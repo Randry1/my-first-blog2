@@ -1,5 +1,6 @@
 {% extends 'blog/base.html' %}
 {% block content %}
+    <a href="{% url 'post_detail' pk=post.pk %}" class="glyphicon glyphicon-pencil"></a>
     <div class="post">
         {% if post.published_date %}
             <div class="date">
