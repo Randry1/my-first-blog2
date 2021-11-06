@@ -11,8 +11,11 @@
 
     <div class="page-header">
         {% if user.is_authenticated %}
+            <a href="/admin/logout/" class="top-menu btn btn-warning">Выйти</a>
             <a href="{% url 'post_new' %}" class="top-menu mt-3"><span class="glyphicon glyphicon-plus"></span></a>
             <a href="{% url 'post_draft_list' %}" class="top-menu btn btn-warning">Черновики</a>
+        {% else %}
+            <a class="top-menu btn btn-warning" href="{% url 'login' %}">Войти</a>
         {% endif %}
         <h1><a href="/">Django Girls Blog</a></h1>
     </div>
