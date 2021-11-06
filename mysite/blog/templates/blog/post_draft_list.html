@@ -1,0 +1,12 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <h1>Черновики постов</h1>
+    {% for post in post_draft %}
+        <a href="{% url 'post_edit'  post.pk  %}"><h2 class="">{{ post.title }}</h2></a>
+        <p class="date">created: {{ post.created_date|date:'d-m-Y' }}</p>
+        <div class="content">
+        {{ post.text|linebreaksbr }}
+        </div>
+    {% endfor %}
+{% endblock %}

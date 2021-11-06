@@ -12,9 +12,9 @@
     <div class="page-header">
         {% if user.is_authenticated %}
             <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+            <a href="{% url 'post_draft_list' %}" class="top-menu">Черновики</a>
         {% endif %}
         <h1><a href="/">Django Girls Blog</a></h1>
-        <a href="https://djangogirls.org/">Учебник</a>
     </div>
     <div class="content container">
     <div class="row">
@@ -26,5 +26,8 @@
     </div>
 </div>
     <div><a href="https://en.wikipedia.org/wiki/Django" class="external_link" id="link_to_wiki_page">Wiki</a></div>
+<footer class="footer">
+    <a href="https://djangogirls.org/">Учебник</a>
+</footer>
 </body>
 </html>
