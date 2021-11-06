@@ -43,7 +43,12 @@ def post_draft_list(request):
 
 def post_publish(request, pk):
     '''Обработка нажатия кнопки публикации'''
-
     post = get_object_or_404(Post, pk=pk)
     post.publish()
     return redirect('post_detail', pk=post.pk)
+
+def post_delete(request, pk):
+    '''Обработка нажатия кнопки удалить пост'''
+    post = get_object_or_404(Post, pk=pk)
+    post.delete()
+    return redirect('post_list')
