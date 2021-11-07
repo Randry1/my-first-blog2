@@ -64,3 +64,7 @@ h1, h2, h3, h4 {
 .left {
     float: left;
 }
+
+.comment {
+    margin: 20px 0px 20px 20px;
+}

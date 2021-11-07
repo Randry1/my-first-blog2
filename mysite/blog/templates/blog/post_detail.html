@@ -15,4 +15,17 @@
         <h1>{{ post.title }}</h1>
         <p>{{ post.text|linebreaksbr }}</p>
     </div>
+    <hr>
+    <div class="comments">
+        {% for comment in post.comments.all %}
+            <div class="comment">
+                <div class="date">{{ comment.created_date }}</div>
+                <strong>{{ comment.author }}</strong>
+                {{ comment.text|linebreaksbr }}
+            </div>
+        {% empty %}
+            <p> Комминтариев не оставили </p>
+        {% endfor %}
+        <a class="btn btn-info" href="{% url 'add_comment_to_post' pk=post.pk %}">Добавить комментарий</a>
+    </div>
 {% endblock %}
