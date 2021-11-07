@@ -18,11 +18,17 @@
     <hr>
     <div class="comments">
         {% for comment in post.comments.all %}
+           {% if user.is_authenticated or comment.approved_comment %}
             <div class="comment">
                 <div class="date">{{ comment.created_date }}</div>
+                {%  if not comment.approved_comment %}
+                    <a class="btn btn-warning" href="{% url 'comment_remove' pk=comment.pk %}">Удалить комментарий</a>
+                    <a class="btn btn-default" href="{% url 'comment_approve' pk=comment.pk %}">Одобрить комментарий</a>
+                {% endif %}
                 <strong>{{ comment.author }}</strong>
                 {{ comment.text|linebreaksbr }}
             </div>
+            {% endif %}
         {% empty %}
             <p> Комминтариев не оставили </p>
         {% endfor %}
