@@ -10,4 +10,6 @@ urlpatterns = [
     re_path(r'^users/(?P<id>\d+)/(?P<name>\D+)/', views.users, name='users'),
     #r'^*началозапроса* blank*название функуии во views.py /(?P<blankid>\d+)*описания переменных*/(?P<name>\D+)/(?P<phone>\d+)/'
     re_path(r'^blanks/(?P<blankid>\d+)/(?P<name>\D+)/(?P<phone>\d+)/', views.blanks, name='blanks'),
+    re_path(r'^mod_products/$', views.mod_products, name='mod_products'),
+    re_path(r'^mod_products/(?P<productid>\d+)/', views.mod_products, name='mod_products'),
 ]

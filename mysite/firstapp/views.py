@@ -9,6 +9,7 @@ def index(request):
     content += '<a href="/firstapp/products/2/" class="btn btn-info">Products 2</a><br>'
     content += '<a href="/firstapp/users/2/Maria/" class="btn btn-info">Users</a><br>'
     content += '<a href="/firstapp/blanks/1/Maria/89089462235/" class="btn btn-info">Бланк 1</a><br>'
+    content += '<a href="/firstapp/mod_products/" class="btn btn-info">Бланк без номера</a><br>'
     return HttpResponse(content)
 
 def about(request):
@@ -35,3 +36,9 @@ def blanks(request, blankid, name, phone):
     http://127.0.0.1:8000/firstapp/blanks/1/Maria/89089462235/'''
     page ="<h1>Номер бланка {0}, заполнен на {1}, телефон {2} </h1>".format(blankid, name, phone)
     return HttpResponse(page)
+def mod_products(request, productid = 2):
+    '''Функция для изучения получения данных из запроса url адреса
+    если не запрлнино поле запроса можно поставить значение по умолчанию
+    http://127.0.0.1:8000/firstapp/produsts/'''
+    return HttpResponse("<h1>Продукт № {0}".format(productid))
+
