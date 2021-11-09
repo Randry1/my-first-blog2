@@ -29,13 +29,14 @@ def products(request, productid):
 def users(request, id, name):
     '''Функйия получения данныйх из URL запроса
     http://127.0.0.1:8000/firstapp/users/2/Maria/'''
-    return HttpResponse("<h1>Привет {0} ваш id:{1}</h1>".format(name,id))
+    return HttpResponse("<h1>Привет {0} ваш id:{1}</h1>".format(name, id))
 
 def blanks(request, blankid, name, phone):
     '''Моя функция для того чтобы пронять правильно ли получил как вытащить переменные из URL запроса
     http://127.0.0.1:8000/firstapp/blanks/1/Maria/89089462235/'''
     page ="<h1>Номер бланка {0}, заполнен на {1}, телефон {2} </h1>".format(blankid, name, phone)
     return HttpResponse(page)
+
 def mod_products(request, productid = 2):
     '''Функция для изучения получения данных из запроса url адреса
     если не запрлнино поле запроса можно поставить значение по умолчанию
