@@ -3,7 +3,13 @@ from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
-    return HttpResponse('<h1>Главная</h1>')
+    content = '<h1>Главная</h1>'
+    content += '<a href="/firstapp/about/" class="btn btn-info">About</a><br>'
+    content += '<a href="/firstapp/contact/" class="btn btn-info">Contact</a><br>'
+    content += '<a href="/firstapp/products/2/" class="btn btn-info">Products 2</a><br>'
+    content += '<a href="/firstapp/users/2/Maria/" class="btn btn-info">Users</a><br>'
+    content += '<a href="/firstapp/blanks/1/Maria/89089462235/" class="btn btn-info">Бланк 1</a><br>'
+    return HttpResponse(content)
 
 def about(request):
     '''Пример реализации обработки запроса пользователя
