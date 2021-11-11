@@ -12,4 +12,8 @@ urlpatterns = [
     re_path(r'^blanks/(?P<blankid>\d+)/(?P<name>\D+)/(?P<phone>\d+)/', views.blanks, name='blanks'),
     re_path(r'^mod_products/$', views.mod_products, name='mod_products'),
     re_path(r'^mod_products/(?P<productid>\d+)/', views.mod_products, name='mod_products'),
+    path('posts/', views.posts),
+    path('posts/<int:id>/', views.posts),
+    path('posts/<int:id>/edit/', views.posts_edit),
+    path('posts/<int:id>/<str:name>/', views.posts_name),
 ]

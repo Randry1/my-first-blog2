@@ -10,6 +10,8 @@ def index(request):
     content += '<a href="/firstapp/users/2/Maria/" class="btn btn-info">Users</a><br>'
     content += '<a href="/firstapp/blanks/1/Maria/89089462235/" class="btn btn-info">Бланк 1</a><br>'
     content += '<a href="/firstapp/mod_products/" class="btn btn-info">Бланк без номера</a><br>'
+    content += '<a href="/firstapp/posts/2/edit/" class="btn btn-info">Пост edit с id</a><br>'
+    content += '<a href="/firstapp/posts/2/Gleb/" class="btn btn-info">Пост edit с id и именем</a><br>'
     return HttpResponse(content)
 
 def about(request):
@@ -43,3 +45,22 @@ def mod_products(request, productid = 2):
     http://127.0.0.1:8000/firstapp/produsts/'''
     return HttpResponse("<h1>Продукт № {0}".format(productid))
 
+def posts(request, id = 1):
+    '''Попытка достать данные из URL через функцию path(),'''
+    if id == 1:
+        return HttpResponse('<h1>Posts list</h1>')
+    else:
+        return HttpResponse("<h1> Post №{0}.".format(id))
+
+def posts_edit(request, id):
+    '''Пост едит с адишником'''
+    if id == 1:
+        return HttpResponse('<h1>Posts list</h1>')
+    else:
+        return HttpResponse("<h1>Edit posts № {0}</h1>".format(id))
+
+def posts_name(request, id =1, name = 'Gleb'):
+    if id == 1:
+        return HttpResponse('<h1>Posts list</h1>')
+    else:
+        return HttpResponse("<h1>Edit posts № {0}: author: {1}</h1>".format(id, name))
