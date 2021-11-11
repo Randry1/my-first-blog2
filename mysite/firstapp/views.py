@@ -1,17 +1,19 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
 
 # Create your views here.
 def index(request):
     content = '<h1>Главная</h1>'
     content += '<a href="/firstapp/about/" class="btn btn-info">About</a><br>'
     content += '<a href="/firstapp/contact/" class="btn btn-info">Contact</a><br>'
+    content += '<a href="/firstapp/detail/" class="btn btn-info">Detail перенаправление HttpResponsePermanentRedirect(\'/firstapp\')</a><br>'
     content += '<a href="/firstapp/products/2/" class="btn btn-info">Products 2</a><br>'
     content += '<a href="/firstapp/users/2/Maria/" class="btn btn-info">Users</a><br>'
     content += '<a href="/firstapp/blanks/1/Maria/89089462235/" class="btn btn-info">Бланк 1</a><br>'
     content += '<a href="/firstapp/mod_products/" class="btn btn-info">Бланк без номера</a><br>'
     content += '<a href="/firstapp/posts/2/edit/" class="btn btn-info">Пост edit с id</a><br>'
     content += '<a href="/firstapp/posts/2/Gleb/" class="btn btn-info">Пост edit с id и именем</a><br>'
+    content += '<a href="/firstapp/posts/2/sdfsad/?pk=3&kategori=poni&othes=fdgsa" class="btn btn-info">Пост edit с id и именем + request.GET.get()</a><br>'
     return HttpResponse(content)
 
 def about(request):
@@ -21,7 +23,10 @@ def about(request):
 
 def contact(request):
     ''' Второй пример использования запроса пользлавтеля'''
-    return HttpResponse('<h2> Контакты с нами</h2>')
+    return HttpResponseRedirect("/firstapp/about/")
+
+def detail(request):
+    return HttpResponsePermanentRedirect('/firstapp/')
 
 def products(request, productid):
     '''Функция для изучения получения данных из запроса url адреса
