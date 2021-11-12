@@ -17,4 +17,8 @@ urlpatterns = [
     path('posts/<int:id>/edit/', views.posts_edit),
     path('posts/<int:id>/<str:name>/', views.posts_name),
     path('detail/', views.detail),
+    path('m304/', views.m304),
+    path('m400/', views.m400),
+    path('m403/', views.m403),
+    path('m404', views.m404),
 ]

@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
+# from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
+from django.http import *
 
 # Create your views here.
 def index(request):
@@ -14,7 +15,11 @@ def index(request):
     content += '<a href="/firstapp/posts/2/edit/" class="btn btn-info">Пост edit с id</a><br>'
     content += '<a href="/firstapp/posts/2/Gleb/" class="btn btn-info">Пост edit с id и именем</a><br>'
     content += '<a href="/firstapp/posts/2/sdfsad/?pk=3&kategori=poni&othes=fdgsa" class="btn btn-info">Пост edit с id и именем + request.GET.get()</a><br>'
-    return HttpResponse(content)
+    content += '<a href="/firstapp/m304" class="btn btn-info">Error 304</a><br>'
+    content += '<a href="/firstapp/m400" class="btn btn-info">Error 400</a><br>'
+    content += '<a href="/firstapp/m403" class="btn btn-info">Error forbidden</a><br>'
+    content += '<a href="/firstapp/m404" class="btn btn-info">Error 404 file not found</a><br>'
+    return render(request, 'firstapp/index.html')
 
 def about(request):
     '''Пример реализации обработки запроса пользователя
@@ -71,3 +76,18 @@ def posts_name(request, id =1, name = 'Gleb'):
         if request.GET.get('pk','1') != '':
             return HttpResponse('<h1> Edit posts № {0}: author: {1}, Request get = {2} , категория = {3}'.format(id, name, request.GET.get('pk', '1'), request.GET.get('kategori', 'default')))
         return HttpResponse("<h1>Edit posts № {0}: author: {1}</h1>".format(id, name))
+
+def m304(request):
+    return HttpResponseNotModified()
+
+def m400(request):
+    '''Ошибка 400'''
+    return HttpResponseBadRequest("<h1> Bad request </h1> ")
+
+def m403(request):
+    '''Ошибка 403'''
+    return HttpResponseForbidden('<h1>Forbidden</h1>')
+
+def m404(request):
+    '''Ошибка 404 file not found'''
+    return HttpResponseNotFound('<h1> File not found </h1>')
