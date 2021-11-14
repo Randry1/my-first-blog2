@@ -95,3 +95,19 @@ def m403(request):
 def m404(request):
     '''Ошибка 404 file not found'''
     return HttpResponseNotFound('<h1> File not found </h1>')
+
+def index_app1(request):
+    '''Передача данных в шаблон пункт 5.3'''
+    data = {"header": "Пердача данных в шаблон",
+            "message": "Загружен шаблон fitstapp/templates/firstapp/index_app1.html"
+            }
+    return render(request, 'firstapp/index_app1.html', context=data)
+
+def index_app2(request):
+    '''Передача сложных данных'''
+    header = "Персональные данные"
+    langs = ["Английский", "Немецкий", "Испанский"]
+    user = {"name": "Максим","age": 18}
+    adr = ("Виноградная", 25, 25)
+    data = {"header": header, "langs": langs, "user": user, "address": adr}
+    return render(request, 'firstapp/index_app2.html', context=data)
