@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from  django.template.response import TemplateResponse
 # from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.http import *
 
@@ -19,7 +20,10 @@ def index(request):
     content += '<a href="/firstapp/m400" class="btn btn-info">Error 400</a><br>'
     content += '<a href="/firstapp/m403" class="btn btn-info">Error forbidden</a><br>'
     content += '<a href="/firstapp/m404" class="btn btn-info">Error 404 file not found</a><br>'
-    return render(request, 'firstapp/index.html')
+    return render(request, 'firstapp/home.html', {'content': content})
+
+def def_template_render(request):
+    return TemplateResponse(request, 'firstapp/templsteRespond.html')
 
 def about(request):
     '''Пример реализации обработки запроса пользователя

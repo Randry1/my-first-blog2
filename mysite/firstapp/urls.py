@@ -21,4 +21,5 @@ urlpatterns = [
     path('m400/', views.m400),
     path('m403/', views.m403),
     path('m404', views.m404),
+    path('template/', views.def_template_render),
 ]
