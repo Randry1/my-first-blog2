@@ -77,7 +77,7 @@ def posts_name(request, id =1, name = 'Gleb'):
     if id == 1:
         return HttpResponse('<h1>Posts list</h1>')
     else:
-        if request.GET.get('pk','1') != '':
+        if request.GET.get('pk', '1') != '':
             return HttpResponse('<h1> Edit posts № {0}: author: {1}, Request get = {2} , категория = {3}'.format(id, name, request.GET.get('pk', '1'), request.GET.get('kategori', 'default')))
         return HttpResponse("<h1>Edit posts № {0}: author: {1}</h1>".format(id, name))
 
