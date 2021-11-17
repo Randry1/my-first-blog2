@@ -1,7 +1,12 @@
+import os
+from os.path import normpath
+
+from django.contrib.sessions.backends import file
 from django.shortcuts import render
-from  django.template.response import TemplateResponse
+from django.template.response import TemplateResponse
 # from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.http import *
+
 
 # Create your views here.
 def index(request):
@@ -20,7 +25,8 @@ def index(request):
     content += '<a href="/firstapp/m400" class="btn btn-info">Error 400</a><br>'
     content += '<a href="/firstapp/m403" class="btn btn-info">Error forbidden</a><br>'
     content += '<a href="/firstapp/m404" class="btn btn-info">Error 404 file not found</a><br>'
-    return render(request, 'firstapp/home.html', {'content': content})
+    path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
+    return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
 def def_template_render(request):
     return TemplateResponse(request, 'firstapp/templsteRespond.html')

@@ -1,5 +1,6 @@
 from django.urls import path, re_path
 from . import views
+from django.views.generic import TemplateView
 
 urlpatterns = [
     # path('about/',views.about, name='about'),
@@ -24,4 +25,7 @@ urlpatterns = [
     path('template/', views.def_template_render),
     path('app1/', views.index_app1),
     path('app2/', views.index_app2),
+    path('contact_template/', TemplateView.as_view(template_name='firstapp/contact_template.html', extra_context={
+        "work": "Создание и поддержка сайтов и веб приложений"
+    })),
 ]

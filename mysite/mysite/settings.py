@@ -36,11 +36,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 ROOT_URLCONF = 'mysite.urls'
-TEMPLATES_DIR = os.path.join(BASE_DIR,"firstapp/templates")
+TEMPLATES_DIR = os.path.join(BASE_DIR, "firstapp/templates")  # вариант когда один центральный каталог в корне проекта
+# TEMPLATES_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'firstapp/templates')
+# print(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'firstapp/templates'))
+# print(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATES_DIR,],
+        'DIRS': [TEMPLATES_DIR, ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
