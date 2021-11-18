@@ -13,4 +13,10 @@
             <p>Массив пуст</p>
         {% endfor %}
     </ul>
+    {% with name='Чайхана' nom=1 %}
+        <div>
+            <p>При магазине работает {{ name }}</p>
+            <p>Номер {{ nom }}</p>
+        </div>
+    {% endwith %}
 {% endblock %}
