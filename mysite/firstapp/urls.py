@@ -32,4 +32,5 @@ urlpatterns = [
     path('index_app3', views.index_app3, name='app3'),
     path('if_template/', views.if_template, name='if_template'),
     path('for_template/', views.for_template, name='for_template'),
+    path('form_template/', views.form_template, name='form_template'),
 ]

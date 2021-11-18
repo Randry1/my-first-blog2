@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.template.response import TemplateResponse
 # from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.http import *
+from .forms import UserForm
 
 
 # Create your views here.
@@ -30,6 +31,8 @@ def index(request):
     content += '<a href="/firstapp/about_template/" class="btn btn-info">Связь шаблонов base.html и about_template.html</a><br>'
     content += '<a href="/firstapp/if_template/" class="btn btn-info">Функция if в шаблоне</a><br>'
     content += '<a href="/firstapp/for_template/" class="btn btn-info">Функция for в шаблоне</a><br>'
+    content += '<hr>'
+    content += '<a href="/firstapp/form_template/" class="btn btn-info">Формы</a><br>'
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -147,3 +150,16 @@ def for_template(request):
     # array_template = [] #проверка функции {% empty %}
     data = {"array": array_template}
     return render(request, 'firstapp/for_template.html', context=data)
+
+
+def form_template(request):
+    '''Шаблон для изучения форм в django'''
+    if request.method == 'POST':
+        name = request.POST.get('name')  # Получить данные из формы поля name
+        age = request.POST.get('age')  # Получить данные из формы поля age
+        output = "<h2>Имя: {0}, возраст{1} </h2>".format(name, age)
+        return HttpResponse(output)
+    else:
+        # Если форма не пришла еще то отправляем шаблон с формой
+        user_form = UserForm()  # Создаем обьект формы
+        return render(request, 'firstapp/form_template.html', {"user_form": user_form})
