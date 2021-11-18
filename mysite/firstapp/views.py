@@ -1,4 +1,5 @@
 import os
+from array import array
 from os.path import normpath
 
 from django.contrib.sessions.backends import file
@@ -28,6 +29,7 @@ def index(request):
     content += '<a href="/firstapp/index_app3" class="btn btn-info">Связь шаблонов base.html и index_app3.html</a><br>'
     content += '<a href="/firstapp/about_template/" class="btn btn-info">Связь шаблонов base.html и about_template.html</a><br>'
     content += '<a href="/firstapp/if_template/" class="btn btn-info">Функция if в шаблоне</a><br>'
+    content += '<a href="/firstapp/for_template/" class="btn btn-info">Функция for в шаблоне</a><br>'
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -137,3 +139,11 @@ def if_template(request):
     '''Шаблон с функцией if внутри'''
     data = {"age": 18}
     return render(request, 'firstapp/if_template.html', context=data)
+
+
+def for_template(request):
+    '''Обработка for в шаблоне'''
+    array_template = ['Шнурок', "сосиска", "Ноутбуки", "Принтеры"]
+    # array_template = [] #проверка функции {% empty %}
+    data = {"array": array_template}
+    return render(request, 'firstapp/for_template.html', context=data)

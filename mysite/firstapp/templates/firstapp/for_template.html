@@ -1,0 +1,16 @@
+{% extends 'firstapp/base.html' %}
+{% block title %}
+    Цикл For в шаблоне
+{% endblock %}
+{% block header %}
+    Цикл For в шаблоне
+{% endblock %}
+{% block content %}
+    <ul>
+        {% for item in array %}
+            <li>{{ item | capfirst }}</li>
+        {% empty %}
+            <p>Массив пуст</p>
+        {% endfor %}
+    </ul>
+{% endblock %}
