@@ -30,4 +30,5 @@ urlpatterns = [
         "work": "Создание и поддержка сайтов и веб приложений"
     })),
     path('index_app3', views.index_app3, name='app3'),
+    path('if_template/', views.if_template, name='if_template')
 ]

@@ -1,0 +1,10 @@
+{% extends 'firstapp/base.html' %}
+{% block title %}IF{% endblock %}
+{% block header %}Шаблон с if{% endblock %}
+{% block content %}
+    {% if age > 20 %}
+        <div>Вам больше 20</div>
+    {% else %}
+        <div>Вам меньше 20</div>
+    {% endif %}
+{% endblock %}
