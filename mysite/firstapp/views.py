@@ -25,6 +25,7 @@ def index(request):
     content += '<a href="/firstapp/m400" class="btn btn-info">Error 400</a><br>'
     content += '<a href="/firstapp/m403" class="btn btn-info">Error forbidden</a><br>'
     content += '<a href="/firstapp/m404" class="btn btn-info">Error 404 file not found</a><br>'
+    content += '<a href="/firstapp/index_app3" class="btn btn-info">Связь шаблонов base.html и index_app3.html</a><br>'
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -109,11 +110,17 @@ def index_app1(request):
             }
     return render(request, 'firstapp/index_app1.html', context=data)
 
+
 def index_app2(request):
     '''Передача сложных данных'''
     header = "Персональные данные"
     langs = ["Английский", "Немецкий", "Испанский"]
-    user = {"name": "Максим","age": 18}
+    user = {"name": "Максим", "age": 18}
     adr = ("Виноградная", 25, 25)
     data = {"header": header, "langs": langs, "user": user, "address": adr}
     return render(request, 'firstapp/index_app2.html', context=data)
+
+
+def index_app3(request):
+    '''Пример связки базового шаблона и индекса'''
+    return render(request, 'firstapp/index_app3.html')

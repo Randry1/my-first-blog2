@@ -23,7 +23,7 @@
     <img src="{% static 'images/flag.png' %}" alt="book">
     <div class="col-md-8">
         <font style="color: rebeccapurple">
-            {{ content }}
+            {{ content| safe }}
         </font>
     </div>
     <div>

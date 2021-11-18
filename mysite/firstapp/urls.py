@@ -28,4 +28,5 @@ urlpatterns = [
     path('contact_template/', TemplateView.as_view(template_name='firstapp/contact_template.html', extra_context={
         "work": "Создание и поддержка сайтов и веб приложений"
     })),
+    path('index_app3', views.index_app3, name='app3'),
 ]
