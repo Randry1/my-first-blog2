@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.template.response import TemplateResponse
 # from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.http import *
-from .forms import UserForm
+from .forms import UserForm, HelperTextContactForm
 
 
 # Create your views here.
@@ -33,6 +33,7 @@ def index(request):
     content += '<a href="/firstapp/for_template/" class="btn btn-info">Функция for в шаблоне</a><br>'
     content += '<hr>'
     content += '<a href="/firstapp/form_template/" class="btn btn-info">Формы</a><br>'
+    content += '<a href="/firstapp/form_helper_text/" class="btn btn-info">Форма Helper text</a><br>'
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -157,9 +158,25 @@ def form_template(request):
     if request.method == 'POST':
         name = request.POST.get('name')  # Получить данные из формы поля name
         age = request.POST.get('age')  # Получить данные из формы поля age
-        output = "<h2>Имя: {0}, возраст{1} </h2>".format(name, age)
+        output = "<h2>Имя: {0}, возраст {1} </h2>".format(name, age)
         return HttpResponse(output)
     else:
         # Если форма не пришла еще то отправляем шаблон с формой
-        user_form = UserForm()  # Создаем обьект формы
+        user_form = UserForm(label_suffix='?')  # Создаем обьект формы
         return render(request, 'firstapp/form_template.html', {"user_form": user_form})
+
+
+def form_helper_text(request):
+    '''Обработчик для HelpTextContactForm'''
+    if request.method == 'POST':  # Если форма была отправлена
+        subject = request.POST.get('subject')  # Извлекаем данные из request запроса
+        message = request.POST.get('message')  #
+        sender = request.POST.get('sender')  #
+        cc_my_self = request.POST.get('cc_my_self')  #
+        return HttpResponse("<p>Тема: {0}</p>"  # Делаем с данными что хотим
+                            "<p>Сообшение: {1}</p>"  # перенаправляема в шаблон для ответа пользователю
+                            "<p>Емайл: {2} </p>"
+                            "<p>Галочка: {3} </p>".format(subject, message, sender, cc_my_self))
+    else:
+        helper_form = HelperTextContactForm(auto_id=False)
+        return render(request, 'firstapp/form_helper_text.html', {'helper_form': helper_form})

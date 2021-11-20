@@ -33,4 +33,5 @@ urlpatterns = [
     path('if_template/', views.if_template, name='if_template'),
     path('for_template/', views.for_template, name='for_template'),
     path('form_template/', views.form_template, name='form_template'),
+    path('form_helper_text/', views.form_helper_text, name='form_helper_text')
 ]

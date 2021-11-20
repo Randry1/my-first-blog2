@@ -1,0 +1,18 @@
+{% extends 'firstapp/base.html' %}
+{% block title %}
+    Helper text form
+{% endblock %}
+{% block header %}
+    Форма для изучения текта помошника Helper Text Form
+{% endblock %}
+{% block content %}
+    <div>
+        <form action="" method="post">
+            {% csrf_token %}
+            <table>
+                {{ helper_form }}
+            </table>
+            <button type="submit">Отправить</button>
+        </form>
+    </div>
+{% endblock %}
