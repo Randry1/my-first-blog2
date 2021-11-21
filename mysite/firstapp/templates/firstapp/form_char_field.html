@@ -2,10 +2,27 @@
 {% block title %}Char field{% endblock %}
 {% block header %}Char field{% endblock %}
 {% block content %}
+    <h3>Как таблица</h3>
     <form action="" method="post">
         {% csrf_token %}
         <table>
-            {{ form_char }}
+            {{ form_char.as_table }}
+        </table>
+        <button type="submit">Отправить</button>
+    </form>
+    <h3>Как параграфы</h3>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+            {{ form_char.as_p }}
+        </table>
+        <button type="submit">Отправить</button>
+    </form>
+    <h3>Как список</h3>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+            {{ form_char.as_ul }}
         </table>
         <button type="submit">Отправить</button>
     </form>
