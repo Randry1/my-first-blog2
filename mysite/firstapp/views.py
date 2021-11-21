@@ -207,5 +207,5 @@ def form_char_field(request):
         name = request.POST.get('name')
         return HttpResponse('<h1>Имя: {0} </h1>'.format(name))
     else:
-        form_char = CharFieldForm()
+        form_char = CharFieldForm(field_order=["message", "name", "email", "ip_address", "reg_text"])
         return render(request, 'firstapp/form_char_field.html', {"form_char": form_char})
