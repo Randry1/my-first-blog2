@@ -37,4 +37,4 @@ class HelperTextContactForm(forms.Form):
 
 class CharFieldForm(forms.Form):
     '''Form for charfield'''
-    name = forms.CharField(label='Имя')
+    name = forms.CharField(label='Имя', max_length=6, min_length=2, help_text='Не более 6 символов')
