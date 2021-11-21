@@ -40,5 +40,6 @@ class CharFieldForm(forms.Form):
     name = forms.CharField(label='Имя', max_length=6, min_length=2, help_text='Не более 6 символов')
     email = forms.EmailField(label='Емайл', help_text='Обязательно должен быть символ @')
     message = forms.CharField(initial='Text message', widget=forms.Textarea)
-    ip_address = forms.GenericIPAddressField(label='IP адрес', help_text='Пример формата 192.168.9.1')
+    ip_address = forms.GenericIPAddressField(label='IP адрес', help_text='Пример формата 192.168.9.1',
+                                             initial='192.168.9.1')
     reg_text = forms.RegexField(label='Регулярные выражения', regex='[0-9][A-F][0-9]')
