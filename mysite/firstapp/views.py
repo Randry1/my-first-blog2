@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.template.response import TemplateResponse
 # from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.http import *
-from .forms import UserForm, HelperTextContactForm
+from .forms import UserForm, HelperTextContactForm, CharFieldForm
 
 
 # Create your views here.
@@ -34,52 +34,63 @@ def index(request):
     content += '<hr>'
     content += '<a href="/firstapp/form_template/" class="btn btn-info">Формы</a><br>'
     content += '<a href="/firstapp/form_helper_text/" class="btn btn-info">Форма Helper text</a><br>'
+    content += '<a href="/firstapp/form_char_field/" class="btn btn-info">Форма Char Field</a><br>'
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
+
 def def_template_render(request):
     return TemplateResponse(request, 'firstapp/templsteRespond.html')
+
 
 def about(request):
     '''Пример реализации обработки запроса пользователя
     и строки запроса'''
     return HttpResponse('<h1> О нас</h1>')
 
+
 def contact(request):
     ''' Второй пример использования запроса пользлавтеля'''
     return HttpResponseRedirect("/firstapp/about/")
 
+
 def detail(request):
     return HttpResponsePermanentRedirect('/firstapp/')
+
 
 def products(request, productid):
     '''Функция для изучения получения данных из запроса url адреса
     http://127.0.0.1:8000/firstapp/produsts/2/'''
     return HttpResponse("<h1>Продукт № {0}".format(productid))
 
+
 def users(request, id, name):
     '''Функйия получения данныйх из URL запроса
     http://127.0.0.1:8000/firstapp/users/2/Maria/'''
     return HttpResponse("<h1>Привет {0} ваш id:{1}</h1>".format(name, id))
 
+
 def blanks(request, blankid, name, phone):
     '''Моя функция для того чтобы пронять правильно ли получил как вытащить переменные из URL запроса
     http://127.0.0.1:8000/firstapp/blanks/1/Maria/89089462235/'''
-    page ="<h1>Номер бланка {0}, заполнен на {1}, телефон {2} </h1>".format(blankid, name, phone)
+    page = "<h1>Номер бланка {0}, заполнен на {1}, телефон {2} </h1>".format(blankid, name, phone)
     return HttpResponse(page)
 
-def mod_products(request, productid = 2):
+
+def mod_products(request, productid=2):
     '''Функция для изучения получения данных из запроса url адреса
     если не запрлнино поле запроса можно поставить значение по умолчанию
     http://127.0.0.1:8000/firstapp/produsts/'''
     return HttpResponse("<h1>Продукт № {0}".format(productid))
 
-def posts(request, id = 1):
+
+def posts(request, id=1):
     '''Попытка достать данные из URL через функцию path(),'''
     if id == 1:
         return HttpResponse('<h1>Posts list</h1>')
     else:
         return HttpResponse("<h1> Post №{0}.".format(id))
+
 
 def posts_edit(request, id):
     '''Пост едит с адишником'''
@@ -88,28 +99,36 @@ def posts_edit(request, id):
     else:
         return HttpResponse("<h1>Edit posts № {0}</h1>".format(id))
 
-def posts_name(request, id =1, name = 'Gleb'):
+
+def posts_name(request, id=1, name='Gleb'):
     if id == 1:
         return HttpResponse('<h1>Posts list</h1>')
     else:
         if request.GET.get('pk', '1') != '':
-            return HttpResponse('<h1> Edit posts № {0}: author: {1}, Request get = {2} , категория = {3}'.format(id, name, request.GET.get('pk', '1'), request.GET.get('kategori', 'default')))
+            return HttpResponse(
+                '<h1> Edit posts № {0}: author: {1}, Request get = {2} , категория = {3}'.format(
+                    id, name, request.GET.get('pk', '1'), request.GET.get('kategori', 'default')))
         return HttpResponse("<h1>Edit posts № {0}: author: {1}</h1>".format(id, name))
+
 
 def m304(request):
     return HttpResponseNotModified()
+
 
 def m400(request):
     '''Ошибка 400'''
     return HttpResponseBadRequest("<h1> Bad request </h1> ")
 
+
 def m403(request):
     '''Ошибка 403'''
     return HttpResponseForbidden('<h1>Forbidden</h1>')
 
+
 def m404(request):
     '''Ошибка 404 file not found'''
     return HttpResponseNotFound('<h1> File not found </h1>')
+
 
 def index_app1(request):
     '''Передача данных в шаблон пункт 5.3'''
@@ -154,7 +173,7 @@ def for_template(request):
 
 
 def form_template(request):
-    '''Шаблон для изучения форм в django'''
+    """Шаблон для изучения форм в django"""
     if request.method == 'POST':
         name = request.POST.get('name')  # Получить данные из формы поля name
         age = request.POST.get('age')  # Получить данные из формы поля age
@@ -167,7 +186,7 @@ def form_template(request):
 
 
 def form_helper_text(request):
-    '''Обработчик для HelpTextContactForm'''
+    """Обработчик для HelpTextContactForm"""
     if request.method == 'POST':  # Если форма была отправлена
         subject = request.POST.get('subject')  # Извлекаем данные из request запроса
         message = request.POST.get('message')  #
@@ -180,3 +199,13 @@ def form_helper_text(request):
     else:
         helper_form = HelperTextContactForm(auto_id=False)
         return render(request, 'firstapp/form_helper_text.html', {'helper_form': helper_form})
+
+
+def form_char_field(request):
+    """ CharField изучение поля"""
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        return HttpResponse('<h1>Имя: {0} </h1>'.format(name))
+    else:
+        form_char = CharFieldForm()
+        return render(request, 'firstapp/form_char_field.html', {"form_char": form_char})

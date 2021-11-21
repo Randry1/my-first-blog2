@@ -27,7 +27,14 @@ class UserForm(forms.Form):
 
 class HelperTextContactForm(forms.Form):
     '''Форма для изучения аргумента helper_text'''
-    subject = forms.CharField(help_text='Не более 100 символов')
-    message = forms.CharField()
-    sender = forms.EmailField(help_text='Емайл адрес')
-    cc_my_self = forms.BooleanField(required=False)
+    subject = forms.CharField(help_text='Не более 100 символов', initial='How a you?')
+    message = forms.CharField(initial='Text message', error_messages={'required': 'Мое сообщение об ошибке'})
+    sender = forms.EmailField(help_text='Емайл адрес', initial='DFSs@df.dd')
+    cc_my_self = forms.BooleanField(required=False, initial=True)  # required=False - отключает проверку
+    basket = forms.BooleanField(label='Положить в корзину')
+    leave = forms.NullBooleanField(label='Вы поедете в Сочи в этом году?')
+
+
+class CharFieldForm(forms.Form):
+    '''Form for charfield'''
+    name = forms.CharField(label='Имя')
