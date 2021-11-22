@@ -35,4 +35,5 @@ urlpatterns = [
     path('form_template/', views.form_template, name='form_template'),
     path('form_helper_text/', views.form_helper_text, name='form_helper_text'),
     path('form_char_field/', views.form_char_field, name='form_char_field'),
+    path('slug_field_form/', views.slug_field_form, name='slug_field_form'),
 ]

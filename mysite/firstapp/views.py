@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.template.response import TemplateResponse
 # from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.http import *
-from .forms import UserForm, HelperTextContactForm, CharFieldForm
+from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm
 
 
 # Create your views here.
@@ -35,6 +35,7 @@ def index(request):
     content += '<a href="/firstapp/form_template/" class="btn btn-info">Формы</a><br>'
     content += '<a href="/firstapp/form_helper_text/" class="btn btn-info">Форма Helper text</a><br>'
     content += '<a href="/firstapp/form_char_field/" class="btn btn-info">Форма Char Field</a><br>'
+    content += '<a href="/firstapp/slug_field_form/" class="btn btn-info">Форма Slug field</a><br>'
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -204,8 +205,22 @@ def form_helper_text(request):
 def form_char_field(request):
     """ CharField изучение поля"""
     if request.method == 'POST':
-        name = request.POST.get('name')
-        return HttpResponse('<h1>Имя: {0} </h1>'.format(name))
+        form_char = CharFieldForm(request.POST)
+        if form_char.is_valid():
+            name = form_char.cleaned_data['name']
+            return HttpResponse('<h1>Имя: {0} </h1>'.format(name))
+        else:
+            return HttpResponse('<h1>Ошибка введено неверное имя</h1>')
     else:
         form_char = CharFieldForm(field_order=["message", "name", "email", "ip_address", "reg_text"])
         return render(request, 'firstapp/form_char_field.html', {"form_char": form_char})
+
+
+def slug_field_form(request):
+    """SlugField"""
+    if request.method == 'POST':
+        slug = request.POST.get("slug")
+        return HttpResponse("Slug: {0}".format(slug))
+    else:
+        slug_form = SlugFieldForm()
+        return render(request, template_name="firstapp/slug_field_form.html", context={"slug_form": slug_form})

@@ -1,0 +1,12 @@
+{% extends 'firstapp/base.html' %}
+{% block title %}Char field{% endblock %}
+{% block header %}Char field{% endblock %}
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+            {{ slug_form }}
+        </table>
+        <button type="submit">Send</button>
+    </form>
+{% endblock %}

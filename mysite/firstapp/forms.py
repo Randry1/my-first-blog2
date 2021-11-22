@@ -44,3 +44,7 @@ class CharFieldForm(forms.Form):
                                              initial='192.168.9.1')
     reg_text = forms.RegexField(label='Регулярные выражения', regex='[0-9][A-F][0-9]')
     field_order = ["name", "email", "ip_address", "reg_text", "message"]  # Регулирование порядка вывода полей
+
+class SlugFieldForm(forms.Form):
+    """Example from book SlugFieldForm"""
+    slug = forms.SlugField(label='Slug field')

@@ -3,7 +3,7 @@
 {% block header %}Char field{% endblock %}
 {% block content %}
     <h3>Как таблица</h3>
-    <form action="" method="post">
+    <form action="" method="post" novalidate>
         {% csrf_token %}
         <table>
             {{ form_char.as_table }}
