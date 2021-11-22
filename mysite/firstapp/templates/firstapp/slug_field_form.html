@@ -2,7 +2,7 @@
 {% block title %}Char field{% endblock %}
 {% block header %}Char field{% endblock %}
 {% block content %}
-    <form action="" method="post">
+    <form action="" method="post" novalidate>
         {% csrf_token %}
         <table>
             {{ slug_form }}

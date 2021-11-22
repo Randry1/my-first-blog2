@@ -47,4 +47,4 @@ class CharFieldForm(forms.Form):
 
 class SlugFieldForm(forms.Form):
     """Example from book SlugFieldForm"""
-    slug = forms.SlugField(label='Slug field')
+    slug = forms.SlugField(label='Slug field', required=True, min_length=5)

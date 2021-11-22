@@ -208,6 +208,7 @@ def form_char_field(request):
         form_char = CharFieldForm(request.POST)
         if form_char.is_valid():
             name = form_char.cleaned_data['name']
+            error = form_char.errors
             return HttpResponse('<h1>Имя: {0} </h1>'.format(name))
         else:
             return HttpResponse('<h1>Ошибка введено неверное имя</h1>')
@@ -219,8 +220,13 @@ def form_char_field(request):
 def slug_field_form(request):
     """SlugField"""
     if request.method == 'POST':
-        slug = request.POST.get("slug")
-        return HttpResponse("Slug: {0}".format(slug))
+        slug_form = SlugFieldForm(request.POST)
+        if slug_form.is_valid():
+            slug = slug_form.cleaned_data
+            return HttpResponse('Valid is sacsessful <br> Slug: {0}'.format(slug))
+        else:
+            slug_errors = slug_form.errors
+            return HttpResponse("We find error: <br> {0}".format(slug_errors))
     else:
         slug_form = SlugFieldForm()
         return render(request, template_name="firstapp/slug_field_form.html", context={"slug_form": slug_form})
