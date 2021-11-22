@@ -1,6 +1,7 @@
 from calendar import format
 
 from django import forms
+from django.core.validators import validate_slug
 
 
 class UserForm(forms.Form):
@@ -45,6 +46,12 @@ class CharFieldForm(forms.Form):
     reg_text = forms.RegexField(label='Регулярные выражения', regex='[0-9][A-F][0-9]')
     field_order = ["name", "email", "ip_address", "reg_text", "message"]  # Регулирование порядка вывода полей
 
+
 class SlugFieldForm(forms.Form):
     """Example from book SlugFieldForm"""
-    slug = forms.SlugField(label='Slug field', required=True, min_length=5)
+    slug = forms.SlugField(label='Slug field', required=True, min_length=5, validators=[validate_slug])
+
+
+class UrlFieldForm(forms.Form):
+    """URL Field example book"""
+    url_field = forms.URLField(label='Url', help_text='Например http://www.google.com')

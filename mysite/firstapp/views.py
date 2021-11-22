@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.template.response import TemplateResponse
 # from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.http import *
-from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm
+from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm
 
 
 # Create your views here.
@@ -36,6 +36,7 @@ def index(request):
     content += '<a href="/firstapp/form_helper_text/" class="btn btn-info">Форма Helper text</a><br>'
     content += '<a href="/firstapp/form_char_field/" class="btn btn-info">Форма Char Field</a><br>'
     content += '<a href="/firstapp/slug_field_form/" class="btn btn-info">Форма Slug field</a><br>'
+    content += '<a href="/firstapp/url_field_form/" class="btn btn-info">Форма Url field</a><br>'
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -230,3 +231,9 @@ def slug_field_form(request):
     else:
         slug_form = SlugFieldForm()
         return render(request, template_name="firstapp/slug_field_form.html", context={"slug_form": slug_form})
+
+
+def url_field_form(request):
+    """Url field from book"""
+    url_form = UrlFieldForm()
+    return render(request, template_name='firstapp/url_field_form.html', context={"form": url_form})

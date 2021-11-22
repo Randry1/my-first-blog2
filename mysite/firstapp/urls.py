@@ -36,4 +36,5 @@ urlpatterns = [
     path('form_helper_text/', views.form_helper_text, name='form_helper_text'),
     path('form_char_field/', views.form_char_field, name='form_char_field'),
     path('slug_field_form/', views.slug_field_form, name='slug_field_form'),
+    path('url_field_form/', views.url_field_form, name='url_field_form'),
 ]
