@@ -262,6 +262,11 @@ def combo_field_form(request):
 def file_path_field_form(request):
     """File path field"""
     title = 'File path field'
-    file_path_form = FilePathFieldForm()
-    return render(request, 'firstapp/universal_form_template.html',
-                  context={"title": title, "header": title, "form": file_path_form})
+    # Проверка пришла ли форма
+    if request.method == 'POST':
+        file_path = request.POST.get('file_path')
+        return HttpResponse("<h3>Путь: {0}</h3>".format(file_path))
+    else:
+        file_path_form = FilePathFieldForm()
+        return render(request, 'firstapp/universal_form_template.html',
+                      context={"title": title, "header": title, "form": file_path_form})

@@ -69,4 +69,5 @@ class ComboFieldForm(forms.Form):
 
 class FilePathFieldForm(forms.Form):
     """File path Field"""
-    file_path = forms.FilePathField(label='Выберети файл', path='F:\\py\\my-first-blog2\\mysite\\firstapp\\')
+    file_path = forms.FilePathField(label='Выберети файл', path='F:\\py\\my-first-blog2\\mysite\\firstapp\\',
+                                    allow_files=True, allow_folders=True)
