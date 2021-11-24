@@ -65,3 +65,8 @@ class UuiFieldForm(forms.Form):
 class ComboFieldForm(forms.Form):
     """Combo Field Form"""
     combo_text = forms.ComboField(label='Введите текст', fields=[forms.URLField(), forms.CharField(max_length=20)])
+
+
+class FilePathFieldForm(forms.Form):
+    """File path Field"""
+    file_path = forms.FilePathField(label='Выберети файл', path='F:\\py\\my-first-blog2\\mysite\\firstapp\\')

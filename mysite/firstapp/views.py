@@ -8,7 +8,7 @@ from django.template.response import TemplateResponse
 # from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.http import *
 from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm, \
-    ComboFieldForm
+    ComboFieldForm, FilePathFieldForm
 
 
 # Create your views here.
@@ -40,6 +40,7 @@ def index(request):
     content += '<a href="/firstapp/url_field_form/" class="btn btn-info">Форма Url field</a><br>'
     content += '<a href="/firstapp/uuid_field_form/" class="btn btn-info">Форма Uuid field</a><br>'
     content += '<a href="/firstapp/combo_field_form/" class="btn btn-info">Форма Combo field</a><br>'
+    content += '<a href="/firstapp/file_path_field_form/" class="btn btn-info">Форма File path field</a><br>'
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -256,3 +257,11 @@ def combo_field_form(request):
     """Combo field"""
     combo_form = ComboFieldForm()
     return render(request, 'firstapp/combo_field_form.html', context={"form": combo_form})
+
+
+def file_path_field_form(request):
+    """File path field"""
+    title = 'File path field'
+    file_path_form = FilePathFieldForm()
+    return render(request, 'firstapp/universal_form_template.html',
+                  context={"title": title, "header": title, "form": file_path_form})
