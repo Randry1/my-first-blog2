@@ -40,4 +40,5 @@ urlpatterns = [
     path('uuid_field_form/', views.uuid_field_form, name='uuid_field_form'),
     path('combo_field_form/', views.combo_field_form, name='combo_field_form'),
     path('file_path_field_form/', views.file_path_field_form, name='file_path_field_form'),
+    path('file_field_form/', views.file_field_form, name='file_field_form'),
 ]

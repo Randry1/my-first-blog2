@@ -68,6 +68,17 @@ class ComboFieldForm(forms.Form):
 
 
 class FilePathFieldForm(forms.Form):
-    """File path Field"""
+    """File path Field, возвращает строку путь к файлу или папку от корня"""
     file_path = forms.FilePathField(label='Выберети файл', path='F:\\py\\my-first-blog2\\mysite\\firstapp\\',
                                     allow_files=True, allow_folders=True)
+
+
+class FileFieldForm(forms.Form):
+    """File field Поле FileField предназначено для выбора и загрузки файлов и по умолчанmо
+    использует виджет ClearabeFileinput с пустым значением None. Поде формирует
+    объект UploadedFile, который упаковывает содержимое файла и имя файла в один
+    объект. Поле принимает два необязательных аргумента для проверки длины вводи­
+    мой строки: max_length (гарантирует, что имя файла не превысит максимальную
+    заданную длину) и allow_empty_file (гарантирует, что проверка пройдет успешно,
+    даже если содержимое файла пустое)."""
+    file = forms.FileField(label='Файл', allow_empty_file=True)

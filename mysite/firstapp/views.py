@@ -5,10 +5,10 @@ from os.path import normpath
 from django.contrib.sessions.backends import file
 from django.shortcuts import render
 from django.template.response import TemplateResponse
-# from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.http import *
 from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm, \
-    ComboFieldForm, FilePathFieldForm
+    ComboFieldForm, FilePathFieldForm, FileFieldForm
 
 
 # Create your views here.
@@ -270,3 +270,31 @@ def file_path_field_form(request):
         file_path_form = FilePathFieldForm()
         return render(request, 'firstapp/universal_form_template.html',
                       context={"title": title, "header": title, "form": file_path_form})
+
+
+def handle_uploaded_file(file):
+    pass
+    destination = open('F:\\', 'wb+')
+    for chunk in file.chunks():
+        destination.write(chunk)
+    destination.close()
+
+
+def file_field_form(request):
+    """File field form"""
+    # TODO Разобраться с загрузокой файлов есть какойто SimpleUpload
+    title = "File field"
+    # Проверка была ли отправлена на сервер форма
+    if request.method == 'POST':
+        file_form = FileFieldForm(request.POST, request.FILES)
+        if file_form.is_valid():
+            handle_uploaded_file(request.FILES['file'])
+            return HttpResponse('Успешно загружен')
+        else:
+            # form = FileFieldForm()
+            errors = file_form.errors
+            return HttpResponse('Неудалось загрузить файл {0} <br> {1}'.format(request.FILES, request.POST))
+    else:
+        form = FileFieldForm()
+        return render(request, 'firstapp/universal_form_template.html',
+                      context={"title": title, "header": title, "form": form})
