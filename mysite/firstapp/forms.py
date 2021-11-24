@@ -55,3 +55,8 @@ class SlugFieldForm(forms.Form):
 class UrlFieldForm(forms.Form):
     """URL Field example book"""
     url_field = forms.URLField(label='Url', help_text='Например http://www.google.com')
+
+
+class UuiFieldForm(forms.Form):
+    """Uui Field form"""
+    uui = forms.UUIDField(label="UUI")

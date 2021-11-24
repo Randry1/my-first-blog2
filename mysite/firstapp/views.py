@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.template.response import TemplateResponse
 # from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.http import *
-from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm
+from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm
 
 
 # Create your views here.
@@ -37,6 +37,7 @@ def index(request):
     content += '<a href="/firstapp/form_char_field/" class="btn btn-info">Форма Char Field</a><br>'
     content += '<a href="/firstapp/slug_field_form/" class="btn btn-info">Форма Slug field</a><br>'
     content += '<a href="/firstapp/url_field_form/" class="btn btn-info">Форма Url field</a><br>'
+    content += '<a href="/firstapp/uuid_field_form/" class="btn btn-info">Форма Uuid field</a><br>'
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -237,3 +238,13 @@ def url_field_form(request):
     """Url field from book"""
     url_form = UrlFieldForm()
     return render(request, template_name='firstapp/url_field_form.html', context={"form": url_form})
+
+
+def uuid_field_form(request):
+    """"Comment uuid form"""
+    if request.method == 'POST':
+        uuid = request.POST.get("uui")
+        return HttpResponse('<h1> UUID: {0} '.format(uuid))
+    else:
+        uuid_form = UuiFieldForm()
+        return render(request, 'firstapp/uui_field_form.html', context={"form": uuid_form})
