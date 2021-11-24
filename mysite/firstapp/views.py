@@ -7,7 +7,8 @@ from django.shortcuts import render
 from django.template.response import TemplateResponse
 # from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.http import *
-from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm
+from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm, \
+    ComboFieldForm
 
 
 # Create your views here.
@@ -38,6 +39,7 @@ def index(request):
     content += '<a href="/firstapp/slug_field_form/" class="btn btn-info">Форма Slug field</a><br>'
     content += '<a href="/firstapp/url_field_form/" class="btn btn-info">Форма Url field</a><br>'
     content += '<a href="/firstapp/uuid_field_form/" class="btn btn-info">Форма Uuid field</a><br>'
+    content += '<a href="/firstapp/combo_field_form/" class="btn btn-info">Форма Combo field</a><br>'
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -248,3 +250,9 @@ def uuid_field_form(request):
     else:
         uuid_form = UuiFieldForm()
         return render(request, 'firstapp/uui_field_form.html', context={"form": uuid_form})
+
+
+def combo_field_form(request):
+    """Combo field"""
+    combo_form = ComboFieldForm()
+    return render(request, 'firstapp/combo_field_form.html', context={"form": combo_form})

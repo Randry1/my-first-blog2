@@ -1,0 +1,16 @@
+{% extends 'firstapp/base.html' %}
+{% block title %}
+    Combo field field
+{% endblock %}
+{% block header %}
+    Combo field field
+{% endblock %}
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+            {{ form }}
+        </table>
+        <button type="submit">Send</button>
+    </form>
+{% endblock %}

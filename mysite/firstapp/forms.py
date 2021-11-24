@@ -60,3 +60,8 @@ class UrlFieldForm(forms.Form):
 class UuiFieldForm(forms.Form):
     """Uui Field form"""
     uui = forms.UUIDField(label="UUI")
+
+
+class ComboFieldForm(forms.Form):
+    """Combo Field Form"""
+    combo_text = forms.ComboField(label='Введите текст', fields=[forms.URLField(), forms.CharField(max_length=20)])
