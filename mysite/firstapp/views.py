@@ -8,7 +8,7 @@ from django.template.response import TemplateResponse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.http import *
 from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm, \
-    ComboFieldForm, FilePathFieldForm, FileFieldForm
+    ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm
 
 
 # Create your views here.
@@ -41,6 +41,7 @@ def index(request):
     content += '<a href="/firstapp/uuid_field_form/" class="btn btn-info">Форма Uuid field</a><br>'
     content += '<a href="/firstapp/combo_field_form/" class="btn btn-info">Форма Combo field</a><br>'
     content += '<a href="/firstapp/file_path_field_form/" class="btn btn-info">Форма File path field</a><br>'
+    content += '<a href="/firstapp/date_field_form/" class="btn btn-info">Форма Date path field</a><br>'
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -296,5 +297,17 @@ def file_field_form(request):
             return HttpResponse('Неудалось загрузить файл {0} <br> {1}'.format(request.FILES, request.POST))
     else:
         form = FileFieldForm()
+        return render(request, 'firstapp/universal_form_template.html',
+                      context={"title": title, "header": title, "form": form})
+
+
+def date_field_form(request):
+    """Date field"""
+    title = 'Data field'
+    if request.method == 'POST':
+        date = request.POST.get('date')
+        return HttpResponse("Date: {0}".format(date))
+    else:
+        form = DateFieldForm()
         return render(request, 'firstapp/universal_form_template.html',
                       context={"title": title, "header": title, "form": form})

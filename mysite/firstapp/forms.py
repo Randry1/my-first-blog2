@@ -84,3 +84,7 @@ class FileFieldForm(forms.Form):
     заданную длину) и allow_empty_file (гарантирует, что проверка пройдет успешно,
     даже если содержимое файла пустое)."""
     file = forms.FileField(label='Файл', allow_empty_file=True)
+
+class DateFieldForm(forms.Form):
+    """Date field"""
+    date = forms.DateField(label="Дата", help_text='Пример 25/12/2021')
