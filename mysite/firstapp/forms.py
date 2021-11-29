@@ -1,3 +1,4 @@
+import os
 from calendar import format
 
 from django import forms
@@ -69,7 +70,8 @@ class ComboFieldForm(forms.Form):
 
 class FilePathFieldForm(forms.Form):
     """File path Field, возвращает строку путь к файлу или папку от корня"""
-    file_path = forms.FilePathField(label='Выберети файл', path='F:\\py\\my-first-blog2\\mysite\\firstapp\\',
+    file_path = forms.FilePathField(label='Выберети файл',
+                                    path=os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                                     allow_files=True, allow_folders=True)
 
 
