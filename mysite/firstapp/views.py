@@ -8,7 +8,7 @@ from django.template.response import TemplateResponse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.http import *
 from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm, \
-    ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm
+    ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm
 
 
 # Create your views here.
@@ -42,6 +42,7 @@ def index(request):
     content += '<a href="/firstapp/combo_field_form/" class="btn btn-info">Форма Combo field</a><br>'
     content += '<a href="/firstapp/file_path_field_form/" class="btn btn-info">Форма File path field</a><br>'
     content += '<a href="/firstapp/date_field_form/" class="btn btn-info">Форма Date path field</a><br>'
+    content += '<a href="/firstapp/time_field_form/" class="btn btn-info">Форма Date path field</a><br>'
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -311,3 +312,10 @@ def date_field_form(request):
         form = DateFieldForm()
         return render(request, 'firstapp/universal_form_template.html',
                       context={"title": title, "header": title, "form": form})
+
+
+def time_field_form(request):
+    """Time field"""
+    title = 'Time form'
+    form = TimeFieldForm()
+    return render(request, 'firstapp/universal_form_template.html', context={"title": title, "header": title, "form": form})

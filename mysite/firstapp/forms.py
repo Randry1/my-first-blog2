@@ -88,3 +88,8 @@ class FileFieldForm(forms.Form):
 class DateFieldForm(forms.Form):
     """Date field"""
     date = forms.DateField(label="Дата", help_text='Пример 25/12/2021')
+    
+    
+class TimeFieldForm(forms.Form):
+    """Time field form"""
+    time = forms.TimeField(label='Время: ')
