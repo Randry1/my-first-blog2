@@ -317,5 +317,5 @@ def date_field_form(request):
 def time_field_form(request):
     """Time field"""
     title = 'Time form'
-    form = TimeFieldForm()
+    form = TimeFieldForm(auto_id=False)
     return render(request, 'firstapp/universal_form_template.html', context={"title": title, "header": title, "form": form})
