@@ -93,3 +93,25 @@ class DateFieldForm(forms.Form):
 class TimeFieldForm(forms.Form):
     """Time field form"""
     time = forms.TimeField(label='Время: ')
+
+class DateTimeFieldForm(forms.Form):
+    """Date time field"""
+    # TODO Надо разобраться с провенркой количество заков после запятоай max_whole_digits у DecimalField. Что это вообще такое
+    date_time = forms.DateTimeField(help_text='например, 2021-12-25 14: 30: 59 иnи 25/12/2021 14: 30')
+    duration = forms.DurationField(label='Введите промежуток времени',
+                                   help_text='"DD нн:мм:SS" -например, 2 1:10:20 (2 дня 1 час 10 минут 20 секунд)')
+    split_date = forms.SplitDateTimeField(label='Введите дату и время')
+    integer_field = forms.IntegerField(label='Введите целое число:')
+    decimal_field = forms.DecimalField(label='Введите число с точкой', max_value=100.0, min_value=0.0, decimal_places=2)
+    float_field = forms.FloatField(label='Введите число с плавающей точкой')  # Непонятно чем отличается от decimal
+    choice = forms.ChoiceField(choices=((1, 'Английский'),
+                                        (2, 'Немецкий'),
+                                        (3, 'Французкий')))
+    # TODO Узнаить как работает coerce= в TypeChoice
+    type_choice = forms.TypedChoiceField(label='Выберете город', empty_value=None, choices=((1, 'Москва'),
+                                                                                            (2, 'Воронеж'),
+                                                                                            (3, 'Курск')), )
+    multiple_choice = forms.MultipleChoiceField(label='Выберете город',
+                                                choices=((1, 'Москва'),
+                                                         (2, 'Воронеж'),
+                                                         (3, 'Курск')))
