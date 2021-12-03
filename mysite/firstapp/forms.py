@@ -115,3 +115,9 @@ class DateTimeFieldForm(forms.Form):
                                                 choices=((1, 'Москва'),
                                                          (2, 'Воронеж'),
                                                          (3, 'Курск')))
+    # Как я понял это тотже Multiple только можно свои проверки на валидацию делать
+    type_multiple_choice = forms.TypedMultipleChoiceField(label='Выберете город',
+                                                          choices=((1, 'Москва'),
+                                                                   (2, 'Воронеж'),
+                                                                   (3, 'Курск')),
+                                                          empty_value=None)
