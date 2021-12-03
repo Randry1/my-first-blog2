@@ -8,7 +8,7 @@ from django.template.response import TemplateResponse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.http import *
 from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm, \
-    ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm, DateTimeFieldForm
+    ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm, DateTimeFieldForm, WidgetForm
 
 
 # Create your views here.
@@ -44,6 +44,7 @@ def index(request):
     content += '<a href="/firstapp/date_field_form/" class="btn btn-info">Форма Date field</a><br>'
     content += '<a href="/firstapp/time_field_form/" class="btn btn-info">Форма Time field</a><br>'
     content += '<a href="/firstapp/date_time_field_form/" class="btn btn-info">Форма Date time field</a><br>'
+    content += '<a href="/firstapp/widget_form/" class="btn btn-info">Форма изменеия Widget</a><br>'
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -340,3 +341,11 @@ def date_time_field_form(request):
         form = DateTimeFieldForm()
         return render(request, 'firstapp/universal_form_template.html',
                       context={"title": title, "header": title, "form": form})
+
+
+def widget_form(request):
+    """Запрос формы в которой изменим виджет"""
+    title = 'Запрос формы в которой изменим виджет'
+    form = WidgetForm()
+    return render(request, 'firstapp/universal_form_template.html',
+                  context={"title": title, "header": title, "form": form})
