@@ -356,6 +356,6 @@ def widget_form(request):
         else:
             return HttpResponse(widget_form.errors)
     else:
-        form = WidgetForm()
+        form = WidgetForm(field_order=["age", "comment", "name"])
         return render(request, 'firstapp/universal_form_template.html',
                       context={"title": title, "header": title, "form": form})
