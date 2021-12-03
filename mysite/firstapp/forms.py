@@ -128,3 +128,4 @@ class WidgetForm(forms.Form):
     name = forms.CharField(label='Имя:', initial='Витя')
     age = forms.IntegerField(label='Возраст', initial='46', help_text='Введите ваш возраст')
     comment = forms.CharField(label='Комментарий:', widget=forms.Textarea, initial='Комментарий')
+    ad = forms.BooleanField(label='Согласны получать рекламу?', required=False)
