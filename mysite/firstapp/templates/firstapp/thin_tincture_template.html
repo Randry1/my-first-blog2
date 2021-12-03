@@ -1,0 +1,27 @@
+{% extends 'firstapp/base.html' %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+{% block header %}
+    {{ header }}
+{% endblock %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <ul>
+            <li><label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+                <input class="input {{ form.name.css }}" type="{{ form.name.type }}" name="{{ form.name.name }}"
+                       value="{{ form.name.value }}" id="{{ form.name.id_for_label }}" required/>
+            </li>
+            <li>
+                <input class="input" type="{{ form.age.type }}" name="{{ form.age.name }}" value="{{ form.age.value }}"
+                       id="{{ form.age.id_for_label }}" {{ form.age.required }}/>
+            </li>
+            <li>
+                <input class="input" type="{{ form.comment.type }}" name="{{ form.comment.name }}"
+                       value="{{ form.comment.value }}" id="{{ form.comment.id_for_label }}"/>
+            </li>
+        </ul>
+        <button type="submit">Send</button>
+    </form>
+{% endblock %}

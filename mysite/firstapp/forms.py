@@ -129,3 +129,11 @@ class WidgetForm(forms.Form):
     age = forms.IntegerField(label='Возраст', initial='46', help_text='Введите ваш возраст')
     comment = forms.CharField(label='Комментарий:', widget=forms.Textarea, initial='Комментарий')
     ad = forms.BooleanField(label='Согласны получать рекламу?', required=False)
+
+
+class ThinTinctureForm(forms.Form):
+    """Тонкая настройка формы"""
+    # TODO добавить класс css через виджет https://docs.djangoproject.com/en/dev/ref/forms/widgets/#django.forms.Widget.attrs
+    name = forms.CharField(label='Имя', initial='Витя')
+    age = forms.IntegerField(label='Возраст', initial='46', help_text='Введите ваш возраст')
+    comment = forms.CharField(label='Комментарий')

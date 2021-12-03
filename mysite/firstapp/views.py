@@ -8,7 +8,8 @@ from django.template.response import TemplateResponse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.http import *
 from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm, \
-    ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm, DateTimeFieldForm, WidgetForm
+    ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm, DateTimeFieldForm, WidgetForm, \
+    ThinTinctureForm
 
 
 # Create your views here.
@@ -45,6 +46,7 @@ def index(request):
     content += '<a href="/firstapp/time_field_form/" class="btn btn-info">Форма Time field</a><br>'
     content += '<a href="/firstapp/date_time_field_form/" class="btn btn-info">Форма Date time field</a><br>'
     content += '<a href="/firstapp/widget_form/" class="btn btn-info">Форма изменеия Widget</a><br>'
+    content += '<a href="/firstapp/thin_tincture_form/" class="btn btn-info">Форма тонкая настройка формы</a><br>'
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -359,3 +361,11 @@ def widget_form(request):
         form = WidgetForm(field_order=["age", "comment", "name"])
         return render(request, 'firstapp/universal_form_template.html',
                       context={"title": title, "header": title, "form": form})
+
+
+def thin_tincture_form(request):
+    """Тонкая настройка формы"""
+    title = 'Тонкая настройка формы'
+    form = ThinTinctureForm()
+    return render(request, 'firstapp/thin_tincture_template.html',
+                  context={"title": title, "header": title, "form": form})
