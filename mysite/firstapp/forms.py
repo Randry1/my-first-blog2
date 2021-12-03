@@ -126,5 +126,5 @@ class DateTimeFieldForm(forms.Form):
 class WidgetForm(forms.Form):
     """Форма для проверки как работают виджеты в формах"""
     name = forms.CharField(label='Имя:', initial='Витя')
-    age = forms.IntegerField(label='Возраст', initial='46')
+    age = forms.IntegerField(label='Возраст', initial='46', help_text='Введите ваш возраст')
     comment = forms.CharField(label='Комментарий:', widget=forms.Textarea, initial='Комментарий')
