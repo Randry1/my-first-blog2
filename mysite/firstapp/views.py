@@ -346,6 +346,16 @@ def date_time_field_form(request):
 def widget_form(request):
     """Запрос формы в которой изменим виджет"""
     title = 'Запрос формы в которой изменим виджет'
-    form = WidgetForm()
-    return render(request, 'firstapp/universal_form_template.html',
-                  context={"title": title, "header": title, "form": form})
+    if request.method == 'POST':
+        widget_form = WidgetForm(request.POST)
+        if widget_form.is_valid():
+            name = widget_form.cleaned_data['name']
+            age = widget_form.cleaned_data['age']
+            comment = widget_form.cleaned_data['comment']
+            return HttpResponse("Name: {0}<br> Age: {1}<br> Comment: {2}".format(name, age, comment))
+        else:
+            return HttpResponse(widget_form.errors)
+    else:
+        form = WidgetForm()
+        return render(request, 'firstapp/universal_form_template.html',
+                      context={"title": title, "header": title, "form": form})
