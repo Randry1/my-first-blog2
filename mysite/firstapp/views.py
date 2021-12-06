@@ -366,6 +366,16 @@ def widget_form(request):
 def thin_tincture_form(request):
     """Тонкая настройка формы"""
     title = 'Тонкая настройка формы'
-    form = ThinTinctureForm()
-    return render(request, 'firstapp/thin_tincture_template.html',
+    err_age = {}
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        age = request.POST.get('age')
+        comment = request.POST.get('comment')
+        form = ThinTinctureForm(request.POST)
+        form.errors = "df"
+        err_age = form.errors
+        return HttpResponse("name: {0}<br> age: {1}<br> comment: {2}<br> error_messages {3}".format(name, age, comment, err_age))
+    else:
+        form = ThinTinctureForm()
+        return render(request, 'firstapp/thin_tincture_template.html',
                   context={"title": title, "header": title, "form": form})

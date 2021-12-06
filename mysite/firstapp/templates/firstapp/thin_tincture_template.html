@@ -14,8 +14,10 @@
                        value="{{ form.name.value }}" id="{{ form.name.id_for_label }}" required/>
             </li>
             <li>
-                <input class="input" type="{{ form.age.type }}" name="{{ form.age.name }}" value="{{ form.age.value }}"
+                <input class="input {{ form.age.css_classes}}" type="{{ form.age.type }}" name="{{ form.age.name }}" value="{{ form.age.value }}"
                        id="{{ form.age.id_for_label }}" {{ form.age.required }}/>
+                       {{ form.age.help_text }}
+                       <div>{{ form.age.errors }}</div>
             </li>
             <li>
                 <input class="input" type="{{ form.comment.type }}" name="{{ form.comment.name }}"
