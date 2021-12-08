@@ -143,4 +143,5 @@ class UserBookForm(forms.Form):
     """Форма для учебника тонкая настройка"""
     name = forms.CharField(label="Имя:")
     age = forms.IntegerField(label="Возраст:")
-    reqired_css_class = 'allert'
+    required_css_class = 'field_1'
+    error_css_class = 'alert'
