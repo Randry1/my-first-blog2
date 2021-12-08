@@ -46,4 +46,5 @@ urlpatterns = [
     path('date_time_field_form/', views.date_time_field_form, name='date_time_field_form'),
     path('widget_form/', views.widget_form, name='widget_form'),
     path('thin_tincture_form/', views.thin_tincture_form, name='thin_tincture_form'),
+    path('user_book_form/', views.user_book_form, name='user_book_form'),
 ]

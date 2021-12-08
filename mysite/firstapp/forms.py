@@ -137,3 +137,10 @@ class ThinTinctureForm(forms.Form):
     name = forms.CharField(label='Имя', initial='Витя')
     age = forms.IntegerField(label='Возраст', initial='46', help_text='Введите ваш возраст')
     comment = forms.CharField(label='Комментарий')
+
+
+class UserBookForm(forms.Form):
+    """Форма для учебника тонкая настройка"""
+    name = forms.CharField(label="Имя:")
+    age = forms.IntegerField(label="Возраст:")
+    reqired_css_class = 'allert'

@@ -9,7 +9,7 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanen
 from django.http import *
 from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm, \
     ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm, DateTimeFieldForm, WidgetForm, \
-    ThinTinctureForm
+    ThinTinctureForm, UserBookForm
 
 
 # Create your views here.
@@ -47,6 +47,7 @@ def index(request):
     content += '<a href="/firstapp/date_time_field_form/" class="btn btn-info">Форма Date time field</a><br>'
     content += '<a href="/firstapp/widget_form/" class="btn btn-info">Форма изменеия Widget</a><br>'
     content += '<a href="/firstapp/thin_tincture_form/" class="btn btn-info">Форма тонкая настройка формы</a><br>'
+    content += '<a href="/firstapp/user_book_form/" class="btn btn-info">Тонкая настройка из кникги формы</a><br>'
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -379,3 +380,17 @@ def thin_tincture_form(request):
         form = ThinTinctureForm()
         return render(request, 'firstapp/thin_tincture_template.html',
                   context={"title": title, "header": title, "form": form})
+
+
+def user_book_form(request):
+    title = 'Тонкая настройка формы из книги'
+    user_form = UserBookForm()
+    if request.method == 'POST':
+        user_form = UserBookForm(request.POST)
+        if user_form.is_valid():
+            name = user_form.cleaned_data['name']
+            return HttpResponse("Вы ввели имя: {0}".format(name))
+        else:
+            return HttpResponse("Ошибка <br> {0}".format(user_form.errors))
+    else:
+        return render(request, 'firstapp/user_book_form.html', context={"title": title, "form": user_form})
