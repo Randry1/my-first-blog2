@@ -50,6 +50,7 @@ def index(request):
     content += '<a href="/firstapp/user_book_form/" class="btn btn-info">Тонкая настройка из кникги формы</a><br>'
     content += '<a href="/firstapp/css_class_form/" class="btn btn-info">Форма из книги с настройкой css из класса ' \
                'формы</a><br> '
+    content += '<a href="/firstapp/attrs_css_form/" class="btn btn-info">Вытащить css из attrs</a><br> '
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -375,7 +376,6 @@ def thin_tincture_form(request):
         age = request.POST.get('age')
         comment = request.POST.get('comment')
         form = ThinTinctureForm(request.POST)
-        form.errors = "df"
         err_age = form.errors
         return HttpResponse("name: {0}<br> age: {1}<br> comment: {2}<br> error_messages {3}".format(name, age, comment, err_age))
     else:
@@ -409,3 +409,20 @@ def css_class_form(request):
             return render(request, 'firstapp/css_class_form.html', context={"title": title, "form": user_form})
     else:
         return render(request, 'firstapp/css_class_form.html', context={"title": title, "form": user_form})
+
+
+def attrs_css_form(request):
+    """Тонкая настройка формы"""
+    title = 'Тонкая настройка формы'
+    err_age = {}
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        age = request.POST.get('age')
+        comment = request.POST.get('comment')
+        form = ThinTinctureForm(request.POST)
+        err_age = form.errors
+        return HttpResponse("name: {0}<br> age: {1}<br> comment: {2}<br> error_messages {3}".format(name, age, comment, err_age))
+    else:
+        form = ThinTinctureForm()
+        return render(request, 'firstapp/attrs_css_form.html',
+                  context={"title": title, "header": title, "form": form})

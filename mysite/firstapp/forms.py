@@ -134,8 +134,8 @@ class WidgetForm(forms.Form):
 class ThinTinctureForm(forms.Form):
     """Тонкая настройка формы"""
     # TODO добавить класс css через виджет https://docs.djangoproject.com/en/dev/ref/forms/widgets/#django.forms.Widget.attrs
-    name = forms.CharField(label='Имя', initial='Витя')
-    age = forms.IntegerField(label='Возраст', initial='46', help_text='Введите ваш возраст')
+    name = forms.CharField(label='Имя', initial='Витя', widget=forms.TextInput(attrs={"class": "field_class_from_attrs"}))
+    age = forms.IntegerField(label='Возраст', initial='46', help_text='Введите ваш возраст', widget=forms.NumberInput(attrs={"class": "field_class_from_attrs"}))
     comment = forms.CharField(label='Комментарий')
 
 

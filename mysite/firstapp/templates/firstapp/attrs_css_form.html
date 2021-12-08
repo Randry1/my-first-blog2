@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        .field {
+            font-weight: bold;
+        }
+        .alert {
+            color: red;
+        }
+        .error{
+            color: rebeccapurple;
+        }
+        .error_list{
+            color: aquamarine;
+        }
+        .field_class_from_attrs{
+            background-color: #c7bbef;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            height: 25px;
+            width: 250px;
+            margin: 10px 10px 10px 0;
+        }
+
+    </style>
+    <title>{{ title }}</title>
+</head>
+<body>
+<h1>{{ title }}</h1>
+<form action="" method="post" novalidate>
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="row">
+            {{ field.label_tag }}
+            {{ field }}
+        </div>
+    {% endfor %}
+
+    <input type="submit" value="Send">
+</form>
+</body>
+</html>
