@@ -143,5 +143,6 @@ class UserBookForm(forms.Form):
     """Форма для учебника тонкая настройка"""
     name = forms.CharField(label="Имя:")
     age = forms.IntegerField(label="Возраст:")
-    required_css_class = 'field_1'
-    error_css_class = 'alert'
+    required_css_class = 'field'
+    field_css_class = "fortuna"
+    error_css_class = 'error'           #Отображается в классе который оборачиевает input и label добовляется только если форма не прошла валидацию

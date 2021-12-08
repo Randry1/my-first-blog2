@@ -48,6 +48,8 @@ def index(request):
     content += '<a href="/firstapp/widget_form/" class="btn btn-info">Форма изменеия Widget</a><br>'
     content += '<a href="/firstapp/thin_tincture_form/" class="btn btn-info">Форма тонкая настройка формы</a><br>'
     content += '<a href="/firstapp/user_book_form/" class="btn btn-info">Тонкая настройка из кникги формы</a><br>'
+    content += '<a href="/firstapp/css_class_form/" class="btn btn-info">Форма из книги с настройкой css из класса ' \
+               'формы</a><br> '
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -394,3 +396,16 @@ def user_book_form(request):
             return HttpResponse("Ошибка <br> {0}".format(user_form.errors))
     else:
         return render(request, 'firstapp/user_book_form.html', context={"title": title, "form": user_form})
+
+def css_class_form(request):
+    title = 'Тонкая настройка формы из книги'
+    user_form = UserBookForm()
+    if request.method == 'POST':
+        user_form = UserBookForm(request.POST)
+        if user_form.is_valid():
+            name = user_form.cleaned_data['name']
+            return HttpResponse("Вы ввели имя: {0}".format(name))
+        else:
+            return render(request, 'firstapp/css_class_form.html', context={"title": title, "form": user_form})
+    else:
+        return render(request, 'firstapp/css_class_form.html', context={"title": title, "form": user_form})
