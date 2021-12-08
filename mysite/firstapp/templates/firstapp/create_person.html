@@ -1,0 +1,27 @@
+{% extends 'firstapp/base.html' %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+{% block header %}
+    {{ header }}
+{% endblock %}
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+            {{ person }}
+        </table>
+        <button type="submit">Send</button>
+    </form>
+    <hr>
+    {% if persons %}
+        <table>
+            {% for person in persons %}
+                <tr>
+                    <td>{{person.name}}</td>
+                    <td>{{person.age}}</td>
+                </tr>   
+            {% endfor %}
+        </table>
+    {% endif %} 
+{% endblock %}

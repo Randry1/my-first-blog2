@@ -9,10 +9,13 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanen
 from django.http import *
 from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm, \
     ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm, DateTimeFieldForm, WidgetForm, \
-    ThinTinctureForm, UserBookForm
+    ThinTinctureForm, UserBookForm, CreatePerson
 
 
 # Create your views here.
+from .models import Person
+
+
 def index(request):
     content = '<h1>Главная</h1>'
     content += '<a href="/firstapp/about/" class="btn btn-info">About</a><br>'
@@ -51,6 +54,8 @@ def index(request):
     content += '<a href="/firstapp/css_class_form/" class="btn btn-info">Форма из книги с настройкой css из класса ' \
                'формы</a><br> '
     content += '<a href="/firstapp/attrs_css_form/" class="btn btn-info">Вытащить css из attrs</a><br> '
+    content += '<hr>'
+    content += '<a href="/firstapp/create_person/" class="btn btn-info">Заполнение таблицы модели при помощи формы</a><br> '
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -426,3 +431,24 @@ def attrs_css_form(request):
         form = ThinTinctureForm()
         return render(request, 'firstapp/attrs_css_form.html',
                   context={"title": title, "header": title, "form": form})
+
+
+def create_person(request):
+    """Начало модели Личность"""
+    title = 'Начало модели Личность'
+    create_person_form = CreatePerson()
+    if request.method =='POST':
+        create_person_form = CreatePerson(request.POST)
+        if create_person_form.is_valid():
+            is_create_person = create_person_form.cleaned_data['is_create']
+            if is_create_person == True:
+                for years in range(30):
+                    person = Person(name="igor", age=years)
+                    person.save()
+
+                persons = Person.objects.all()
+                return render(request, 'firstapp/create_person.html', context={"title": title, "person": create_person_form, "persons": persons})
+        else:
+            return render(request, 'firstapp/create_person.html', context={"title": title, "person": create_person_form})
+    else:
+        return render(request, 'firstapp/create_person.html', context={"title": title, "person": create_person_form})

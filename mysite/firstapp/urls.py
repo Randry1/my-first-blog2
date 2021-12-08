@@ -49,4 +49,5 @@ urlpatterns = [
     path('user_book_form/', views.user_book_form, name='user_book_form'),
     path('css_class_form/', views.css_class_form, name='css_class_form'),
     path('attrs_css_form/', views.attrs_css_form, name='attrs_css_form'),
+    path('create_person/', views.create_person, name='create_person'), # начало модели
 ]

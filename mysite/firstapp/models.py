@@ -1,3 +1,6 @@
 from django.db import models
 
-# Create your models here.
+class Person(models.Model):
+    """Первый раза использую БД глава из книжки"""
+    name = models.CharField(max_length=12)
+    age = models.IntegerField()

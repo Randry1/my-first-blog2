@@ -146,3 +146,8 @@ class UserBookForm(forms.Form):
     required_css_class = 'field'
     field_css_class = "fortuna"
     error_css_class = 'error'           #Отображается в классе который оборачиевает input и label добовляется только если форма не прошла валидацию
+
+
+class CreatePerson(forms.Form):
+    """Форма для заполнения модели персоны"""
+    is_create = forms.BooleanField(label="Создать запрись в таблице firstapp_person?")
