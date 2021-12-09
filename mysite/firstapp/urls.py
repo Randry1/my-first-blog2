@@ -50,5 +50,6 @@ urlpatterns = [
     path('css_class_form/', views.css_class_form, name='css_class_form'),
     path('attrs_css_form/', views.attrs_css_form, name='attrs_css_form'),
     path('create_person/', views.create_person, name='create_person'), # начало модели
-    path('method_get_person/<int:id>/', views.method_get_person, name='method_get_person'), # методы модели
+    path('method_get_person/<int:id>/', views.method_get_person, name='method_get_person'), # метод get модели
+    path('method_get_or_create_person/', views.method_get_or_create_person, name='method_get_or_create_person'), # метод get модели
 ]

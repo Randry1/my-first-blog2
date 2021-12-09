@@ -55,7 +55,8 @@ def index(request):
     content += '<a href="/firstapp/attrs_css_form/" class="btn btn-info">Вытащить css из attrs</a><br> '
     content += '<hr>'
     content += '<a href="/firstapp/create_person/" class="btn btn-info">Заполнение таблицы модели при помощи формы</a><br> '
-    content += '<a href="/firstapp/method_get_person/15/" class="btn btn-info">Функции модели</a><br> '
+    content += '<a href="/firstapp/method_get_person/15/" class="btn btn-info">Функция get модели</a><br> '
+    content += '<a href="/firstapp/method_get_or_create_person/" class="btn btn-info">Функции get_or_created модели</a><br> '
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -467,7 +468,13 @@ def method_get_person(request, id):
         second_person = Person.objects.get(name='igor')
     except Person.DoesNotExist:  # Вызывает исключения когда не нащел Id в таблице
         return HttpResponse('not this id')
-    except Person.MultipleObjectsReturned:  # Вызывает когда собподений больше одного
-        second_person = {"name": 'Сильно много совпадений'}
+    except Person.MultipleObjectsReturned as me:  # Вызывает когда собподений больше одного
+        second_person = {"name": me}
     return render(request, 'firstapp/method_person.html',
                   context={"title": 'Методы модели', "first_person": first_person, "second_person": second_person})
+
+
+def method_get_or_create_person(request):
+    """Метод get_or_create обязательно должны быть заполнены все обязательные поля можели !!! иначе исключение вызовет"""
+    iror, created = Person.objects.get_or_create(id=800, name='Igor', age=12) # created = True если объект будет создан заново
+    return render(request, 'firstapp/method_get_or_create_model.html', context={"title": 'Метод get_or_create', "igor": iror, "created": created})
