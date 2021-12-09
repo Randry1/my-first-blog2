@@ -1,0 +1,13 @@
+{% extends 'firstapp/base.html' %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+{% block header %}
+    {{ header }}
+{% endblock %}
+{% block content %}
+    <p>{{ first_person.name }}</p>
+    <p>{{ first_person.age }}</p>
+    <hr>
+    {{ second_person.name }}
+{% endblock %}

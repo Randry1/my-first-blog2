@@ -11,7 +11,6 @@ from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm
     ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm, DateTimeFieldForm, WidgetForm, \
     ThinTinctureForm, UserBookForm, CreatePerson
 
-
 # Create your views here.
 from .models import Person
 
@@ -56,6 +55,7 @@ def index(request):
     content += '<a href="/firstapp/attrs_css_form/" class="btn btn-info">Вытащить css из attrs</a><br> '
     content += '<hr>'
     content += '<a href="/firstapp/create_person/" class="btn btn-info">Заполнение таблицы модели при помощи формы</a><br> '
+    content += '<a href="/firstapp/method_get_person/15/" class="btn btn-info">Функции модели</a><br> '
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -382,11 +382,12 @@ def thin_tincture_form(request):
         comment = request.POST.get('comment')
         form = ThinTinctureForm(request.POST)
         err_age = form.errors
-        return HttpResponse("name: {0}<br> age: {1}<br> comment: {2}<br> error_messages {3}".format(name, age, comment, err_age))
+        return HttpResponse(
+            "name: {0}<br> age: {1}<br> comment: {2}<br> error_messages {3}".format(name, age, comment, err_age))
     else:
         form = ThinTinctureForm()
         return render(request, 'firstapp/thin_tincture_template.html',
-                  context={"title": title, "header": title, "form": form})
+                      context={"title": title, "header": title, "form": form})
 
 
 def user_book_form(request):
@@ -401,6 +402,7 @@ def user_book_form(request):
             return HttpResponse("Ошибка <br> {0}".format(user_form.errors))
     else:
         return render(request, 'firstapp/user_book_form.html', context={"title": title, "form": user_form})
+
 
 def css_class_form(request):
     title = 'Тонкая настройка формы из книги'
@@ -426,18 +428,19 @@ def attrs_css_form(request):
         comment = request.POST.get('comment')
         form = ThinTinctureForm(request.POST)
         err_age = form.errors
-        return HttpResponse("name: {0}<br> age: {1}<br> comment: {2}<br> error_messages {3}".format(name, age, comment, err_age))
+        return HttpResponse(
+            "name: {0}<br> age: {1}<br> comment: {2}<br> error_messages {3}".format(name, age, comment, err_age))
     else:
         form = ThinTinctureForm()
         return render(request, 'firstapp/attrs_css_form.html',
-                  context={"title": title, "header": title, "form": form})
+                      context={"title": title, "header": title, "form": form})
 
 
 def create_person(request):
     """Начало модели Личность"""
     title = 'Начало модели Личность'
     create_person_form = CreatePerson()
-    if request.method =='POST':
+    if request.method == 'POST':
         create_person_form = CreatePerson(request.POST)
         if create_person_form.is_valid():
             is_create_person = create_person_form.cleaned_data['is_create']
@@ -447,8 +450,24 @@ def create_person(request):
                     person.save()
 
                 persons = Person.objects.all()
-                return render(request, 'firstapp/create_person.html', context={"title": title, "person": create_person_form, "persons": persons})
+                return render(request, 'firstapp/create_person.html',
+                              context={"title": title, "person": create_person_form, "persons": persons})
         else:
-            return render(request, 'firstapp/create_person.html', context={"title": title, "person": create_person_form})
+            return render(request, 'firstapp/create_person.html',
+                          context={"title": title, "person": create_person_form})
     else:
         return render(request, 'firstapp/create_person.html', context={"title": title, "person": create_person_form})
+
+
+def method_get_person(request, id):
+    """Метод модели get"""
+    id = int(id)
+    try:
+        first_person = Person.objects.get(id=id)
+        second_person = Person.objects.get(name='igor')
+    except Person.DoesNotExist:  # Вызывает исключения когда не нащел Id в таблице
+        return HttpResponse('not this id')
+    except Person.MultipleObjectsReturned:  # Вызывает когда собподений больше одного
+        second_person = {"name": 'Сильно много совпадений'}
+    return render(request, 'firstapp/method_person.html',
+                  context={"title": 'Методы модели', "first_person": first_person, "second_person": second_person})
