@@ -54,4 +54,5 @@ urlpatterns = [
     path('method_get_or_create_person/', views.method_get_or_create_person, name='method_get_or_create_person'), # метод get_or_create модели
     path('method_filter_person/', views.method_filter_person, name='method_filter_person'), # метод method_filter_person модели
     path('method_exclude_model/', views.method_exclude_model, name='method_exclude_model'), # метод method_exclude_person модели
+    path('method_in_bulk_model/', views.method_in_bulk_model, name='method_in_bulk_model'), # метод method_in_bulk_person модели
 ]

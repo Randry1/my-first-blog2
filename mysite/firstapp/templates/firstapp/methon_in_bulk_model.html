@@ -1,0 +1,17 @@
+{% extends 'firstapp/base.html' %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+{% block header %}
+    {{ header }}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-10">
+            {{ type_exclude }}
+            {{ persons }}
+            <hr>
+
+        </div>
+    </div>
+{% endblock %}

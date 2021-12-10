@@ -59,6 +59,7 @@ def index(request):
     content += '<a href="/firstapp/method_get_or_create_person/" class="btn btn-info">Функции get_or_created модели</a><br> '
     content += '<a href="/firstapp/method_filter_person/" class="btn btn-info">Функции filter модели</a><br> '
     content += '<a href="/firstapp/method_exclude_model/" class="btn btn-info">Функции exclude модели</a><br> '
+    content += '<a href="/firstapp/method_in_bulk_model/" class="btn btn-info">Функции in_bulk модели</a><br> '
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -498,3 +499,17 @@ def method_exclude_model(request):
     return render(request, 'firstapp/methon_exclude_model.html',
                   context={"title": 'Метод excude- уберает из выборки данные соответствеющие условию',
                            "persons": persons, "i": iteration, "type_exclude": type_exclude})
+
+
+def method_in_bulk_model(request):
+    """Метод in_bulk - похоже тоже самое что и фильт только возвращает результат в виде словаря"""
+    # TODO Не понял до конца как работает in_bulk
+    persons = Person.objects.in_bulk()
+    type_exclude = str(type(persons))
+    persons_bulk = {}
+    for ids in persons:
+        persons_bulk['id'] = persons[ids].id
+        print(persons[ids])
+    return render(request, 'firstapp/methon_in_bulk_model.html',
+                  context={"title": 'Метод in_bulk - похоже тоже самое что и фильт только возвращает результат в виде словаря',
+                           "persons": persons_bulk, "type_exclude": type_exclude})
