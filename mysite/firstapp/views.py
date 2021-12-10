@@ -58,6 +58,7 @@ def index(request):
     content += '<a href="/firstapp/method_get_person/15/" class="btn btn-info">Функция get модели</a><br> '
     content += '<a href="/firstapp/method_get_or_create_person/" class="btn btn-info">Функции get_or_created модели</a><br> '
     content += '<a href="/firstapp/method_filter_person/" class="btn btn-info">Функции filter модели</a><br> '
+    content += '<a href="/firstapp/method_exclude_model/" class="btn btn-info">Функции exclude модели</a><br> '
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -477,10 +478,23 @@ def method_get_person(request, id):
 
 def method_get_or_create_person(request):
     """Метод get_or_create обязательно должны быть заполнены все обязательные поля можели !!! иначе исключение вызовет"""
-    iror, created = Person.objects.get_or_create(id=800, name='Igor', age=12) # created = True если объект будет создан заново
-    return render(request, 'firstapp/method_get_or_create_model.html', context={"title": 'Метод get_or_create', "igor": iror, "created": created})
+    iror, created = Person.objects.get_or_create(id=800, name='Igor',
+                                                 age=12)  # created = True если объект будет создан заново
+    return render(request, 'firstapp/method_get_or_create_model.html',
+                  context={"title": 'Метод get_or_create', "igor": iror, "created": created})
+
 
 def method_filter_person(request):
     """Метод filter извлекает из базы все что подошло под фильтер"""
-    persons = Person.objects.filter(age=12) # Находим все строки которые соответствуют фильтру
+    persons = Person.objects.filter(age=12)  # Находим все строки которые соответствуют фильтру
     return render(request, 'firstapp/method_filter_model.html', context={"title": 'Метод filter', "persons": persons})
+
+
+def method_exclude_model(request):
+    """Метод exclude- уберает из выборки данные соответствеющие условию"""
+    persons = Person.objects.exclude(age=12)
+    iteration = 0
+    type_exclude = str(type(persons))
+    return render(request, 'firstapp/methon_exclude_model.html',
+                  context={"title": 'Метод excude- уберает из выборки данные соответствеющие условию',
+                           "persons": persons, "i": iteration, "type_exclude": type_exclude})

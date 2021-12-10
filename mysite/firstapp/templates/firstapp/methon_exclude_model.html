@@ -1,0 +1,20 @@
+{% extends 'firstapp/base.html' %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+{% block header %}
+    {{ header }}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-10">
+            {{ type_exclude }}
+            {% for person in persons %}
+                
+                <div class="col-md-1">{{ person.name }} / {{ person.age }}</div>
+            {% endfor %}
+            <hr>
+
+        </div>
+    </div>
+{% endblock %}
