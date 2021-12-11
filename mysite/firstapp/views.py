@@ -9,10 +9,11 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanen
 from django.http import *
 from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm, \
     ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm, DateTimeFieldForm, WidgetForm, \
-    ThinTinctureForm, UserBookForm, CreatePerson, ChangeDataPersonModel
+    ThinTinctureForm, UserBookForm, CreatePerson, ChangeDataPersonModel, UpdateColumnForm
 
 # Create your views here.
 from .models import Person
+from django.db.models import F
 
 
 def index(request):
@@ -60,8 +61,9 @@ def index(request):
     content += '<a href="/firstapp/method_filter_person/" class="btn btn-info">Функции filter модели</a><br> '
     content += '<a href="/firstapp/method_exclude_model/" class="btn btn-info">Функции exclude модели</a><br> '
     content += '<a href="/firstapp/method_in_bulk_model/" class="btn btn-info">Функции in_bulk модели</a><br> '
-    content += '<a href="/firstapp/change_date_in_bd/" class="btn btn-info">Функции save, save(update_fields=\'name\') модели</a><br> '
+    content += '<a href="/firstapp/change_date_in_bd/" class="btn btn-info">Функции save модели</a><br> '
     content += "<a href=\"{0}\" class=\"btn btn-info\">Функции save, save(update_fields=\'name\') модели</a><br>".format('update_bd_person')
+    content += "<a href=\"{0}\" class=\"btn btn-info\">Функции F обновлние всего столбика модели</a><br>".format('metod_f')
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -594,3 +596,25 @@ def update_bd_person(request):
     else:
         return render(request, 'firstapp/change_date_in_bd.html',
                       context={"title": title, "header": title, "form": form, "messages": messages})
+
+def metod_f(request):
+    """Меняет весь столбец"""
+    title = 'Меняет весь столбец'
+    messages = ''
+    persons = Person.objects.all()
+    form = UpdateColumnForm()
+    if request.method == 'POST':
+        form =  UpdateColumnForm(request.POST)
+        if form.is_valid():
+            delta_age = int(form.cleaned_data['delta_age'])
+            persons.update(age=F('age')+1)
+            return render(request, 'firstapp/metod_f.html',
+                          context={"title": title, "header": title, "form": form, "messages": messages,
+                                   "persons": persons})
+        else:
+            return render(request, 'firstapp/metod_f.html',
+                          context={"title": title, "header": title, "form": form, "messages": messages,
+                                   "persons": persons})
+    else:
+        return render(request, 'firstapp/metod_f.html',
+                      context={"title": title, "header": title, "form": form, "messages": messages, "persons": persons})

@@ -159,3 +159,8 @@ class ChangeDataPersonModel(forms.Form):
     name = forms.CharField()
     age = forms.CharField()
     only_name = forms.BooleanField(label='Изменить только имя: ', required=False)
+
+
+class UpdateColumnForm(forms.Form):
+    """Форма для добавлени всем персонам вадраста в столбец"""
+    delta_age = forms.IntegerField(label='Добавить возраст на:')

@@ -1,0 +1,41 @@
+{% extends 'firstapp/base.html' %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+{% block header %}
+    {{ header }}
+{% endblock %}
+{% block content %}
+    {% if messages %}
+        <div class="row">{{ messages }}</div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-10">
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit">
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10">
+            {% if persons.count > 0 %}
+                <div class="row">
+                    <div class="col-md-10">
+                        <table>
+                            {% for person in persons %}
+                                <tr>
+                                    <td>Id: {{ person.id }}</td>
+                                    <td>name: {{ person.name }}</td>
+                                    <td>age: {{ person.age }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
