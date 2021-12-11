@@ -61,6 +61,7 @@ def index(request):
     content += '<a href="/firstapp/method_exclude_model/" class="btn btn-info">Функции exclude модели</a><br> '
     content += '<a href="/firstapp/method_in_bulk_model/" class="btn btn-info">Функции in_bulk модели</a><br> '
     content += '<a href="/firstapp/change_date_in_bd/" class="btn btn-info">Функции save, save(update_fields=\'name\') модели</a><br> '
+    content += "<a href=\"{0}\" class=\"btn btn-info\">Функции save, save(update_fields=\'name\') модели</a><br>".format('update_bd_person')
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -541,7 +542,7 @@ def change_date_in_bd(request):
             # пепеправляем данные в полученый объект базы данных
             person.name = name
             person.age = age
-            if only_name == True:
+            if only_name == True: # Если стоит галочка записывает только name
                 Person.objects.filter(id=id_person).update(name=name)
                 print("work")
             else:
@@ -556,3 +557,40 @@ def change_date_in_bd(request):
                           context={"title": title, "header": title, "form": form, "messages": messages})
     else:
         return render(request, 'firstapp/change_date_in_bd.html', context={"title": title, "header": title, "form": form, "messages": messages})
+
+
+def update_bd_person(request):
+    """update - должен сохранять вроде только часть талбицы но чегото сохраняет все поля"""
+    title = ' Меняем данные модели Person из формы методом person.save(fields_update=\'name\''
+    messages = ''
+    form = ChangeDataPersonModel()
+    if request.method == 'POST':
+        form = ChangeDataPersonModel(request.POST)
+        if form.is_valid():
+            messages = 'Форма успешно получена'
+            # извлекаем данные из формы
+            id_person = form.cleaned_data['id_person']
+            name = form.cleaned_data['name']
+            age = int(form.cleaned_data['age'])
+            only_name = form.cleaned_data['only_name']
+            # пробуем получить обьект из базы данных
+            try:
+                person = Person.objects.get(id=5)
+            except Person.DoesNotExist:
+                messages = 'Данной записи в базе нет'
+            except:
+                messages = 'Что-то пошло не так'
+            # пепеправляем данные в полученый объект базы данных
+            person.name = name
+            person.save(update_fields=['name'])  # Сохраняем в БД
+            messages += ' и сохранен в базе данных.'
+            return render(request, 'firstapp/change_date_in_bd.html',
+                          context={"title": title, "header": title, "form": form, "messages": messages,
+                                   "person": person})
+
+        else:
+            return render(request, 'firstapp/change_date_in_bd.html',
+                          context={"title": title, "header": title, "form": form, "messages": messages})
+    else:
+        return render(request, 'firstapp/change_date_in_bd.html',
+                      context={"title": title, "header": title, "form": form, "messages": messages})
