@@ -151,3 +151,11 @@ class UserBookForm(forms.Form):
 class CreatePerson(forms.Form):
     """Форма для заполнения модели персоны"""
     is_create = forms.BooleanField(label="Создать запрись в таблице firstapp_person?")
+
+
+class ChangeDataPersonModel(forms.Form):
+    """ Меняем данные модели Person из формы """
+    id_person = forms.IntegerField()
+    name = forms.CharField()
+    age = forms.CharField()
+    only_name = forms.BooleanField(label='Изменить только имя: ', required=False)

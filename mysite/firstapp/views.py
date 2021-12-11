@@ -9,7 +9,7 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanen
 from django.http import *
 from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm, \
     ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm, DateTimeFieldForm, WidgetForm, \
-    ThinTinctureForm, UserBookForm, CreatePerson
+    ThinTinctureForm, UserBookForm, CreatePerson, ChangeDataPersonModel
 
 # Create your views here.
 from .models import Person
@@ -60,6 +60,7 @@ def index(request):
     content += '<a href="/firstapp/method_filter_person/" class="btn btn-info">Функции filter модели</a><br> '
     content += '<a href="/firstapp/method_exclude_model/" class="btn btn-info">Функции exclude модели</a><br> '
     content += '<a href="/firstapp/method_in_bulk_model/" class="btn btn-info">Функции in_bulk модели</a><br> '
+    content += '<a href="/firstapp/change_date_in_bd/" class="btn btn-info">Функции save, save(update_fields=\'name\') модели</a><br> '
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -511,5 +512,47 @@ def method_in_bulk_model(request):
         persons_bulk['id'] = persons[ids].id
         print(persons[ids])
     return render(request, 'firstapp/methon_in_bulk_model.html',
-                  context={"title": 'Метод in_bulk - похоже тоже самое что и фильт только возвращает результат в виде словаря',
-                           "persons": persons_bulk, "type_exclude": type_exclude})
+                  context={
+                      "title": 'Метод in_bulk - похоже тоже самое что и фильт только возвращает результат в виде словаря',
+                      "persons": persons_bulk, "type_exclude": type_exclude})
+
+
+def change_date_in_bd(request):
+    """ Меняем данные модели Person из формы """
+    title = ' Меняем данные модели Person из формы '
+    messages = ''
+    form = ChangeDataPersonModel()
+    if request.method == 'POST':
+        form = ChangeDataPersonModel(request.POST)
+        if form.is_valid():
+            messages = 'Форма успешно получена'
+            # извлекаем данные из формы
+            id_person = form.cleaned_data['id_person']
+            name = form.cleaned_data['name']
+            age = int(form.cleaned_data['age'])
+            only_name = form.cleaned_data['only_name']
+            # пробуем получить обьект из базы данных
+            try:
+                person = Person.objects.get(id=id_person)
+            except Person.DoesNotExist:
+                messages = 'Данной записи в базе нет'
+            except:
+                messages = 'Что-то пошло не так'
+            # пепеправляем данные в полученый объект базы данных
+            person.name = name
+            person.age = age
+            if only_name == True:
+                Person.objects.filter(id=id_person).update(name=name)
+                print("work")
+            else:
+                person.save() # Сохраняем в БД
+                print("not work")
+            messages += ' и сохранен в базе данных.'
+            return render(request, 'firstapp/change_date_in_bd.html',
+                          context={"title": title, "header": title, "form": form, "messages": messages, "person": person})
+
+        else:
+            return render(request, 'firstapp/change_date_in_bd.html',
+                          context={"title": title, "header": title, "form": form, "messages": messages})
+    else:
+        return render(request, 'firstapp/change_date_in_bd.html', context={"title": title, "header": title, "form": form, "messages": messages})
