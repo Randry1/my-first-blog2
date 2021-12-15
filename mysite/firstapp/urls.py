@@ -58,4 +58,5 @@ urlpatterns = [
     path('change_date_in_bd/', views.change_date_in_bd, name='change_date_in_bd'), # метод save модели
     path('update_bd_person/', views.update_bd_person, name='update_bd_person'), # метод save модели
     path('metod_f/', views.metod_f, name='metod_f'), # метод save модели
+    path('metod_filter_update/', views.metod_filter_update, name='metod_filter_update'), # метод filter(id=1).update() модели
 ]

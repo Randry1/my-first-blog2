@@ -14,6 +14,7 @@ from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm
 # Create your views here.
 from .models import Person
 from django.db.models import F
+from .utils import update_post
 
 
 def index(request):
@@ -64,6 +65,7 @@ def index(request):
     content += '<a href="/firstapp/change_date_in_bd/" class="btn btn-info">Функции save модели</a><br> '
     content += "<a href=\"{0}\" class=\"btn btn-info\">Функции save, save(update_fields=\'name\') модели</a><br>".format('update_bd_person')
     content += "<a href=\"{0}\" class=\"btn btn-info\">Функции F обновлние всего столбика модели</a><br>".format('metod_f')
+    content += "<a href=\"{0}\" class=\"btn btn-info\">Обновление несеолько столбикоа методом filter</a><br>".format('metod_filter_update')
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -618,3 +620,12 @@ def metod_f(request):
     else:
         return render(request, 'firstapp/metod_f.html',
                       context={"title": title, "header": title, "form": form, "messages": messages, "persons": persons})
+
+
+def metod_filter_update(request):
+    """Обновление нескольких полей методом filter().update()"""
+    title = 'Обновление нескольких полей методом filter().update()'
+    messages = ''
+    persons = Person.objects.all()
+    form = UpdateColumnForm()
+    return update_post(request, persons, form, 'firstapp/metod_filter_update.html', title, messages)
