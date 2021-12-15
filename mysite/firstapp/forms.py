@@ -168,7 +168,7 @@ class UpdateColumnForm(forms.Form):
 
 class UpdatePerson(forms.Form):
     """Форма для обновления данных в модели"""
-    id = forms.IntegerField(label='id:')
+    id_person = forms.IntegerField(label='id:')
     name = forms.CharField(label='Имя:', required=False)
     age = forms.IntegerField(label='Возраст', required=False)
     bio = forms.CharField(label='Описание:', required=False)
