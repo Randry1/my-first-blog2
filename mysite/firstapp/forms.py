@@ -164,3 +164,6 @@ class ChangeDataPersonModel(forms.Form):
 class UpdateColumnForm(forms.Form):
     """Форма для добавлени всем персонам вадраста в столбец"""
     delta_age = forms.IntegerField(label='Добавить возраст на:')
+    name = forms.CharField(label='Имя:', required=False)
+    age = forms.IntegerField(label='Возраст', required=False)
+    bio = forms.CharField(label='Описание:', required=False)
