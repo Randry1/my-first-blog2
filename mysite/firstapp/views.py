@@ -14,7 +14,7 @@ from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm
 # Create your views here.
 from .models import Person
 from django.db.models import F
-from .utils import update_post, update_post_f
+from .utils import update_post, update_post_f, update_post_update_or_create
 
 
 def index(request):
@@ -66,7 +66,8 @@ def index(request):
     content += "<a href=\"{0}\" class=\"btn btn-info\">Функции save, save(update_fields=\'name\') модели</a><br>".format('update_bd_person')
     content += "<a href=\"{0}\" class=\"btn btn-info\">Функции F обновлние всего столбика модели</a><br>".format('metod_f')
     content += "<a href=\"{0}\" class=\"btn btn-info\">Обновление несеолько столбикоа методом filter</a><br>".format('metod_filter_update')
-    content += "<a href=\"{0}\" class=\"btn btn-info\">Обновление несеолько столбикоа методом filter</a><br>".format('method_filter_update_and_f')
+    content += "<a href=\"{0}\" class=\"btn btn-info\">Обновление нескольких полей методом filter().update() + F()</a><br>".format('method_filter_update_and_f')
+    content += "<a href=\"{0}\" class=\"btn btn-info\">Обновление нескольких полей методом method_update_or_create</a><br>".format('method_update_or_create')
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -638,3 +639,12 @@ def method_filter_update_and_f(request):
     persons = Person.objects.all()
     form = UpdatePerson()
     return update_post_f(request, persons, form, 'firstapp/metod_filter_update.html', title, messages)
+
+
+def method_update_or_create(request):
+    """Обновление полей методом update_or_create"""
+    title = 'Обновление нескольких полей методом filter().update()'
+    messages = ''
+    persons = Person.objects.all()
+    form = UpdatePerson()
+    return update_post_update_or_create(request, persons, form, 'firstapp/metod_filter_update.html', title, messages)

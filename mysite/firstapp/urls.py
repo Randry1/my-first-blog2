@@ -60,4 +60,5 @@ urlpatterns = [
     path('metod_f/', views.metod_f, name='metod_f'), # метод save модели
     path('metod_filter_update/', views.method_filter_update, name='metod_filter_update'), # метод filter(id=1).update() модели
     path('method_filter_update_and_f/', views.method_filter_update_and_f, name='method_filter_update_and_f'), # метод filter(id=1).update() модели
+    path('method_update_or_create/', views.method_update_or_create, name='method_update_or_create'), # метод filter(id=1).update() модели
 ]
