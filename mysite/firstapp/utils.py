@@ -79,3 +79,28 @@ def update_post_update_or_create(request, persons, form, template, title, messag
     else:
         return render(request, template,
                       context={"title": title, "header": title, "form": form, "messages": messages, "persons": persons})
+
+
+def update_persons(request, persons, form, template, title, messages):
+    """Функция для обновления данных в модели"""
+    if request.method == 'POST':
+        form = UpdatePerson(request.POST)
+        if form.is_valid():
+            id_person = int(form.cleaned_data['id_person'])
+            name = str(form.cleaned_data['name'])
+            age = int(form.cleaned_data['age'])
+            bio = str(form.cleaned_data['bio'])
+            data_for_defaults_person = {"name":name, "age":age, "bio":bio}
+            person, created = Person.objects.update_or_create(id=id_person, defaults=data_for_defaults_person)
+            if created == True:
+                messages = 'Записи нет в базе данных, персона была добаленеа'
+            return render(request, template,
+                          context={"title": title, "header": title, "form": form, "messages": messages,
+                                   "persons": persons})
+        else:
+            return render(request, template,
+                          context={"title": title, "header": title, "form": form, "messages": messages,
+                                   "persons": persons})
+    else:
+        return render(request, template,
+                      context={"title": title, "header": title, "form": form, "messages": messages, "persons": persons})

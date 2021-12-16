@@ -172,3 +172,8 @@ class UpdatePerson(forms.Form):
     name = forms.CharField(label='Имя:', required=False)
     age = forms.IntegerField(label='Возраст', required=False)
     bio = forms.CharField(label='Описание:', required=False)
+
+
+class DeletePerson(forms.Form):
+    """Форма для удаление данных методом post запроса"""
+    id_person = forms.IntegerField(label='Id', widget=forms.HiddenInput)

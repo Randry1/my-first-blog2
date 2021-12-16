@@ -61,4 +61,6 @@ urlpatterns = [
     path('metod_filter_update/', views.method_filter_update, name='metod_filter_update'), # метод filter(id=1).update() модели
     path('method_filter_update_and_f/', views.method_filter_update_and_f, name='method_filter_update_and_f'), # метод filter(id=1).update() модели
     path('method_update_or_create/', views.method_update_or_create, name='method_update_or_create'), # метод filter(id=1).update() модели
+    path('person/<int:id_person>/delete/', views.method_delete_person, name='method_delete_person'), # удаление данных из модели
+    path('index_persons', views.index_persons, name='index_persons'), # удаление данных из модели
 ]

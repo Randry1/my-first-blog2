@@ -9,12 +9,12 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanen
 from django.http import *
 from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm, \
     ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm, DateTimeFieldForm, WidgetForm, \
-    ThinTinctureForm, UserBookForm, CreatePerson, ChangeDataPersonModel, UpdateColumnForm, UpdatePerson
+    ThinTinctureForm, UserBookForm, CreatePerson, ChangeDataPersonModel, UpdateColumnForm, UpdatePerson, DeletePerson
 
 # Create your views here.
 from .models import Person
 from django.db.models import F
-from .utils import update_post, update_post_f, update_post_update_or_create
+from .utils import update_post, update_post_f, update_post_update_or_create, update_persons
 
 
 def index(request):
@@ -63,11 +63,20 @@ def index(request):
     content += '<a href="/firstapp/method_exclude_model/" class="btn btn-info">Функции exclude модели</a><br> '
     content += '<a href="/firstapp/method_in_bulk_model/" class="btn btn-info">Функции in_bulk модели</a><br> '
     content += '<a href="/firstapp/change_date_in_bd/" class="btn btn-info">Функции save модели</a><br> '
-    content += "<a href=\"{0}\" class=\"btn btn-info\">Функции save, save(update_fields=\'name\') модели</a><br>".format('update_bd_person')
-    content += "<a href=\"{0}\" class=\"btn btn-info\">Функции F обновлние всего столбика модели</a><br>".format('metod_f')
-    content += "<a href=\"{0}\" class=\"btn btn-info\">Обновление несеолько столбикоа методом filter</a><br>".format('metod_filter_update')
-    content += "<a href=\"{0}\" class=\"btn btn-info\">Обновление нескольких полей методом filter().update() + F()</a><br>".format('method_filter_update_and_f')
-    content += "<a href=\"{0}\" class=\"btn btn-info\">Обновление нескольких полей методом method_update_or_create</a><br>".format('method_update_or_create')
+    content += "<a href=\"{0}\" class=\"btn btn-info\">Функции save, save(update_fields=\'name\') модели</a><br>".format(
+        'update_bd_person')
+    content += "<a href=\"{0}\" class=\"btn btn-info\">Функции F обновлние всего столбика модели</a><br>".format(
+        'metod_f')
+    content += "<a href=\"{0}\" class=\"btn btn-info\">Обновление несеолько столбикоа методом filter</a><br>".format(
+        'metod_filter_update')
+    content += "<a href=\"{0}\" class=\"btn btn-info\">Обновление нескольких полей методом filter().update() + F()</a><br>".format(
+        'method_filter_update_and_f')
+    content += "<a href=\"{0}\" class=\"btn btn-info\">Обновление нескольких полей методом method_update_or_create</a><br>".format(
+        'method_update_or_create')
+    content += "<a href=\"person/8/delete/\" class=\"btn btn-info\">Удаляет данные по get запросу</a><br>"
+    content += "<a href=\"person/8/delete/\" class=\"btn btn-info\">Удаляет данные по get запросу</a><br>"
+    content += "<a href=\"{0}\" class=\"btn btn-info\">Все персоны".format(
+        'index_persons')
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -548,21 +557,23 @@ def change_date_in_bd(request):
             # пепеправляем данные в полученый объект базы данных
             person.name = name
             person.age = age
-            if only_name == True: # Если стоит галочка записывает только name
+            if only_name == True:  # Если стоит галочка записывает только name
                 Person.objects.filter(id=id_person).update(name=name)
                 print("work")
             else:
-                person.save() # Сохраняем в БД
+                person.save()  # Сохраняем в БД
                 print("not work")
             messages += ' и сохранен в базе данных.'
             return render(request, 'firstapp/change_date_in_bd.html',
-                          context={"title": title, "header": title, "form": form, "messages": messages, "person": person})
+                          context={"title": title, "header": title, "form": form, "messages": messages,
+                                   "person": person})
 
         else:
             return render(request, 'firstapp/change_date_in_bd.html',
                           context={"title": title, "header": title, "form": form, "messages": messages})
     else:
-        return render(request, 'firstapp/change_date_in_bd.html', context={"title": title, "header": title, "form": form, "messages": messages})
+        return render(request, 'firstapp/change_date_in_bd.html',
+                      context={"title": title, "header": title, "form": form, "messages": messages})
 
 
 def update_bd_person(request):
@@ -601,6 +612,7 @@ def update_bd_person(request):
         return render(request, 'firstapp/change_date_in_bd.html',
                       context={"title": title, "header": title, "form": form, "messages": messages})
 
+
 def metod_f(request):
     """Меняет весь столбец"""
     title = 'Меняет весь столбец'
@@ -608,10 +620,10 @@ def metod_f(request):
     persons = Person.objects.all()
     form = UpdateColumnForm()
     if request.method == 'POST':
-        form =  UpdateColumnForm(request.POST)
+        form = UpdateColumnForm(request.POST)
         if form.is_valid():
             delta_age = int(form.cleaned_data['delta_age'])
-            persons.update(age=F('age')+1)
+            persons.update(age=F('age') + 1)
             return render(request, 'firstapp/metod_f.html',
                           context={"title": title, "header": title, "form": form, "messages": messages,
                                    "persons": persons})
@@ -632,6 +644,7 @@ def method_filter_update(request):
     form = UpdatePerson()
     return update_post(request, persons, form, 'firstapp/metod_filter_update.html', title, messages)
 
+
 def method_filter_update_and_f(request):
     """Обновление нескольких полей методом filter().update() + F()"""
     title = 'Обновление нескольких полей методом filter().update()'
@@ -648,3 +661,43 @@ def method_update_or_create(request):
     persons = Person.objects.all()
     form = UpdatePerson()
     return update_post_update_or_create(request, persons, form, 'firstapp/metod_filter_update.html', title, messages)
+
+
+def method_delete_person(request, id_person):
+    """ Удаляет данные по get запросу"""
+    title = 'Меняет весь столбец'
+    messages = ''
+    persons = Person.objects.all()
+    form = UpdatePerson()
+    messages = "{}".format(str(id_person))
+    return render(request, 'firstapp/metod_f.html',
+                  context={"title": title, "header": title, "form": form, "messages": messages, "persons": persons})
+
+
+def index_persons(request):
+    """Таблица всех Persons"""
+    title = 'Обновление нескольких полей методом filter().update()'
+    messages = ''
+    template = 'firstapp/index_persons.html'
+    persons = Person.objects.all()
+    form = UpdatePerson()
+    delete_form = DeletePerson()
+    context = {"title": title, "header": title, "form": form, "messages": messages,
+                                   "persons": persons, "delete_form": delete_form}
+    """Функция для обновления данных в модели"""
+    if request.method == 'POST':
+        form = UpdatePerson(request.POST)
+        if form.is_valid():
+            id_person = int(form.cleaned_data['id_person'])
+            name = str(form.cleaned_data['name'])
+            age = int(form.cleaned_data['age'])
+            bio = str(form.cleaned_data['bio'])
+            data_for_defaults_person = {"name": name, "age": age, "bio": bio}
+            person, created = Person.objects.update_or_create(id=id_person, defaults=data_for_defaults_person)
+            if created == True:
+                messages = 'Записи нет в базе данных, персона была добаленеа'
+            return render(request, template, context=context)
+        else:
+            return render(request, template, context=context)
+    else:
+        return render(request, template, context=context)
