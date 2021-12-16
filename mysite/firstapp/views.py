@@ -669,9 +669,31 @@ def method_delete_person(request, id_person):
     messages = ''
     persons = Person.objects.all()
     form = UpdatePerson()
+    delete_form = DeletePerson()
     messages = "{}".format(str(id_person))
-    return render(request, 'firstapp/metod_f.html',
-                  context={"title": title, "header": title, "form": form, "messages": messages, "persons": persons})
+    context = {"title": title, "header": title, "form": form, "messages": messages, "persons": persons,
+               "delete_form": delete_form}
+    if request.method == 'POST': #Проверели форму что нам ее отправили методом пост
+        delete_form = DeletePerson(request.POST) # Передали запрос в форму
+        if delete_form.is_valid(): #Проверили вылидна ли форма
+            id_person = delete_form.cleaned_data['id_person'] #Извлекли данные из формы
+            try: #Попытка удаления обьекта
+                person = Person.objects.get(id=id_person) #Найти и извлеч объект из базы данных
+                person.delete() #Если нашли удалить
+                context['messages'] = "Запись id:{0} удалена".format(id_person) #Сообщить об успешном удалении пользователю
+                context['persons'] = Person.objects.all()
+                return render(request, 'firstapp/metod_f.html', context=context)
+            except Person.DoesNotExist:
+                context['messages'] = 'Данной записи не существует'
+                return render(request, 'firstapp/metod_f.html', context=context)
+            except Person.MultipleObjectsReturned as e:
+                context['messages'] = "{}".format(e)
+                return render(request, 'firstapp/metod_f.html', context=context)
+        else:
+            context['messages'] = delete_form.errors
+            return render(request, 'firstapp/metod_f.html', context=context)
+    else:
+        return render(request, 'firstapp/metod_f.html', context=context)
 
 
 def index_persons(request):
@@ -695,7 +717,7 @@ def index_persons(request):
             data_for_defaults_person = {"name": name, "age": age, "bio": bio}
             person, created = Person.objects.update_or_create(id=id_person, defaults=data_for_defaults_person)
             if created == True:
-                messages = 'Записи нет в базе данных, персона была добаленеа'
+                context['messages'] = 'Записи нет в базе данных, персона была добаленеа'
             return render(request, template, context=context)
         else:
             return render(request, template, context=context)
