@@ -723,3 +723,10 @@ def index_persons(request):
             return render(request, template, context=context)
     else:
         return render(request, template, context=context)
+
+
+def index_crude(request):
+    """Индексный файл из учебника"""
+    title = ''
+    messages = ''
+    return render(request, 'firstapp/index_crude.html', context={})
