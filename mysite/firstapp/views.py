@@ -75,8 +75,8 @@ def index(request):
         'method_update_or_create')
     content += "<a href=\"person/8/delete/\" class=\"btn btn-info\">Удаляет данные по get запросу</a><br>"
     content += "<a href=\"person/8/delete/\" class=\"btn btn-info\">Удаляет данные по get запросу</a><br>"
-    content += "<a href=\"{0}\" class=\"btn btn-info\">Все персоны".format(
-        'index_persons')
+    content += "<a href=\"{0}\" class=\"btn btn-info\">Все персоны</a><br>".format('index_persons')
+    content += "<a href=\"{0}\" class=\"btn btn-info\">Все персоны, из учебника</a><br>".format('index_crude')
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -726,7 +726,18 @@ def index_persons(request):
 
 
 def index_crude(request):
-    """Индексный файл из учебника"""
+    """Индексный файл из учебника, получение всех данных из модели"""
     title = ''
     messages = ''
-    return render(request, 'firstapp/index_crude.html', context={})
+    persons = Person.objects.all()
+    return render(request, 'firstapp/index_crude.html', context={"persons": persons})
+
+
+def create(request):
+    """Созданик персоны, по пост запросу из формы"""
+    if request.method == 'POST':
+        person = Person()
+        person.name = request.POST.get("name")
+        person.age = request.POST.get("age")
+        person.save()
+    return HttpResponseRedirect('index_crude')
