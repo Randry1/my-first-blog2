@@ -65,4 +65,6 @@ urlpatterns = [
     path('index_persons', views.index_persons, name='index_persons'), # вывод всех данных из модели
     path('index_crude', views.index_crude, name='index_crude'), # Вывод всех данных из модели
     path('create', views.create, name='create'), # Вывод всех данных из модели
+    re_path(r'^edit/(?P<id_person>\d+)/', views.edit, name='edit'), # изменение данных из модели
+    path('delete/<int:id>/', views.delete, name='delete'), # удаление данных из модели
 ]

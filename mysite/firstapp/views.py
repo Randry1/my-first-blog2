@@ -741,3 +741,29 @@ def create(request):
         person.age = request.POST.get("age")
         person.save()
     return HttpResponseRedirect('index_crude')
+
+
+def edit(request, id_person):
+    """Изменение данных в ДБ"""
+    title =''
+    try:
+        person = Person.objects.get(id=id_person)
+        if request.method == 'POST':
+            person.name = request.POST.get('name')
+            person.age = request.POST.get('age')
+            person.save()
+            return HttpResponseRedirect("/firstapp/index_crude")
+        else:
+            return render(request, 'firstapp/edit.html', context={"person": person, "title": title})
+    except Person.DoesNotExist:
+        return HttpResponseNotFound('<h2>Клиент не найден</p>')
+
+
+def delete(request, id):
+    """Удаление базы из данных"""
+    try:
+        person = Person.objects.get(id=id)
+        person.delete()
+        return HttpResponseRedirect("/firstapp/index_crude")
+    except Person.DoesNotExist:
+        return HttpResponseNotFound('<h1>Данная записть не найдена</h1>')

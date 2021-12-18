@@ -1,0 +1,24 @@
+{%  extends 'firstapp/base.html' %}
+{% block header %}
+{{ title }}
+{% endblock %}
+{% block title %}
+{{ title }}
+{% endblock %}
+{% block content %}
+    <form action="{% url 'edit' person.id %}" method="post">
+        <div>{% csrf_token %}</div>
+        <div>
+            <label>Введите имя:</label>
+            <input type="text" name="name" value="{{ person.name }}">
+        </div>
+        <div>
+            <label>Введите возраст:</label>
+            <input type="number" name="age" value="{{ person.age }}">
+        </div>
+        <div>
+            <input type="submit" value="Отправить">
+        </div>
+    </form>
+
+{% endblock %}

@@ -27,6 +27,8 @@
                 <td>{{ person.id }}</td>
                 <td>{{ person.name }}</td>
                 <td>{{ person.age }}</td>
+                <td><a href="{% url 'edit' person.id %}">Изменить</a></td>
+                <td><a href="{%  url 'delete' person.id %}">Удалить</a> </td>
             </tr>
             {% endfor %}
         </table>
