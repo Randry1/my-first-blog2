@@ -785,4 +785,16 @@ def electric_new(request):
     """Create new electrical"""
     if request.method == 'POST':
         form = ElectricForm(request.POST)
-    return HttpResponseRedirect('firstapp/electric_index')
+        electric = Electric()
+        if form.is_valid():
+            electric.name = form.cleaned_data['name']
+            electric.dict = form.cleaned_data['dict']
+            electric.email = form.cleaned_data['email']
+            electric.bio = form.cleaned_data['bio']
+            electric.active = form.cleaned_data['active']
+            electric.save()
+            return  HttpResponseRedirect('firstapp/electric_index' )
+        else:
+            return HttpResponse('Не удалось пройти валидацию формы')
+    else:
+        return HttpResponseRedirect('firstapp/electric_index')
