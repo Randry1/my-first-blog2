@@ -767,3 +767,8 @@ def delete(request, id):
         return HttpResponseRedirect("/firstapp/index_crude")
     except Person.DoesNotExist:
         return HttpResponseNotFound('<h1>Данная записть не найдена</h1>')
+
+
+def electric_index(reqest):
+    """Создать индексный файл и вывести всех электриков"""
+    return render(reqest,'firstapp/electric_index.html', context={})
