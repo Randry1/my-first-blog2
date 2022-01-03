@@ -177,3 +177,13 @@ class UpdatePerson(forms.Form):
 class DeletePerson(forms.Form):
     """Форма для удаление данных методом post запроса"""
     id_person = forms.IntegerField(label='Id', widget=forms.HiddenInput)
+    
+
+class ElectricForm(forms.Form):
+    """Форма для модели электрика"""
+    name = forms.CharField(help_text='ФИО', max_length=15)
+    dict = forms.CharField(help_text='Район', blank=True, max_length=230)
+    email = forms.EmailField(blank=True)
+    # avatar = forms.ImageField(blank=True) #  Cannot use ImageField because Pillow is not installed. todo https://pypi.org/project/Pillow/
+    bio = forms.CharField(blank=True, help_text='О себе', max_length=230)
+    active = forms.BooleanField(default=True, help_text='Работает')
