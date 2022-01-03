@@ -67,4 +67,5 @@ urlpatterns = [
     path('create', views.create, name='create'), # Вывод всех данных из модели
     re_path(r'^edit/(?P<id_person>\d+)/', views.edit, name='edit'), # изменение данных из модели
     path('delete/<int:id>/', views.delete, name='delete'), # удаление данных из модели
+    path('electric_index', views.electric_index, name='electric_index') #Файл создания новых электриков, и вывода всех электриков
 ]
