@@ -3,6 +3,8 @@ from calendar import format
 
 from django import forms
 from django.core.validators import validate_slug
+from django.forms import ModelForm
+from .models import Electric
 
 
 class UserForm(forms.Form):
@@ -179,11 +181,8 @@ class DeletePerson(forms.Form):
     id_person = forms.IntegerField(label='Id', widget=forms.HiddenInput)
     
 
-class ElectricForm(forms.Form):
+class ElectricForm(ModelForm):
     """Форма для модели электрика"""
-    name = forms.CharField(label='ФИО', max_length=15)
-    dict = forms.CharField(label='Район',  max_length=230, required=False)
-    email = forms.EmailField(label='Email')
-    # avatar = forms.ImageField(blank=True) #  Cannot use ImageField because Pillow is not installed. todo https://pypi.org/project/Pillow/
-    bio = forms.CharField(label='О себе', max_length=230, required=False)
-    active = forms.BooleanField(label='Работает')
+    class Meta:
+        model = Electric
+        fields = '__all__'

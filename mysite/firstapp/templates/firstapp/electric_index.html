@@ -21,6 +21,7 @@
             {% if electrics.count > 0 %}
                 <table>
                         <tr>
+                            <td>id</td>
                             <td>Имя</td>
                             <td>Описание</td>
                             <td>Работает</td>
@@ -31,11 +32,13 @@
                         </tr>
                     {% for electric in electrics %}
                         <tr>
+                            <td>{{ electric.id }}</td>
                             <td>{{ electric.name }}</td>
                             <td>{{ electric.bio }}</td>
                             <td>{{ electric.active }}</td>
                             <td>{{ electric.email }}</td>
                             <td>{{ electric.dict }}</td>
+                            <td><a href="{% url 'electric_edit' electric.id %}">Изменить</a></td>
                         </tr>
                     {% endfor %}
                 </table>

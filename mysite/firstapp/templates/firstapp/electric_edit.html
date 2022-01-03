@@ -1,0 +1,22 @@
+{%  extends 'firstapp/base.html' %}
+{% block title %}
+{{ title }}
+{% endblock %}
+{% block header %}
+{{ title }}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <a href="{%  url 'electric_index' %}">Назад к списку</a>
+        </div>
+        <div class="col-md-12">
+            {{ messages }}
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Изменить">
+            </form>
+        </div>
+    </div>
+{% endblock %}

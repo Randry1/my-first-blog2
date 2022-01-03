@@ -2,8 +2,9 @@ import os
 from array import array
 from os.path import normpath
 
+from django.conf.urls import url
 from django.contrib.sessions.backends import file
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template.response import TemplateResponse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.http import *
@@ -15,6 +16,7 @@ from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm
 from .models import Person, Electric
 from django.db.models import F
 from .utils import update_post, update_post_f, update_post_update_or_create, update_persons
+from django.urls import reverse
 
 
 def index(request):
@@ -793,8 +795,40 @@ def electric_new(request):
             electric.bio = form.cleaned_data['bio']
             electric.active = form.cleaned_data['active']
             electric.save()
-            return  HttpResponse('Прошел по алгоритму сохранения' )
+            return redirect('electric_index')
         else:
             return HttpResponse('Не удалось пройти валидацию формы')
     else:
-        return HttpResponseRedirect('firstapp/electric_index')
+        return HttpResponseRedirect(reverse('electric_index'))
+
+def electric_edit(request, pk):
+    """Редактирование профиля электрика"""
+    title = 'Редактирование профиля электрика'
+    context = {}
+    context['messages'] = ''
+    context['title'] = title
+    form = ElectricForm()
+    context['form'] = form
+    try:  # Пробуем найти в базе данных профиль электрика
+        electric = Electric.objects.get(pk=pk)
+        form = ElectricForm(instance=electric)
+        context['form'] = form
+        if request.method == 'POST':
+            form = ElectricForm(request.POST)
+            if form.is_valid(): #Провека формы
+                electric.name = form.cleaned_data['name']
+                electric.bio = form.cleaned_data['bio']
+                electric.active = form.cleaned_data['active']
+                electric.dict = form.cleaned_data['dict']
+                electric.save() #Сохранение профиля в базе данных
+                context['form'] = ElectricForm(instance=electric)
+                context['messages'] = str(electric.id)
+                return render(request, 'firstapp/electric_edit.html', context=context) #Рендерим форму с изменениями
+            else:
+                context['messages'] = str(electric.id)
+                return render(request, 'firstapp/electric_edit.html', context=context)
+        else: # метод get
+            return render(request, 'firstapp/electric_edit.html', context=context)
+    except Electric.DoesNotExist:
+        return HttpResponse('Данного профиля электрика не существует')
+    return redirect('electric_index')
