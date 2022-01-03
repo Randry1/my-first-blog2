@@ -777,6 +777,11 @@ def electric_index(request):
     """Создать индексный файл и вывести всех электриков"""
     title = ''
     context = {}
+    try: # Попытка передать данные из другой функции
+        context['messages'] = request.session['messages']
+        request.session.pop('messages')
+    except KeyError:
+        pass
     form = ElectricForm()
     context['form'] = form
     electrics = Electric.objects.all()
@@ -823,12 +828,24 @@ def electric_edit(request, pk):
                 electric.save() #Сохранение профиля в базе данных
                 context['form'] = ElectricForm(instance=electric)
                 context['messages'] = str(electric.id)
-                return render(request, 'firstapp/electric_edit.html', context=context) #Рендерим форму с изменениями
+                request.session['messages'] = context['messages']
+                return redirect(reverse('electric_index'), context=context) #Рендерим форму с изменениями
             else:
-                context['messages'] = str(electric.id)
+                context['messages'] = form.errors
                 return render(request, 'firstapp/electric_edit.html', context=context)
         else: # метод get
             return render(request, 'firstapp/electric_edit.html', context=context)
     except Electric.DoesNotExist:
         return HttpResponse('Данного профиля электрика не существует')
     return redirect('electric_index')
+
+
+def electric_delete(request, pk):
+    """Функция удаления профиля электрика из БД"""
+    try:
+        electric = Electric.objects.get(pk=pk)
+        electric.delete()
+        request.session['messages'] = "Профиль id: {0} успешно удален".format(pk)
+        return redirect(reverse('electric_index'))
+    except Electric.DoesNotExist:
+        return HttpResponse('Данный профиль не найден')

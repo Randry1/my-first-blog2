@@ -7,6 +7,11 @@
 {% endblock %}
 {% block content %}
     <div class="row">
+    {% if messages %}
+        {{ messages }}
+    {% endif %}
+    </div>
+    <div class="row">
         <div class="col-md-12">
             <h3>Добавить нового электрика</h3>
             <form action="{% url 'electric_new' %}" method="POST">
@@ -39,6 +44,7 @@
                             <td>{{ electric.email }}</td>
                             <td>{{ electric.dict }}</td>
                             <td><a href="{% url 'electric_edit' electric.id %}">Изменить</a></td>
+                            <td><a href="{% url 'electric_delete' electric.id %}">Удалить</a> </td>
                         </tr>
                     {% endfor %}
                 </table>

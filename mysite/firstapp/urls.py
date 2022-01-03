@@ -70,4 +70,5 @@ urlpatterns = [
     path('electric_index', views.electric_index, name='electric_index'), #Файл создания новых электриков, и вывода всех электриков
     path('electric/new', views.electric_new, name='electric_new'), #Функция добавления новых электриков
     path('electric/<int:pk>/edit', views.electric_edit, name='electric_edit'), #Функция изменения профиля электриков
+    path('electric/<int:pk>/delete', views.electric_delete, name='electric_delete'), #Функция удаления профиля электриков
 ]
