@@ -793,7 +793,7 @@ def electric_new(request):
             electric.bio = form.cleaned_data['bio']
             electric.active = form.cleaned_data['active']
             electric.save()
-            return  HttpResponseRedirect('firstapp/electric_index' )
+            return  HttpResponse('Прошел по алгоритму сохранения' )
         else:
             return HttpResponse('Не удалось пройти валидацию формы')
     else:
