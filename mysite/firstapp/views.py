@@ -9,15 +9,16 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanen
 from django.http import *
 from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm, \
     ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm, DateTimeFieldForm, WidgetForm, \
-    ThinTinctureForm, UserBookForm, CreatePerson, ChangeDataPersonModel, UpdateColumnForm, UpdatePerson, DeletePerson
+    ThinTinctureForm, UserBookForm, CreatePerson, ChangeDataPersonModel, UpdateColumnForm, UpdatePerson, DeletePerson, ElectricForm
 
 # Create your views here.
-from .models import Person
+from .models import Person, Electric
 from django.db.models import F
 from .utils import update_post, update_post_f, update_post_update_or_create, update_persons
 
 
 def index(request):
+    css_class_btn = 'class=\"btn btn-info\"'
     content = '<h1>Главная</h1>'
     content += '<a href="/firstapp/about/" class="btn btn-info">About</a><br>'
     content += '<a href="/firstapp/contact/" class="btn btn-info">Contact</a><br>'
@@ -77,6 +78,7 @@ def index(request):
     content += "<a href=\"person/8/delete/\" class=\"btn btn-info\">Удаляет данные по get запросу</a><br>"
     content += "<a href=\"{0}\" class=\"btn btn-info\">Все персоны</a><br>".format('index_persons')
     content += "<a href=\"{0}\" class=\"btn btn-info\">Все персоны, из учебника</a><br>".format('index_crude')
+    content += "<a href=\"{0}\" {1}>Все элекстрики</a><br>".format('electric_index', css_class_btn)
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -769,6 +771,18 @@ def delete(request, id):
         return HttpResponseNotFound('<h1>Данная записть не найдена</h1>')
 
 
-def electric_index(reqest):
+def electric_index(request):
     """Создать индексный файл и вывести всех электриков"""
-    return render(reqest,'firstapp/electric_index.html', context={})
+    title = ''
+    context = {}
+    form = ElectricForm()
+    context['form'] = form
+    electrics = Electric.objects.all()
+    context['electrics'] = electrics
+    return render(request,'firstapp/electric_index.html', context=context)
+
+def electric_new(request):
+    """Create new electrical"""
+    if request.method == 'POST':
+        form = ElectricForm(request.POST)
+    return HttpResponseRedirect('firstapp/electric_index')

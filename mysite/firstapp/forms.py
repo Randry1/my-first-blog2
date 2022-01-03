@@ -181,9 +181,9 @@ class DeletePerson(forms.Form):
 
 class ElectricForm(forms.Form):
     """Форма для модели электрика"""
-    name = forms.CharField(help_text='ФИО', max_length=15)
-    dict = forms.CharField(help_text='Район', blank=True, max_length=230)
-    email = forms.EmailField(blank=True)
+    name = forms.CharField(label='ФИО', max_length=15)
+    dict = forms.CharField(label='Район',  max_length=230, required=False)
+    email = forms.EmailField(label='Email')
     # avatar = forms.ImageField(blank=True) #  Cannot use ImageField because Pillow is not installed. todo https://pypi.org/project/Pillow/
-    bio = forms.CharField(blank=True, help_text='О себе', max_length=230)
-    active = forms.BooleanField(default=True, help_text='Работает')
+    bio = forms.CharField(label='О себе', max_length=230, required=False)
+    active = forms.BooleanField(label='Работает')
