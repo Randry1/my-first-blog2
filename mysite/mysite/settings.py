@@ -15,7 +15,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-brmm9^pu-9350sanq!@u3=a6*uqj&9r3u4b+=6g1)b@ba7qz5'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com', '2c688802767e4e299337fab2596fff6f.vfs.cloud9.us-east-1.amazonaws.com']
+ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com', '2c688802767e4e299337fab2596fff6f.vfs.cloud9.us-east-1.amazonaws.com', 'revinandry.fvds.ru']
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -62,8 +62,12 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'myproject',
+        'USER': 'myprojectuser',
+        'PASSWORD': 'pACWef@dfa75411',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 # Password validation
