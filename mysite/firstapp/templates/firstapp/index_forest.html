@@ -25,6 +25,25 @@
                         <td>{{ forest.name }}</td>
                         <td><a href="{% url 'edit_forest' forest.id %}">Изменить</a></td>
                         <td><a href="{% url 'delete_forest' forest.id %}">Удалить</a></td>
+
+                    </tr>
+                    <tr>
+                    <td>
+                            <form action="{% url 'create_tree' forest.id %}" method="post">
+                                {% csrf_token %}
+                                <td>
+                                    <label for="id_name">Название дерева:</label>
+                                    <input type="text" name="name" maxlength="15" required="" id="id_name">
+                                </td>
+                                <td>
+                                    <label for="id_height">Height:</label>
+                                    <input type="number" name="height" required="" id="id_height">
+                                </td>
+                                <td>
+                                    <input type="submit" name="Добавить">
+                                </td>
+                            </form>
+                        </td>
                     </tr>
                 {% endfor %}
                 </table>

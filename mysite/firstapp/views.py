@@ -4,17 +4,17 @@ from os.path import normpath
 
 from django.conf.urls import url
 from django.contrib.sessions.backends import file
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.template.response import TemplateResponse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.http import *
 from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm, \
     ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm, DateTimeFieldForm, WidgetForm, \
     ThinTinctureForm, UserBookForm, CreatePerson, ChangeDataPersonModel, UpdateColumnForm, UpdatePerson, DeletePerson, \
-    ElectricForm, ForestForm
+    ElectricForm, ForestForm, TreeForm
 
 # Create your views here.
-from .models import Person, Electric, Forest
+from .models import Person, Electric, Forest, Tree
 from django.db.models import F
 from .utils import update_post, update_post_f, update_post_update_or_create, update_persons
 from django.urls import reverse
@@ -859,6 +859,8 @@ def index_forest(request):
     forests = Forest.objects.all()
     form = ForestForm()
     context = {}
+    form_tree = TreeForm()
+    context['form_tree'] = form_tree
     try:
      context['messages'] = request.session['messages']
      request.session.pop('messages')
@@ -892,6 +894,13 @@ def edit_forest(request, id_forest):
     context['title'] = 'Редактирование леса'
     form = ForestForm()
     context['form'] = form
+    form_tree = TreeForm()
+    context['form_tree'] = form_tree
+    try:
+     context['messages'] = request.session['messages']
+     request.session.pop('messages')
+    except KeyError:
+        pass
     try:
         forest = Forest.objects.get(pk=id_forest) #.objects.get(pk=pk)
         context['forest'] = forest
@@ -924,4 +933,25 @@ def delete_forest(request, id_forest):
         return redirect(index_forest)
     except Forest.DoesNotExist:
         request.session['messages'] = "Данный лес не существует"
+        return redirect(index_forest)
+
+def create_tree(request, id_forest):
+    """Добавление нового дерева в лес"""
+    forest = get_object_or_404(Forest, pk=id_forest)
+    if request.method == 'POST':
+        # Излекаем данные из формы
+        name = request.POST.get('name')
+        height = request.POST.get('height')
+
+        # Проверяем заполнена ли форма
+        if (height != '') and (name != ''):
+            tree = Tree(name=name, height=height)
+            forest.tree_set.add(tree, bulk=False)
+            request.session['messages'] = "Дерево успешно добавлено в лес"
+            return redirect(edit_forest, forest.id)
+        else: # Если нет отправляем обратно на индексный файл с сообщением
+            request.session['messages'] = 'В форме не заполнен один или несколько элеметов'
+            return redirect(index_forest)
+    else:
+        request.session['messages'] = 'Дерево не добавлено отпрвти данные через форму'
         return redirect(index_forest)

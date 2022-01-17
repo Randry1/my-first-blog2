@@ -75,4 +75,5 @@ urlpatterns = [
     path('create_forest', views.create_forest, name='create_forest'), #Направлени на создание обьекта
     path('index_forest/<int:id_forest>/edit/', views.edit_forest, name='edit_forest'), #Изменение леса
     path('index_forest/<int:id_forest>/delete/', views.delete_forest, name='delete_forest'), #Изменение леса
+    path('index_forest/<int:id_forest>/tree/new/', views.create_tree, name='create_tree'), #Добовление дерева в лес
 ]
