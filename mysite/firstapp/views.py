@@ -956,5 +956,5 @@ def create_tree(request, id_forest):
             request.session['messages'] = 'В форме не заполнен один или несколько элеметов'
             return redirect(index_forest)
     else:
-        request.session['messages'] = 'Дерево не добавлено отпрвти данные через форму'
+        request.session['messages'] = 'Дерево не добавлено отправте данные через форму'
         return redirect(index_forest)

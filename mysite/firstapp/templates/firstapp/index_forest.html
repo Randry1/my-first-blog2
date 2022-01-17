@@ -28,7 +28,16 @@
 
                     </tr>
                     <tr>
-                    <td>
+                        {% for tree in forest.tree_set.all %}
+                            <tr>
+                                <td></td>
+                                <td>{{ tree.id }}</td>
+                                <td>{{ tree.name }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>
                             <form action="{% url 'create_tree' forest.id %}" method="post">
                                 {% csrf_token %}
                                 <td>
@@ -38,9 +47,6 @@
                                 <td>
                                     <label for="id_height">Height:</label>
                                     <input type="number" name="height" required="" id="id_height">
-                                </td>
-                                <td>
-                                    {{ form_tree.as_p forest.id }}
                                 </td>
                                 <td>
                                     <input type="submit" name="Добавить">
