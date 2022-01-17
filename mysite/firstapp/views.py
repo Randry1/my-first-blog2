@@ -904,6 +904,8 @@ def edit_forest(request, id_forest):
     try:
         forest = Forest.objects.get(pk=id_forest) #.objects.get(pk=pk)
         context['forest'] = forest
+        trees = forest.tree_set.all()
+        context['trees'] = trees
         form = ForestForm(instance=forest)
         context['form'] = form
         if request.method == 'POST':
@@ -911,6 +913,7 @@ def edit_forest(request, id_forest):
             if form.is_valid(): #Проверка формы на ошибки
                 forest.name = form.cleaned_data['name']
                 forest.save()
+                context['form'] = ForestForm(instance=forest)
                 context['messages'] = "Лес id:{0} успешно изменен".format(id_forest)
                 return render(request, 'firstapp/edit_forest.html', context=context)
             else: # форма с ошибками
