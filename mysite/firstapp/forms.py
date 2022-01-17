@@ -4,7 +4,7 @@ from calendar import format
 from django import forms
 from django.core.validators import validate_slug
 from django.forms import ModelForm
-from .models import Electric, Forest
+from .models import Electric, Forest, Tree
 
 
 class UserForm(forms.Form):
@@ -191,4 +191,10 @@ class ForestForm(ModelForm):
     """Форма для модели лес"""
     class Meta:
         model = Forest
+        fields = '__all__'
+
+class TreeForm(ModelForm):
+    """Форма для модели дерево"""
+    class Meta:
+        model = Tree
         fields = '__all__'

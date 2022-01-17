@@ -71,4 +71,7 @@ urlpatterns = [
     path('electric/new', views.electric_new, name='electric_new'), #Функция добавления новых электриков
     path('electric/<int:pk>/edit', views.electric_edit, name='electric_edit'), #Функция изменения профиля электриков
     path('electric/<int:pk>/delete', views.electric_delete, name='electric_delete'), #Функция удаления профиля электриков
+    path('index_forest', views.index_forest, name='index_forest'), #Индексный файл модели один ко многим
+    path('create_forest', views.create_forest, name='create_forest'), #Направлени на создание обьекта
+    path('index_forest/<int:id_forest>/edit/', views.edit_forest, name='edit_forest'), #Изменение леса
 ]

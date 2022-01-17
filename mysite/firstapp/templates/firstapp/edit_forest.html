@@ -1,0 +1,28 @@
+{% extends 'firstapp/base.html' %}
+{% block header %}
+{{ title }}
+{% endblock %}
+{% block title %}
+{{ title }}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md12">
+            <a href="{% url 'index_forest' %}">Все леса</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form action="{% url 'edit_forest' forest.pk %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" name="Отправить">
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+        </div>
+    </div>
+{% endblock %}

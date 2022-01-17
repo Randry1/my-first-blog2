@@ -6,6 +6,13 @@
 </head>
 <body>
 <h1>{% block header %}Заголовок{% endblock %}</h1>
+    <div class="row">
+        <div class="col-md-12">
+            {% if messages %}
+                <p class="info">{{ messages }}</p>
+            {% endif %}
+        </div>
+    </div>
 <div>{% block content %}{% endblock %}</div>
 <div>Подвал страницы</div>
 

@@ -10,10 +10,11 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanen
 from django.http import *
 from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm, \
     ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm, DateTimeFieldForm, WidgetForm, \
-    ThinTinctureForm, UserBookForm, CreatePerson, ChangeDataPersonModel, UpdateColumnForm, UpdatePerson, DeletePerson, ElectricForm
+    ThinTinctureForm, UserBookForm, CreatePerson, ChangeDataPersonModel, UpdateColumnForm, UpdatePerson, DeletePerson, \
+    ElectricForm, ForestForm
 
 # Create your views here.
-from .models import Person, Electric
+from .models import Person, Electric, Forest
 from django.db.models import F
 from .utils import update_post, update_post_f, update_post_update_or_create, update_persons
 from django.urls import reverse
@@ -81,6 +82,9 @@ def index(request):
     content += "<a href=\"{0}\" class=\"btn btn-info\">Все персоны</a><br>".format('index_persons')
     content += "<a href=\"{0}\" class=\"btn btn-info\">Все персоны, из учебника</a><br>".format('index_crude')
     content += "<a href=\"{0}\" {1}>Все элекстрики</a><br>".format('electric_index', css_class_btn)
+    content += "<hr>"
+    content += "<a href=\"{0}\" {1}>Один ко многим Лес деревья</a><br>".format('index_forest', css_class_btn)
+
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
 
@@ -849,3 +853,64 @@ def electric_delete(request, pk):
         return redirect(reverse('electric_index'))
     except Electric.DoesNotExist:
         return HttpResponse('Данный профиль не найден')
+
+def index_forest(request):
+    """Индекс форест"""
+    forests = Forest.objects.all()
+    form = ForestForm()
+    context = {}
+    try:
+     context['messages'] = request.session['messages']
+     request.session.pop('messages')
+    except KeyError:
+        pass
+    context['title'] = 'Модель один ко многим'
+    context['forests'] = forests
+    context['form'] = form
+    return render(request, 'firstapp/index_forest.html', context=context)
+
+def create_forest(request):
+    """Create forest"""
+    form = ForestForm()
+    if request.method == 'POST':
+        forest = Forest()
+        form = ForestForm(request.POST)
+        if form.is_valid():
+            forest.name = form.cleaned_data['name']
+            forest.save()
+            request.session['messages'] = 'Лес успешно сохранен'
+            return redirect(index_forest)
+        else:
+            request.session['messages'] = form.errors
+            return render(request, 'firstapp/index_forest.html')
+    else:
+        return redirect(index_forest,)
+
+def edit_forest(request, id_forest):
+    """Редактирование леса"""
+    context = {}
+    context['title'] = 'Редактирование леса'
+    form = ForestForm()
+    context['form'] = form
+    try:
+        forest = Forest.objects.get(pk=id_forest) #.objects.get(pk=pk)
+        context['forest'] = forest
+        form = ForestForm(instance=forest)
+        context['form'] = form
+        if request.method == 'POST':
+            form = ForestForm(request.POST)
+            if form.is_valid(): #Проверка формы на ошибки
+                forest.name = form.cleaned_data['name']
+                forest.save()
+                context['messages'] = "Лес id:{0} успешно изменен".format(id_forest)
+                return render(request, 'firstapp/edit_forest.html', context=context)
+            else: # форма с ошибками
+                context['messages'] = form.errors
+                return render(request, 'firstapp/edit_forest.html', context=context)
+        else: # get запрос
+            return render(request, 'firstapp/edit_forest.html', context=context)
+
+    except Forest.DoesNotExist:
+        request.session['messages'] = "Леса с id: {0} не найдено в базе данных".format(index_forest)
+        return redirect(index_forest)
+
