@@ -879,12 +879,12 @@ def create_forest(request):
             forest.name = form.cleaned_data['name']
             forest.save()
             request.session['messages'] = 'Лес успешно сохранен'
-            return redirect(index_forest)
+            return redirect(edit_forest, forest.id)
         else:
             request.session['messages'] = form.errors
             return render(request, 'firstapp/index_forest.html')
     else:
-        return redirect(index_forest,)
+        return redirect(index_forest)
 
 def edit_forest(request, id_forest):
     """Редактирование леса"""
@@ -914,3 +914,14 @@ def edit_forest(request, id_forest):
         request.session['messages'] = "Леса с id: {0} не найдено в базе данных".format(index_forest)
         return redirect(index_forest)
 
+def delete_forest(request, id_forest):
+    """Удаление леса"""
+    # тут должна быть проверка на зпрос пост и на права пользователя
+    try:
+        forest = Forest.objects.get(pk=id_forest)
+        forest.delete()
+        request.session['messages'] = "Лес с id: {0} по имени: {1} удален.".format(forest.id, forest.name)
+        return redirect(index_forest)
+    except Forest.DoesNotExist:
+        request.session['messages'] = "Данный лес не существует"
+        return redirect(index_forest)

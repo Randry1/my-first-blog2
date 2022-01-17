@@ -8,13 +8,6 @@
 {% block content %}
     <div class="row">
         <div class="col-md-12">
-            {% if messages %}
-                <p class="info">{{ messages }}</p>
-            {% endif %} 
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
             <form action="{%  url 'create_forest' %}" method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
@@ -28,7 +21,10 @@
                 <table >
                 {% for forest in forests %}
                     <tr>
+                        <td>{{ forest.id }}</td>
                         <td>{{ forest.name }}</td>
+                        <td><a href="{% url 'edit_forest' forest.id %}">Изменить</a></td>
+                        <td><a href="{% url 'delete_forest' forest.id %}">Удалить</a></td>
                     </tr>
                 {% endfor %}
                 </table>

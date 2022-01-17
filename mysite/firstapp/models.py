@@ -18,10 +18,10 @@ class Electric(models.Model):
 
 class Forest(models.Model):
     """Класс лес для  показа модели отношение один ко многим"""
-    name = models.CharField(max_length=15, help_text="Имя леса")
+    name = models.CharField(max_length=15, help_text="Имя леса", verbose_name='Имя')
 
 class Tree(models.Model):
     """Класс дерево, показать отношнение один ко многим"""
     forest = models.ForeignKey(Forest, on_delete=models.CASCADE)
-    name = models.CharField(max_length=15, help_text='Название дерева')
+    name = models.CharField(max_length=15, help_text='Название дерева', verbose_name='Название дерева')
     height = models.IntegerField()

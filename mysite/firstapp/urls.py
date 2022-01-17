@@ -74,4 +74,5 @@ urlpatterns = [
     path('index_forest', views.index_forest, name='index_forest'), #Индексный файл модели один ко многим
     path('create_forest', views.create_forest, name='create_forest'), #Направлени на создание обьекта
     path('index_forest/<int:id_forest>/edit/', views.edit_forest, name='edit_forest'), #Изменение леса
+    path('index_forest/<int:id_forest>/delete/', views.delete_forest, name='delete_forest'), #Изменение леса
 ]
