@@ -77,4 +77,5 @@ urlpatterns = [
     path('index_forest/<int:id_forest>/delete/', views.delete_forest, name='delete_forest'), #Изменение леса
     path('index_forest/<int:id_forest>/tree/new/', views.create_tree, name='create_tree'), #Добовление дерева в лес
     path('index_forest/<int:id_forest>/tree/<int:id_tree>/edit', views.edit_tree, name='edit_tree'), #Добовление дерева в лес
+    path('index_forest/<int:id_forest>/tree/<int:id_tree>/delete', views.delete_tree, name='delete_tree'), #Удаление get запросом дерева в лесу
 ]

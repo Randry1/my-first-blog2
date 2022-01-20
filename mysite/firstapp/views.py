@@ -987,3 +987,13 @@ def edit_tree(request, id_forest, id_tree):
         request.session['messages'] = 'Дерево не добавлено отправте данные через форму'
         return render(request, 'firstapp/edit_tree.html', context=context)
 
+def delete_tree(request, id_forest, id_tree):
+    """Удаляет дерево по get запросу"""
+    context = {}
+    forest = get_object_or_404(Forest, pk=id_forest)
+    context['forest'] = forest
+    tree = get_object_or_404(Tree, pk=id_tree)
+    context['tree'] = tree
+    tree.delete()
+    request.session['messages'] = "Дерево с id: {0} и названием: {1} удалено.".format(forest.id, id_tree)
+    return redirect(edit_forest, forest.id)

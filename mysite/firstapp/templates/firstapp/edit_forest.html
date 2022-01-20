@@ -29,6 +29,8 @@
                         <td>{{ tree.id }}</td>
                         <td>{{ tree.name }}</td>
                         <td>{{ tree.height }}</td>
+                        <td><a href="{% url 'edit_tree' forest.id tree.id %}">Изменить</a></td>
+                        <td><a href="{% url 'delete_tree' forest.id tree.id %}">Удалить</a></td>
                         </tr>
                     {% endfor %}
                 </table>
