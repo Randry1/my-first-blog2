@@ -8,10 +8,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template.response import TemplateResponse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.http import *
+from django.views.generic import CreateView
+
 from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm, \
     ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm, DateTimeFieldForm, WidgetForm, \
     ThinTinctureForm, UserBookForm, CreatePerson, ChangeDataPersonModel, UpdateColumnForm, UpdatePerson, DeletePerson, \
-    ElectricForm, ForestForm, TreeForm
+    ElectricForm, ForestForm, TreeForm, TreeFormM
 
 # Create your views here.
 from .models import Person, Electric, Forest, Tree
@@ -19,6 +21,11 @@ from django.db.models import F
 from .utils import update_post, update_post_f, update_post_update_or_create, update_persons
 from django.urls import reverse
 
+#todo посмотреть подробнее про формы https://djangodoc.ru/3.2/topics/class-based-views/generic-editing/
+#todo посмотреть миксины https://djangodoc.ru/3.2/ref/class-based-views/mixins-editing/#django.views.generic.edit.FormMixin.initial
+class TreeView(CreateView):
+    model = Tree
+    fields = ['name', 'height']
 
 def index(request):
     css_class_btn = 'class=\"btn btn-info\"'
@@ -896,6 +903,12 @@ def edit_forest(request, id_forest):
     context['form'] = form
     form_tree = TreeForm()
     context['form_tree'] = form_tree
+
+    # устанавливаем у формы создания нового дерева id нужного леса
+    forest = get_object_or_404(Forest, pk=id_forest)
+    tree = Tree(forest=forest)
+    form_tree_m = TreeFormM(instance=tree)
+    context['form_tree_m'] = form_tree_m
     try:
      context['messages'] = request.session['messages']
      request.session.pop('messages')

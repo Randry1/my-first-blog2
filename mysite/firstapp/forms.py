@@ -3,7 +3,7 @@ from calendar import format
 
 from django import forms
 from django.core.validators import validate_slug
-from django.forms import ModelForm
+from django.forms import ModelForm, TextInput
 from .models import Electric, Forest, Tree
 
 
@@ -198,3 +198,22 @@ class TreeForm(ModelForm):
     class Meta:
         model = Tree
         fields = '__all__'
+
+class TreeFormM(ModelForm):
+    """Попробую настроить форму через виджеты"""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['forest'].widget.attrs.update({'class': 'hidden hide_parents' })
+        self.fields['forest'].label =False
+
+    class Meta:
+        model = Tree
+        fields = ['forest', 'name', 'height']
+        # widgets ={
+        #     'name': TextInput(attrs={
+        #                    'class': 'form-control',
+        #                    'placeholder': 'Название леса '
+        #                     })
+        # }
+

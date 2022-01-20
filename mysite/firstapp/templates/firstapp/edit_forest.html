@@ -36,5 +36,13 @@
                 </table>
             {% endif %}
         </div>
+        <div class="col-md-12">
+            <hr>
+            <form action="{% url 'create_tree' forest.id %}" method="post">
+                {% csrf_token %}
+                {{ form_tree_m.as_p }}
+                <input type="submit" value="Добавить дерево в лес">
+            </form>
+        </div>
     </div>
 {% endblock %}
