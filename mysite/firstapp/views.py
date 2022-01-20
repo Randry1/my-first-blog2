@@ -958,3 +958,32 @@ def create_tree(request, id_forest):
     else:
         request.session['messages'] = 'Дерево не добавлено отправте данные через форму'
         return redirect(index_forest)
+
+def edit_tree(request, id_forest, id_tree):
+    """Редактирование """
+    context = {}
+    tree = get_object_or_404(Tree, pk=id_tree)
+    context['tree'] = tree
+    forest = get_object_or_404(Forest, pk=id_forest)
+    context['forest'] = forest
+    context['form'] = TreeForm()
+    if request.method == 'POST':
+        # Излекаем данные из формы
+        name = request.POST.get('name')
+        height = request.POST.get('height')
+
+        # Проверяем заполнена ли форма
+        if (height != '') and (name != ''):
+            tree = Tree(pk=id_tree, name=name, height=height)
+            forest.tree_set.add(tree, bulk=False)
+            request.session['messages'] = "Дерево успешно изменено в лесу"
+            context['tree'] = tree
+            context['forest'] = forest
+            return render(request, 'firstapp/edit_tree.html', context=context)
+        else:  # Если нет отправляем обратно на индексный файл с сообщением
+            request.session['messages'] = 'В форме не заполнен один или несколько элеметов'
+            return render(request, 'firstapp/edit_tree.html', context=context)
+    else:
+        request.session['messages'] = 'Дерево не добавлено отправте данные через форму'
+        return render(request, 'firstapp/edit_tree.html', context=context)
+

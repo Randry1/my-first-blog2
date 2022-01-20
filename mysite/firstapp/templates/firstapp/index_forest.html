@@ -31,8 +31,9 @@
                         {% for tree in forest.tree_set.all %}
                             <tr>
                                 <td></td>
-                                <td>{{ tree.id }}</td>
                                 <td>{{ tree.name }}</td>
+                                <td>{{ tree.height }}</td>
+
                             </tr>
                         {% endfor %}
                     </tr>

@@ -1,0 +1,59 @@
+{% extends 'firstapp/base.html' %}
+{% block header %}
+{{ title }}
+{% endblock %}
+{% block title %}
+{{ title }}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md12">
+            <a href="{% url 'index_forest' %}">Все леса</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+             <form action="{% url 'edit_tree' forest.id tree.id %}" method="post">
+                {% csrf_token %}
+
+                <td>
+                    <label for="forest">Id леса:</label>
+                    <input disabled name="forest" required="" id="id_forest" value="{{  forest.id }}">
+                </td>
+                 <td>
+                    <label for="tree">Id Дерева:</label>
+                    <input disabled name="tree" required="" id="id_tree" value="{{  tree.id }}">
+                </td>
+                <td>
+                    <label for="id_name">Название дерева:</label>
+                    <input type="text" name="name" maxlength="15" required="" id="id_name" value="{{ tree.name }}">
+                </td>
+                <td>
+                    <label for="id_height">Height:</label>
+                    <input type="number" name="height" required="" id="id_height" value="{{ tree.height }}">
+                </td>
+                <td>
+                    <input type="submit" name="Добавить">
+                </td>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {% if forest %}
+                <p>Лес</p>
+                <p>{{ forest.id }}  {{ forest.name }}</p>
+            {% endif %}
+            {% if tree %}
+                <table>
+                      <tr>Дерево</tr>
+                        <tr>
+                        <td>{{ tree.id }}</td>
+                        <td>{{ tree.name }}</td>
+                        <td>{{ tree.height }}</td>
+                        </tr>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
