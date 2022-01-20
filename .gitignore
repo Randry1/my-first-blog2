@@ -9,4 +9,5 @@ db.sqlite3
 .vscode
 venv
 /mysite/mysite/settings.py
+./mysite/settings.py
 mysite/settings.py
