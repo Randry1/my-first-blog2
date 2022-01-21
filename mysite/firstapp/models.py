@@ -16,12 +16,26 @@ class Electric(models.Model):
     bio = models.CharField(blank=True, help_text='О себе', max_length=230)
     active = models.BooleanField(default=True, help_text='Работает')
 
+
 class Forest(models.Model):
     """Класс лес для  показа модели отношение один ко многим"""
     name = models.CharField(max_length=15, help_text="Имя леса", verbose_name='Имя')
+
 
 class Tree(models.Model):
     """Класс дерево, показать отношнение один ко многим"""
     forest = models.ForeignKey(Forest, on_delete=models.CASCADE)
     name = models.CharField(max_length=15, help_text='Название дерева', verbose_name='Название дерева')
     height = models.IntegerField()
+
+
+class Bug(models.Model):
+    """Клас Жук, показать отношение многие ко многим"""
+    name = models.CharField(max_length=15, verbose_name='Название жука')
+    population = models.IntegerField(verbose_name='Популяция')
+
+
+class Bush(models.Model):
+    """Модель куст, отношение многи ко многим"""
+    name = models.CharField(max_length=15, verbose_name='Название куста')
+    bugs = models.ManyToManyField(Bug)

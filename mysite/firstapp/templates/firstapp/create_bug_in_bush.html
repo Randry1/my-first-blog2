@@ -1,0 +1,76 @@
+{% extends 'firstapp/base.html' %}
+{% block header %}
+{{ title }}
+{% endblock %}
+{% block title %}
+{{ title }}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            Запустилось
+            <p>{{ bush.id }} {{ bush.name }}</p>
+            {% for bug in bush.bugs.all %}
+            <p>{{ bug.id }}  {{ bug.name }}</p>
+            {% endfor %}
+            <p>Всего: {{ bush.bugs.count }}</p>
+        </div>
+    </div>
+{#    <div class="row">#}
+{#        <div class="col-md-12">#}
+{#            <form action="{%  url 'create_forest' %}" method="post">#}
+{#                {% csrf_token %}#}
+{#                {{ form.as_p }}#}
+{#                <input type="submit" name="Отправить">#}
+{#            </form>#}
+{#        </div>#}
+{#    </div>#}
+{#    <div class="row">#}
+{#        <div class="col-md-12">#}
+{#            {% if forests.count > 0 %}#}
+{#                <table >#}
+{#                {% for forest in forests %}#}
+{#                    <tr>#}
+{#                        <td>{{ forest.id }}</td>#}
+{#                        <td>{{ forest.name }}</td>#}
+{#                        <td><a href="{% url 'edit_forest' forest.id %}">Изменить</a></td>#}
+{#                        <td><a href="{% url 'delete_forest' forest.id %}">Удалить</a></td>#}
+{##}
+{#                    </tr>#}
+{#                    <tr>#}
+{#                        {% for tree in forest.tree_set.all %}#}
+{#                            <tr>#}
+{#                                <td></td>#}
+{#                                <td>{{ tree.name }}</td>#}
+{#                                <td>{{ tree.height }}</td>#}
+{#                                <td>#}
+{#                                    <a href="{% url 'edit_tree' forest.id tree.id %}">Изменить</a>#}
+{#                                    <a href="{% url 'delete_tree' forest.id tree.id %}">Удалить</a>#}
+{#                                </td>#}
+{#                            </tr>#}
+{#                        {% endfor %}#}
+{#                    </tr>#}
+{#                    <tr>#}
+{#                        <td>#}
+{#                            <form action="{% url 'create_tree' forest.id %}" method="post">#}
+{#                                {% csrf_token %}#}
+{#                                <td>#}
+{#                                    <label for="id_name">Название дерева:</label>#}
+{#                                    <input type="text" name="name" maxlength="15" required="" id="id_name">#}
+{#                                </td>#}
+{#                                <td>#}
+{#                                    <label for="id_height">Height:</label>#}
+{#                                    <input type="number" name="height" required="" id="id_height">#}
+{#                                </td>#}
+{#                                <td>#}
+{#                                    <input type="submit" name="Добавить">#}
+{#                                </td>#}
+{#                            </form>#}
+{#                        </td>#}
+{#                    </tr>#}
+{#                {% endfor %}#}
+{#                </table>#}
+{#            {% endif %}#}
+{#        </div>#}
+{#    </div>#}
+{% endblock %}

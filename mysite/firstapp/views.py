@@ -16,16 +16,18 @@ from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm
     ElectricForm, ForestForm, TreeForm, TreeFormM
 
 # Create your views here.
-from .models import Person, Electric, Forest, Tree
+from .models import Person, Electric, Forest, Tree, Bug, Bush
 from django.db.models import F
 from .utils import update_post, update_post_f, update_post_update_or_create, update_persons
 from django.urls import reverse
 
-#todo посмотреть подробнее про формы https://djangodoc.ru/3.2/topics/class-based-views/generic-editing/
-#todo посмотреть миксины https://djangodoc.ru/3.2/ref/class-based-views/mixins-editing/#django.views.generic.edit.FormMixin.initial
+
+# todo посмотреть подробнее про формы https://djangodoc.ru/3.2/topics/class-based-views/generic-editing/
+# todo посмотреть миксины https://djangodoc.ru/3.2/ref/class-based-views/mixins-editing/#django.views.generic.edit.FormMixin.initial
 class TreeView(CreateView):
     model = Tree
     fields = ['name', 'height']
+
 
 def index(request):
     css_class_btn = 'class=\"btn btn-info\"'
@@ -91,6 +93,7 @@ def index(request):
     content += "<a href=\"{0}\" {1}>Все элекстрики</a><br>".format('electric_index', css_class_btn)
     content += "<hr>"
     content += "<a href=\"{0}\" {1}>Один ко многим Лес деревья</a><br>".format('index_forest', css_class_btn)
+    content += "<a href=\"{0}\" {1}>Многие ко многим Жуки кусты</a><br>".format('index_bug/1/bush/2/create', css_class_btn)
 
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
@@ -688,14 +691,15 @@ def method_delete_person(request, id_person):
     messages = "{}".format(str(id_person))
     context = {"title": title, "header": title, "form": form, "messages": messages, "persons": persons,
                "delete_form": delete_form}
-    if request.method == 'POST': #Проверели форму что нам ее отправили методом пост
-        delete_form = DeletePerson(request.POST) # Передали запрос в форму
-        if delete_form.is_valid(): #Проверили вылидна ли форма
-            id_person = delete_form.cleaned_data['id_person'] #Извлекли данные из формы
-            try: #Попытка удаления обьекта
-                person = Person.objects.get(id=id_person) #Найти и извлеч объект из базы данных
-                person.delete() #Если нашли удалить
-                context['messages'] = "Запись id:{0} удалена".format(id_person) #Сообщить об успешном удалении пользователю
+    if request.method == 'POST':  # Проверели форму что нам ее отправили методом пост
+        delete_form = DeletePerson(request.POST)  # Передали запрос в форму
+        if delete_form.is_valid():  # Проверили вылидна ли форма
+            id_person = delete_form.cleaned_data['id_person']  # Извлекли данные из формы
+            try:  # Попытка удаления обьекта
+                person = Person.objects.get(id=id_person)  # Найти и извлеч объект из базы данных
+                person.delete()  # Если нашли удалить
+                context['messages'] = "Запись id:{0} удалена".format(
+                    id_person)  # Сообщить об успешном удалении пользователю
                 context['persons'] = Person.objects.all()
                 return render(request, 'firstapp/metod_f.html', context=context)
             except Person.DoesNotExist:
@@ -720,7 +724,7 @@ def index_persons(request):
     form = UpdatePerson()
     delete_form = DeletePerson()
     context = {"title": title, "header": title, "form": form, "messages": messages,
-                                   "persons": persons, "delete_form": delete_form}
+               "persons": persons, "delete_form": delete_form}
     """Функция для обновления данных в модели"""
     if request.method == 'POST':
         form = UpdatePerson(request.POST)
@@ -760,7 +764,7 @@ def create(request):
 
 def edit(request, id_person):
     """Изменение данных в ДБ"""
-    title =''
+    title = ''
     try:
         person = Person.objects.get(id=id_person)
         if request.method == 'POST':
@@ -788,7 +792,7 @@ def electric_index(request):
     """Создать индексный файл и вывести всех электриков"""
     title = ''
     context = {}
-    try: # Попытка передать данные из другой функции
+    try:  # Попытка передать данные из другой функции
         context['messages'] = request.session['messages']
         request.session.pop('messages')
     except KeyError:
@@ -797,7 +801,8 @@ def electric_index(request):
     context['form'] = form
     electrics = Electric.objects.all()
     context['electrics'] = electrics
-    return render(request,'firstapp/electric_index.html', context=context)
+    return render(request, 'firstapp/electric_index.html', context=context)
+
 
 def electric_new(request):
     """Create new electrical"""
@@ -817,6 +822,7 @@ def electric_new(request):
     else:
         return HttpResponseRedirect(reverse('electric_index'))
 
+
 def electric_edit(request, pk):
     """Редактирование профиля электрика"""
     title = 'Редактирование профиля электрика'
@@ -831,20 +837,20 @@ def electric_edit(request, pk):
         context['form'] = form
         if request.method == 'POST':
             form = ElectricForm(request.POST)
-            if form.is_valid(): #Провека формы
+            if form.is_valid():  # Провека формы
                 electric.name = form.cleaned_data['name']
                 electric.bio = form.cleaned_data['bio']
                 electric.active = form.cleaned_data['active']
                 electric.dict = form.cleaned_data['dict']
-                electric.save() #Сохранение профиля в базе данных
+                electric.save()  # Сохранение профиля в базе данных
                 context['form'] = ElectricForm(instance=electric)
                 context['messages'] = str(electric.id)
                 request.session['messages'] = context['messages']
-                return redirect(reverse('electric_index'), context=context) #Рендерим форму с изменениями
+                return redirect(reverse('electric_index'), context=context)  # Рендерим форму с изменениями
             else:
                 context['messages'] = form.errors
                 return render(request, 'firstapp/electric_edit.html', context=context)
-        else: # метод get
+        else:  # метод get
             return render(request, 'firstapp/electric_edit.html', context=context)
     except Electric.DoesNotExist:
         return HttpResponse('Данного профиля электрика не существует')
@@ -861,6 +867,7 @@ def electric_delete(request, pk):
     except Electric.DoesNotExist:
         return HttpResponse('Данный профиль не найден')
 
+
 def index_forest(request):
     """Индекс форест"""
     forests = Forest.objects.all()
@@ -869,14 +876,15 @@ def index_forest(request):
     form_tree = TreeForm()
     context['form_tree'] = form_tree
     try:
-     context['messages'] = request.session['messages']
-     request.session.pop('messages')
+        context['messages'] = request.session['messages']
+        request.session.pop('messages')
     except KeyError:
         pass
     context['title'] = 'Модель один ко многим'
     context['forests'] = forests
     context['form'] = form
     return render(request, 'firstapp/index_forest.html', context=context)
+
 
 def create_forest(request):
     """Create forest"""
@@ -895,6 +903,7 @@ def create_forest(request):
     else:
         return redirect(index_forest)
 
+
 def edit_forest(request, id_forest):
     """Редактирование леса"""
     context = {}
@@ -910,12 +919,12 @@ def edit_forest(request, id_forest):
     form_tree_m = TreeFormM(instance=tree)
     context['form_tree_m'] = form_tree_m
     try:
-     context['messages'] = request.session['messages']
-     request.session.pop('messages')
+        context['messages'] = request.session['messages']
+        request.session.pop('messages')
     except KeyError:
         pass
     try:
-        forest = Forest.objects.get(pk=id_forest) #.objects.get(pk=pk)
+        forest = Forest.objects.get(pk=id_forest)  # .objects.get(pk=pk)
         context['forest'] = forest
         trees = forest.tree_set.all()
         context['trees'] = trees
@@ -923,21 +932,22 @@ def edit_forest(request, id_forest):
         context['form'] = form
         if request.method == 'POST':
             form = ForestForm(request.POST)
-            if form.is_valid(): #Проверка формы на ошибки
+            if form.is_valid():  # Проверка формы на ошибки
                 forest.name = form.cleaned_data['name']
                 forest.save()
                 context['form'] = ForestForm(instance=forest)
                 context['messages'] = "Лес id:{0} успешно изменен".format(id_forest)
                 return render(request, 'firstapp/edit_forest.html', context=context)
-            else: # форма с ошибками
+            else:  # форма с ошибками
                 context['messages'] = form.errors
                 return render(request, 'firstapp/edit_forest.html', context=context)
-        else: # get запрос
+        else:  # get запрос
             return render(request, 'firstapp/edit_forest.html', context=context)
 
     except Forest.DoesNotExist:
         request.session['messages'] = "Леса с id: {0} не найдено в базе данных".format(index_forest)
         return redirect(index_forest)
+
 
 def delete_forest(request, id_forest):
     """Удаление леса"""
@@ -950,6 +960,7 @@ def delete_forest(request, id_forest):
     except Forest.DoesNotExist:
         request.session['messages'] = "Данный лес не существует"
         return redirect(index_forest)
+
 
 def create_tree(request, id_forest):
     """Добавление нового дерева в лес"""
@@ -965,12 +976,13 @@ def create_tree(request, id_forest):
             forest.tree_set.add(tree, bulk=False)
             request.session['messages'] = "Дерево успешно добавлено в лес"
             return redirect(edit_forest, forest.id)
-        else: # Если нет отправляем обратно на индексный файл с сообщением
+        else:  # Если нет отправляем обратно на индексный файл с сообщением
             request.session['messages'] = 'В форме не заполнен один или несколько элеметов'
             return redirect(index_forest)
     else:
         request.session['messages'] = 'Дерево не добавлено отправте данные через форму'
         return redirect(index_forest)
+
 
 def edit_tree(request, id_forest, id_tree):
     """Редактирование """
@@ -1000,6 +1012,7 @@ def edit_tree(request, id_forest, id_tree):
         request.session['messages'] = 'Дерево не добавлено отправте данные через форму'
         return render(request, 'firstapp/edit_tree.html', context=context)
 
+
 def delete_tree(request, id_forest, id_tree):
     """Удаляет дерево по get запросу"""
     context = {}
@@ -1010,3 +1023,23 @@ def delete_tree(request, id_forest, id_tree):
     tree.delete()
     request.session['messages'] = "Дерево с id: {0} и названием: {1} удалено.".format(forest.id, id_tree)
     return redirect(edit_forest, forest.id)
+
+
+def create_bug(request, id_bug, id_bush):
+    """Создание жука в связи с кустом"""
+    context = {}
+    bug = Bug.objects.create(name="Серебрянка {0}".format(id_bug), population=500)
+    bug.bush_set.create(name="Малина {0}".format(id_bush))
+    bush_malina = get_object_or_404(Bush, pk=2)
+    bugs = Bug.objects.all()
+    # добавить всех жуков на куст 1
+    # for bug in bugs:
+    #     bush_malina.bugs.add(bug)
+    context['bush'] = bush_malina
+    # Удалить жуков с 17 по 22 id с куста
+    # for id_bug in range(17, 23):
+    #     bug = get_object_or_404(Bug, pk=id_bug)
+    #     bush_malina.bugs.remove(bug)
+    # Удаляем всех жуков с куста
+    bush_malina.bugs.clear()
+    return render(request, 'firstapp/create_bug_in_bush.html', context=context)

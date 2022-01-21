@@ -78,4 +78,5 @@ urlpatterns = [
     path('index_forest/<int:id_forest>/tree/new/', views.create_tree, name='create_tree'), #Добовление дерева в лес
     path('index_forest/<int:id_forest>/tree/<int:id_tree>/edit', views.edit_tree, name='edit_tree'), #Добовление дерева в лес
     path('index_forest/<int:id_forest>/tree/<int:id_tree>/delete', views.delete_tree, name='delete_tree'), #Удаление get запросом дерева в лесу
+    path('index_bug/<int:id_bug>/bush/<int:id_bush>/create', views.create_bug, name='create_bug'), # Создание жука в савязи с кустом
 ]
