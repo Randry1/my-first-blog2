@@ -1,0 +1,66 @@
+{% extends 'firstapp/base.html' %}
+{% block header %}
+{{ title }}
+{% endblock %}
+{% block title %}
+{{ title }}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <form action="{%  url 'create_bug' %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" name="Отправить">
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {% if bugs.count > 0 %}
+                <table >
+                {% for bug in bugs %}
+                    <tr>
+                        <td>{{ bug.id }}</td>
+                        <td>{{ bug.name }}</td>
+                        <td>{{ bug.population }}</td>
+{#                        <td><a href="{% url 'edit_forest' bug.id %}">Изменить</a></td>#}
+{#                        <td><a href="{% url 'delete_forest' bug.id %}">Удалить</a></td>#}
+
+                    </tr>
+                    <tr>
+                        {% for bush in bug.bush_set.all %}
+                            <tr>
+                                <td></td>
+                                <td>{{ bush.name }}</td>
+                                <td>
+{#                                    <a href="{% url 'edit_tree' bug.id bush.id %}">Изменить</a>#}
+{#                                    <a href="{% url 'delete_tree' bug.id bush.id %}">Удалить</a>#}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+{#                        <td>#}
+{#                            <form action="{% url 'create_tree' bug.id %}" method="post">#}
+{#                                {% csrf_token %}#}
+{#                                <td>#}
+{#                                    <label for="id_name">Название дерева:</label>#}
+{#                                    <input type="text" name="name" maxlength="15" required="" id="id_name">#}
+{#                                </td>#}
+{#                                <td>#}
+{#                                    <label for="id_height">Height:</label>#}
+{#                                    <input type="number" name="height" required="" id="id_height">#}
+{#                                </td>#}
+{#                                <td>#}
+{#                                    <input type="submit" name="Добавить">#}
+{#                                </td>#}
+{#                            </form>#}
+{#                        </td>#}
+                    </tr>
+                {% endfor %}
+                </table>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

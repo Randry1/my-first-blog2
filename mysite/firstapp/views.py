@@ -13,7 +13,7 @@ from django.views.generic import CreateView
 from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm, \
     ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm, DateTimeFieldForm, WidgetForm, \
     ThinTinctureForm, UserBookForm, CreatePerson, ChangeDataPersonModel, UpdateColumnForm, UpdatePerson, DeletePerson, \
-    ElectricForm, ForestForm, TreeForm, TreeFormM
+    ElectricForm, ForestForm, TreeForm, TreeFormM, BugForm
 
 # Create your views here.
 from .models import Person, Electric, Forest, Tree, Bug, Bush
@@ -94,6 +94,7 @@ def index(request):
     content += "<hr>"
     content += "<a href=\"{0}\" {1}>Один ко многим Лес деревья</a><br>".format('index_forest', css_class_btn)
     content += "<a href=\"{0}\" {1}>Многие ко многим Жуки кусты</a><br>".format('index_bug/1/bush/2/create', css_class_btn)
+    content += "<a href=\"{0}\" {1}>Многие ко многим Жуки</a><br>".format('index_bug/', css_class_btn)
 
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
@@ -1025,21 +1026,61 @@ def delete_tree(request, id_forest, id_tree):
     return redirect(edit_forest, forest.id)
 
 
-def create_bug(request, id_bug, id_bush):
-    """Создание жука в связи с кустом"""
+def create_bug(request):
+    """Создание жука """
+    context = {}
+    if request.method == 'POST':
+        bug = Bug()
+        form = BugForm(request.POST)
+        if form.is_valid():
+            bug.name = form.cleaned_data['name']
+            bug.population = form.cleaned_data['population']
+            bug.save()
+            request.session['messages'] = 'Жук сохранен {0}'.format(bug.name)
+            return redirect(index_bug)
+    else:
+        request.session['messages'] = 'Отправте форму POST запросом'
+        return redirect(index_bug)
+
+
+def index_bug(request):
+    """Индексный файл жуков"""
+    context = {}
+    bugs = Bug.objects.all()
+    context['bugs'] = bugs
+    form = BugForm()
+    context['form'] = form
+    try:
+        context['messages'] = request.session['messages']
+        request.session.pop('messages')
+    except KeyError:
+        pass
+    return render(request, 'firstapp/index_bugs.html', context=context)
+
+
+def create_bug_and_bush(request, id_bug, id_bush):
+    """Создать жуков и кусты"""
     context = {}
     bug = Bug.objects.create(name="Серебрянка {0}".format(id_bug), population=500)
+    context['messages'] = bug.__str__() + '<br>'
     bug.bush_set.create(name="Малина {0}".format(id_bush))
     bush_malina = get_object_or_404(Bush, pk=2)
+    context['messages'] += bush_malina.__str__() + '<br>'
     bugs = Bug.objects.all()
+    context['messages'] += bugs.__str__() + '<br>'
     # добавить всех жуков на куст 1
     # for bug in bugs:
     #     bush_malina.bugs.add(bug)
+    bugs_on_bush_malina = bush_malina.bugs.all()
     context['bush'] = bush_malina
+    context['bugs'] = bugs_on_bush_malina
     # Удалить жуков с 17 по 22 id с куста
     # for id_bug in range(17, 23):
     #     bug = get_object_or_404(Bug, pk=id_bug)
     #     bush_malina.bugs.remove(bug)
     # Удаляем всех жуков с куста
-    bush_malina.bugs.clear()
+    # bush_malina.bugs.clear()
     return render(request, 'firstapp/create_bug_in_bush.html', context=context)
+
+# def edit_bug(request, id_bug):
+#     """Edit bug ahjv id"""

@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-md-12">
             {% if messages %}
-                <p class="info">{{ messages }}</p>
+                <p class="info">{{ messages | safe }}</p>
             {% endif %}
         </div>
     </div>
