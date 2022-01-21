@@ -13,7 +13,7 @@ from django.views.generic import CreateView
 from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm, \
     ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm, DateTimeFieldForm, WidgetForm, \
     ThinTinctureForm, UserBookForm, CreatePerson, ChangeDataPersonModel, UpdateColumnForm, UpdatePerson, DeletePerson, \
-    ElectricForm, ForestForm, TreeForm, TreeFormM, BugForm
+    ElectricForm, ForestForm, TreeForm, TreeFormM, BugForm, AddBushInBug
 
 # Create your views here.
 from .models import Person, Electric, Forest, Tree, Bug, Bush
@@ -1050,6 +1050,8 @@ def index_bug(request):
     context['bugs'] = bugs
     form = BugForm()
     context['form'] = form
+    form_add_bush = AddBushInBug()
+    context['form_add_bush'] = form_add_bush
     try:
         context['messages'] = request.session['messages']
         request.session.pop('messages')
@@ -1083,4 +1085,19 @@ def create_bug_and_bush(request, id_bug, id_bush):
     return render(request, 'firstapp/create_bug_in_bush.html', context=context)
 
 # def edit_bug(request, id_bug):
-#     """Edit bug ahjv id"""
+#     """Edit bug по id"""
+#     context['']
+
+def bug_add(request, id_bug):
+    """Add bush к bug"""
+    if request.method == 'POST':
+        bug = get_object_or_404(Bug, pk=id_bug)
+        form = AddBushInBug(request.POST)
+        if form.is_valid():
+            bush_id = form.cleaned_data['bush_id']
+            bush = get_object_or_404(Bush, pk=bush_id)
+            bug.bush_set.add(bush)
+            request.session['messages'] = "Куст {0} добавлен к жуку {1}".format(bush.name, bug.name)
+        return redirect(index_bug)
+    else:
+        return redirect(index_bug)

@@ -230,3 +230,7 @@ class BushForm(ModelForm):
     class Meta:
         model = Bush
         fields = '__all__'
+
+class AddBushInBug(forms.Form):
+    """Форма добовляет куст к жуку"""
+    bush_id = forms.CharField(label='Добавить куст')

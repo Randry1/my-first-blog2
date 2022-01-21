@@ -41,6 +41,15 @@
                         {% endfor %}
                     </tr>
                     <tr>
+                        <td>
+                            <form action="{% url 'bug_add' bug.id %}" method="post">
+                                {% csrf_token %}
+                                {{ form_add_bush.as_p }}
+                                <input type="submit" value="Добавить куст">
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
 {#                        <td>#}
 {#                            <form action="{% url 'create_tree' bug.id %}" method="post">#}
 {#                                {% csrf_token %}#}
