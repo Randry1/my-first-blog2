@@ -81,5 +81,6 @@ urlpatterns = [
     path('index_bug/<int:id_bug>/bush/<int:id_bush>/create', views.create_bug_and_bush, name='create_bug_and_bush'), # Создание жука в савязи с кустом
     path('index_bug/create', views.create_bug, name='create_bug'), # Создание жука в савязи с кустом
     path('index_bug/', views.index_bug, name='index_bug'), # Все жуки
-    path('bug/<int:id_bug>/add', views.bug_add, name='bug_add'), # Все жуки
+    path('bug/<int:id_bug>/add', views.bug_add, name='bug_add'), # добавить к жуку куст
+    path('bug/<int:bug_id>/clear', views.bud_clear, name='bug_clear'), # Очистить к жука от куста
 ]

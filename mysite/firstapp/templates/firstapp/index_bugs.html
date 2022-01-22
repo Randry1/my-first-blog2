@@ -50,6 +50,15 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>
+                            <form action="{% url 'bug_clear' bug.id %}" method="post">
+                                {% csrf_token %}
+                                {{ form_add_bush.as_p }}
+                                <input type="submit" value="Открепить куст">
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
 {#                        <td>#}
 {#                            <form action="{% url 'create_tree' bug.id %}" method="post">#}
 {#                                {% csrf_token %}#}

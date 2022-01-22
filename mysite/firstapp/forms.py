@@ -205,7 +205,7 @@ class TreeFormM(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['forest'].widget.attrs.update({'class': 'hidden hide_parents' })
-        self.fields['forest'].label =False
+        self.fields['forest'].label = False
 
     class Meta:
         model = Tree
@@ -233,4 +233,9 @@ class BushForm(ModelForm):
 
 class AddBushInBug(forms.Form):
     """Форма добовляет куст к жуку"""
-    bush_id = forms.CharField(label='Добавить куст')
+    bushes = Bush.objects.all()
+    CHOICES = []
+    for bush in bushes:
+        CHOICES.append( (bush.id, (bush.name + " " + str(bush.id) )))
+    bush_id = forms.ChoiceField(widget=forms.Select, choices=CHOICES)
+

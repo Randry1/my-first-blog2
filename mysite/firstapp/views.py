@@ -1088,6 +1088,7 @@ def create_bug_and_bush(request, id_bug, id_bush):
 #     """Edit bug по id"""
 #     context['']
 
+
 def bug_add(request, id_bug):
     """Add bush к bug"""
     if request.method == 'POST':
@@ -1100,4 +1101,23 @@ def bug_add(request, id_bug):
             request.session['messages'] = "Куст {0} добавлен к жуку {1}".format(bush.name, bug.name)
         return redirect(index_bug)
     else:
+        return redirect(index_bug)
+
+
+def bud_clear(request, bug_id):
+    """Открепить куст от жука, не удаляя"""
+    if request.method == 'POST':
+        bug = get_object_or_404(Bug, pk=bug_id)
+        form = AddBushInBug(request.POST)
+        if form.is_valid():
+            bush_id = form.cleaned_data['bush_id']
+            bush = get_object_or_404(Bush,  pk=bush_id)
+            bug.bush_set.remove(bush)
+            request.session['messages'] = "Куст {0} откреплен от жука {1}".format(bush.name, bug.name)
+            return redirect(index_bug)
+        else:
+            request.session['messages'] = form.errors
+            return redirect(index_bug)
+    else:
+        request.session['messages'] = 'Отправте форму POST запросом'
         return redirect(index_bug)
