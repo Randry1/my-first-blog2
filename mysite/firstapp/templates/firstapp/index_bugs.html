@@ -24,7 +24,7 @@
                         <td>{{ bug.id }}</td>
                         <td>{{ bug.name }}</td>
                         <td>{{ bug.population }}</td>
-{#                        <td><a href="{% url 'edit_forest' bug.id %}">Изменить</a></td>#}
+                        <td><a href="{% url 'bug_edit' bug.id %}">Изменить</a></td>
 {#                        <td><a href="{% url 'delete_forest' bug.id %}">Удалить</a></td>#}
 
                     </tr>
@@ -36,6 +36,11 @@
                                 <td>
 {#                                    <a href="{% url 'edit_tree' bug.id bush.id %}">Изменить</a>#}
 {#                                    <a href="{% url 'delete_tree' bug.id bush.id %}">Удалить</a>#}
+                                    <form action="{% url 'bug_edit_clear' bug.id bush.id %}" method="post">
+                                        {% csrf_token %}
+                                         <input type="hidden" value="{{ bush.id }}" class="hidden">
+                                        <input type="submit" value="Открепить">
+                                    </form>
                                 </td>
                             </tr>
                         {% endfor %}

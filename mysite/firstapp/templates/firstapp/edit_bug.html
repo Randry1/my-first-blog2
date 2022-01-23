@@ -1,0 +1,48 @@
+{% extends 'firstapp/base.html' %}
+{% block title %}
+Редактировать жука
+{% endblock %}
+{% block header %}
+Изменить жука
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <form action="{% url 'bug_edit' bug.id %}" method="post" class="form form-row">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Изменить">
+            </form>
+        </div>
+        <div class="col-md-12">
+            <p>Id {{ bug.id }}, Имя вида: {{ bug.name }}, популяция: {{ bug.population }}</p>
+        </div>
+    <div class="col-md-12">
+        {% if bug.bush_set.all.count > 0 %}
+            <table>
+            {% for bush in bug.bush_set.all %}
+                <tr>
+                    <td>{{ bush.id }}</td>
+                    <td>{{ bush.name }}</td>
+                    <td>
+                        <form action="{% url 'bug_edit_clear' bug.id bush.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="number" value="{{ bush.id }}" class="hidden">
+                            <input type="submit" value="Открепить">
+                        </form>
+                    </td>
+
+                </tr>
+            {% endfor %}
+            </table>
+            <div class="col-md-12">
+                <form action="{% url 'bug_add' bug.id %}" method="post">
+                    {% csrf_token %}
+                    {{ form_add_bush.as_table }}
+                    <input type="submit" value="Прикрепить">
+                </form>
+            </div>
+        {% endif %}
+    </div>
+    </div>
+{% endblock %}

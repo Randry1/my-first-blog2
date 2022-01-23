@@ -237,5 +237,9 @@ class AddBushInBug(forms.Form):
     CHOICES = []
     for bush in bushes:
         CHOICES.append( (bush.id, (bush.name + " " + str(bush.id) )))
-    bush_id = forms.ChoiceField(widget=forms.Select, choices=CHOICES)
+    bush_id = forms.ChoiceField(widget=forms.Select, choices=CHOICES, label='Добавить куст')
 
+
+class BugBushClear(forms.Form):
+    """Форма чтобы прердать по пост запросу откреплене жука от куста"""
+    bush_id = forms.IntegerField(show_hidden_initial=False,required=False)

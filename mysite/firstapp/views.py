@@ -13,7 +13,7 @@ from django.views.generic import CreateView
 from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm, \
     ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm, DateTimeFieldForm, WidgetForm, \
     ThinTinctureForm, UserBookForm, CreatePerson, ChangeDataPersonModel, UpdateColumnForm, UpdatePerson, DeletePerson, \
-    ElectricForm, ForestForm, TreeForm, TreeFormM, BugForm, AddBushInBug
+    ElectricForm, ForestForm, TreeForm, TreeFormM, BugForm, AddBushInBug, BugBushClear
 
 # Create your views here.
 from .models import Person, Electric, Forest, Tree, Bug, Bush
@@ -1084,9 +1084,34 @@ def create_bug_and_bush(request, id_bug, id_bush):
     # bush_malina.bugs.clear()
     return render(request, 'firstapp/create_bug_in_bush.html', context=context)
 
-# def edit_bug(request, id_bug):
-#     """Edit bug по id"""
-#     context['']
+def bug_edit(request, bug_id):
+    """Edit bug по id"""
+    context = {}
+    bug = get_object_or_404(Bug, pk=bug_id)
+    context['bug'] = bug
+    form = BugForm(instance=bug)
+    context['form'] = form
+    context['form_clear'] = BugBushClear()
+    try: # переносим сообщение из сессии в текущию функцию и видимость
+        context['messages'] = request.session['messages']
+        request.session.pop('messages')
+    except KeyError:
+        pass
+    # Форма для добавления куста к жуку
+    context['form_add_bush'] = AddBushInBug()
+    if request.method == 'POST':
+        form = BugForm(request.POST, instance=bug)
+        if form.is_valid():
+            bug = form.save()
+            context['bug'] = bug
+            context['form'] = form
+            request.session['messages'] = 'Жук с id {0} изменен'.format(bug.id)
+            return render(request, 'firstapp/edit_bug.html', context=context)
+        else:
+            request.session['messages'] = form.errors
+            return render(request, 'firstapp/edit_bug.html', context=context)
+    else:
+        return render(request, 'firstapp/edit_bug.html', context=context)
 
 
 def bug_add(request, id_bug):
@@ -1104,7 +1129,7 @@ def bug_add(request, id_bug):
         return redirect(index_bug)
 
 
-def bud_clear(request, bug_id):
+def bug_clear(request, bug_id):
     """Открепить куст от жука, не удаляя"""
     if request.method == 'POST':
         bug = get_object_or_404(Bug, pk=bug_id)
@@ -1121,3 +1146,16 @@ def bud_clear(request, bug_id):
     else:
         request.session['messages'] = 'Отправте форму POST запросом'
         return redirect(index_bug)
+
+
+def bug_edit_clear(request, bug_id, bush_id):
+    """Открепляем жука от куста"""
+    if request.method == 'POST':
+        bug = get_object_or_404(Bug, pk=bug_id)
+        bush = get_object_or_404(Bush, pk=bush_id)
+        bug.bush_set.remove(bush)
+        request.session['messages'] = "Куст {0} с id {1} откреплен от жука {2} c id {3}"\
+            .format(bush.name, bush.id, bug.name, bug.id)
+        return redirect(bug_edit, bug_id)
+    request.session['messages'] = "Отправте запрос методом пост через форму"
+    return redirect(bug_edit, bug_id)
