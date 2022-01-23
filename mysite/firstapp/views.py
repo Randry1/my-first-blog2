@@ -13,7 +13,7 @@ from django.views.generic import CreateView
 from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm, \
     ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm, DateTimeFieldForm, WidgetForm, \
     ThinTinctureForm, UserBookForm, CreatePerson, ChangeDataPersonModel, UpdateColumnForm, UpdatePerson, DeletePerson, \
-    ElectricForm, ForestForm, TreeForm, TreeFormM, BugForm, AddBushInBug, BugBushClear
+    ElectricForm, ForestForm, TreeForm, TreeFormM, BugForm, AddBushInBug, BugBushClear, BushForm
 
 # Create your views here.
 from .models import Person, Electric, Forest, Tree, Bug, Bush
@@ -1159,3 +1159,34 @@ def bug_edit_clear(request, bug_id, bush_id):
         return redirect(bug_edit, bug_id)
     request.session['messages'] = "Отправте запрос методом пост через форму"
     return redirect(bug_edit, bug_id)
+
+
+def bush_index(request):
+    """Вывод всех кустов"""
+    context = {}
+    bushes = Bush.objects.all()
+    form = BushForm()
+    context['form'] = form
+    try:
+        context['messages'] = request.session['messages']
+        request.session.pop('messages')
+    except KeyError:
+        pass
+    return render(request, 'firstapp/index_bush.html', context=context)
+
+def bush_create(request):
+    """Создание формы"""
+    if request.method == 'POST':
+        bush = Bush()
+        form = BushForm(request.POST, instance=bush)
+        if form.is_valid():
+            request.session['messages'] = form.cleaned_data['bug_id']
+            form.save()
+            return redirect(bush_index)
+        else:
+            request.session['messages'] = form.errors
+            return redirect(bush_index)
+    else:
+        request.session['messages'] = 'Отправте запрос методом get'
+        return redirect(bush_index)
+

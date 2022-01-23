@@ -1,0 +1,24 @@
+{% extends 'firstapp/base.html' %}
+{% block header %}
+Кусты
+{% endblock %}
+{% block title %}
+Кусты
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <form action="{% url 'bush_create' %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Создать">
+            </form>
+        </div>
+        <div class="col-md-12">
+
+        </div>
+        <div class="col-md-12">
+
+        </div>
+    </div>
+{% endblock %}

@@ -227,9 +227,10 @@ class BugForm(ModelForm):
 
 class BushForm(ModelForm):
     """Bush form fo model bush"""
+    bug_id = forms.CharField(required=False)
     class Meta:
         model = Bush
-        fields = '__all__'
+        fields =  ['name']
 
 class AddBushInBug(forms.Form):
     """Форма добовляет куст к жуку"""

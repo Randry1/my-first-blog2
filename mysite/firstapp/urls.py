@@ -85,4 +85,6 @@ urlpatterns = [
     path('bug/<int:bug_id>/clear', views.bug_clear, name='bug_clear'), # Очистить к жука от куста
     path('bug/<int:bug_id>/edit', views.bug_edit, name='bug_edit'), # изменение жука
     path('bug/<int:bug_id>/bush/<int:bush_id>/edit/clear', views.bug_edit_clear, name='bug_edit_clear'), # изменение жука
+    path('bush_index/', views.bush_index, name='bush_index'), # изменение жука
+    path('bush/create/', views.bush_create, name='bush_create'), # Создание куста
 ]
