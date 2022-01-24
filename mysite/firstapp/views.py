@@ -13,7 +13,7 @@ from django.views.generic import CreateView
 from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm, \
     ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm, DateTimeFieldForm, WidgetForm, \
     ThinTinctureForm, UserBookForm, CreatePerson, ChangeDataPersonModel, UpdateColumnForm, UpdatePerson, DeletePerson, \
-    ElectricForm, ForestForm, TreeForm, TreeFormM, BugForm, AddBushInBug, BugBushClear, BushForm
+    ElectricForm, ForestForm, TreeForm, TreeFormM, BugForm, AddBushInBug, BugBushClear, BushForm, BushFormForEdit
 
 # Create your views here.
 from .models import Person, Electric, Forest, Tree, Bug, Bush
@@ -93,8 +93,9 @@ def index(request):
     content += "<a href=\"{0}\" {1}>Все элекстрики</a><br>".format('electric_index', css_class_btn)
     content += "<hr>"
     content += "<a href=\"{0}\" {1}>Один ко многим Лес деревья</a><br>".format('index_forest', css_class_btn)
-    content += "<a href=\"{0}\" {1}>Многие ко многим Жуки кусты</a><br>".format('index_bug/1/bush/2/create', css_class_btn)
+    content += "<a href=\"{0}\" {1}>Многие ко многим Жуки кусты создание</a><br>".format('index_bug/1/bush/2/create', css_class_btn)
     content += "<a href=\"{0}\" {1}>Многие ко многим Жуки</a><br>".format('index_bug/', css_class_btn)
+    content += "<a href=\"{0}\" {1}>Многие ко многим Кусты</a><br>".format('bush_index/', css_class_btn)
 
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
@@ -1103,6 +1104,7 @@ def bug_edit(request, bug_id):
         form = BugForm(request.POST, instance=bug)
         if form.is_valid():
             bug = form.save()
+            bug = get_object_or_404(Bug, pk=bug_id)
             context['bug'] = bug
             context['form'] = form
             request.session['messages'] = 'Жук с id {0} изменен'.format(bug.id)
@@ -1124,9 +1126,9 @@ def bug_add(request, id_bug):
             bush = get_object_or_404(Bush, pk=bush_id)
             bug.bush_set.add(bush)
             request.session['messages'] = "Куст {0} добавлен к жуку {1}".format(bush.name, bug.name)
-        return redirect(index_bug)
+        return redirect(request.META.get('HTTP_REFERER'))
     else:
-        return redirect(index_bug)
+        return redirect(request.META.get('HTTP_REFERER'))
 
 
 def bug_clear(request, bug_id):
@@ -1156,17 +1158,21 @@ def bug_edit_clear(request, bug_id, bush_id):
         bug.bush_set.remove(bush)
         request.session['messages'] = "Куст {0} с id {1} откреплен от жука {2} c id {3}"\
             .format(bush.name, bush.id, bug.name, bug.id)
-        return redirect(bug_edit, bug_id)
+
+        return redirect(request.META.get('HTTP_REFERER'))
     request.session['messages'] = "Отправте запрос методом пост через форму"
-    return redirect(bug_edit, bug_id)
+    return redirect(request.META.get('HTTP_REFERER'))
 
 
 def bush_index(request):
     """Вывод всех кустов"""
     context = {}
     bushes = Bush.objects.all()
+    context['bushes'] = bushes
     form = BushForm()
     context['form'] = form
+    context['form_add_bush'] = AddBushInBug()
+    context['form_clear'] = BugBushClear()
     try:
         context['messages'] = request.session['messages']
         request.session.pop('messages')
@@ -1190,3 +1196,28 @@ def bush_create(request):
         request.session['messages'] = 'Отправте запрос методом get'
         return redirect(bush_index)
 
+def bush_edit(request, bush_id):
+    """Изменить куст"""
+    context = {}
+    try:
+        context['messages'] = request.session['messages']
+        request.session.pop('messages')
+    except KeyError:
+        pass
+    if request.method == 'POST':
+        bush = get_object_or_404(Bush, pk=bush_id)
+        form = BushFormForEdit(request.POST, instance=bush)
+        if form.is_valid():
+            form.save()
+            context['messages'] = "Куст с id {0} по имени {1} изменен.".format(bush.id, bush.name)
+            context['bush'] = get_object_or_404(Bush, pk=bush_id)
+            context['form'] = BushFormForEdit(instance=bush)
+            return render(request, 'firstapp/edit_bush.html', context=context)
+        else:
+            context['messages'] = form.errors
+            return render(request, 'firstapp/edit_bush.html', context=context)
+    else:
+        bush = get_object_or_404(Bush, pk=bush_id)
+        context['bush'] = bush
+        context['form'] = BushFormForEdit(instance=bush)
+        return  render(request, 'firstapp/edit_bush.html', context=context)

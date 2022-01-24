@@ -232,6 +232,15 @@ class BushForm(ModelForm):
         model = Bush
         fields =  ['name']
 
+class BushFormForEdit(ModelForm):
+    """Куст форма для изиенение куста"""
+    # def __init__(self, *args, **kwargs):
+    #     super.__init__(*args, **kwargs)
+    #     self.fields['bug'].widget.attrs.update({'class': 'hidden'})
+    class Meta:
+        model = Bush
+        fields = '__all__'
+
 class AddBushInBug(forms.Form):
     """Форма добовляет куст к жуку"""
     bushes = Bush.objects.all()

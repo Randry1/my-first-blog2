@@ -15,7 +15,31 @@
             </form>
         </div>
         <div class="col-md-12">
+            {% if bushes.count > 0 %}
+                <table>
+                {% for bush in bushes %}
+                    <tr>
+                        <td>{{ bush.id }}</td>
+                        <td>{{ bush.name }}</td>
+                        <td><a href="{% url 'bush_edit' bush.id %}">Изменить</a></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                  {% if bush.bugs.all.count > 0 %}
+                    {% for bug in bush.bugs.all %}
+                          <tr>
+                            <td></td>
+                              <td>{{ bug.id }}</td>
+                              <td>{{ bug.name }}</td>
+                              <td>{{ bug.population }}</td>
+                              <td><a href="{% url 'bug_edit' bug.id %}">Изменить</a></td>
+                          </tr>
+                    {% endfor %}
+                  {% endif %}
+                {% endfor %}
 
+                </table>
+            {% endif %}
         </div>
         <div class="col-md-12">
 

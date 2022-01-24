@@ -1,0 +1,51 @@
+{% extends 'firstapp/base.html' %}
+{% block header %}
+Изменить куст
+{% endblock %}
+{% block title %}
+Изменить куст
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <form action="{% url 'bush_edit' bush.id %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Изменить">
+            </form>
+        </div>
+        <div class="col-md-12">
+            <table>
+                <tr>
+                    <td>{{ bush.id }}</td>
+                    <td>{{ bush.name }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% if bush.bugs.all.count > 0 %}
+                    {% for bug in bush.bugs.all %}
+                        <tr>
+                            <td>{{ bug.id }}</td>
+                            <td>{{ bug.name }}</td>
+                            <td>{{ bug.population }}</td>
+                            <td><a href="{% url 'bug_edit' bug.id %}">Изменить</a></td>
+                            <td>
+                                <form action="{% url 'bug_edit_clear' bug.id bush.id %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="number" value="{{ bush.id }}" class="hidden">
+                                    <input type="submit" value="Открепить">
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                {% endif %}
+            </table>
+        </div>
+{#        <div class="col-md-12">#}
+{##}
+{#        </div>#}
+    </div>
+{% endblock %}
