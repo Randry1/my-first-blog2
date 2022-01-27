@@ -1221,3 +1221,11 @@ def bush_edit(request, bush_id):
         context['bush'] = bush
         context['form'] = BushFormForEdit(instance=bush)
         return  render(request, 'firstapp/edit_bush.html', context=context)
+
+
+def remote_bug(request, bug_id):
+    """Удаление жука"""
+    bug = get_object_or_404(Bug, pk=bug_id)
+    bug.delete()
+    request.session['messages'] = "Жук ID: {0} с именем {1} удален".format(bug.id, bug.name)
+    return redirect(request.META.get('HTTP_REFERER'))
