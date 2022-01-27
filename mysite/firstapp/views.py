@@ -1229,3 +1229,11 @@ def remote_bug(request, bug_id):
     bug.delete()
     request.session['messages'] = "Жук ID: {0} с именем {1} удален".format(bug.id, bug.name)
     return redirect(request.META.get('HTTP_REFERER'))
+
+
+def remote_bush(request, bush_id):
+    """Удалить куст"""
+    bush = get_object_or_404(Bush, pk=bush_id)
+    bush.delete()
+    request.session['messages'] = "Куст ID: {0} с именем {1} удален".format(bush_id, bush.name)
+    return redirect(request.META.get('HTTP_REFERER'))

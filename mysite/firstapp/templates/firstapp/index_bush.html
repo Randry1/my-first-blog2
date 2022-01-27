@@ -22,6 +22,7 @@
                         <td>{{ bush.id }}</td>
                         <td>{{ bush.name }}</td>
                         <td><a href="{% url 'bush_edit' bush.id %}">Изменить</a></td>
+                        <td><a href="{% url 'remote_bush' bush.id %}">Удалить</a></td>
                         <td></td>
                         <td></td>
                     </tr>
