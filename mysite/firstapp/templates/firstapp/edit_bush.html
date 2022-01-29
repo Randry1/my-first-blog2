@@ -30,7 +30,6 @@
                             <td>{{ bug.id }}</td>
                             <td>{{ bug.name }}</td>
                             <td>{{ bug.population }}</td>
-                            <td><a href="{% url 'bug_edit' bug.id %}">Изменить</a></td>
                             <td>
                                 <form action="{% url 'bug_edit_clear' bug.id bush.id %}" method="post">
                                     {% csrf_token %}
@@ -38,6 +37,8 @@
                                     <input type="submit" value="Открепить">
                                 </form>
                             </td>
+                            <td><a href="{% url 'bug_edit' bug.id %}">Изменить</a></td>
+                            <td><a href="{% url 'remote_bug' bug.id %}">Удалить</a></td>
                         </tr>
                     {% endfor %}
 
