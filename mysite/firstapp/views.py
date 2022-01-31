@@ -1272,7 +1272,7 @@ def index_moss(request):
     except KeyError:
         pass
     mosses = Moss.objects.all()
-    context['moss'] = mosses
+    context['mosses'] = mosses
     context['form'] = MossForm()
     return render(request, 'firstapp/index_moss.html', context=context)
 
@@ -1280,5 +1280,16 @@ def index_moss(request):
 
 def create_moss(request):
     """Создание мха"""
-    request.session['messages'] = 'Мох '
-    return redirect(request.META.get('HTTP_REFERER'))
+    if request.method == 'POST':
+        moss = Moss()
+        form = MossForm(request.POST, instance=moss)
+        if form.is_valid():
+            form.save()
+            request.session['messages'] = 'Мох сохранен'
+            return redirect(request.META.get('HTTP_REFERER'))
+        else:
+            request.session['messages'] = form.errors
+            return redirect(request.META.get('HTTP_REFERER'))
+    else:
+        request.session['messages'] = 'Отправь данные через форму'
+        return redirect(request.META.get('HTTP_REFERER'))
