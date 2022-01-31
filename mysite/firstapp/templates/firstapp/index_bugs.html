@@ -26,6 +26,7 @@
                         <td>{{ bug.population }}</td>
                         <td><a href="{% url 'bug_edit' bug.id %}">Изменить</a></td>
                         <td><a href="{% url 'remote_bug' bug.id %}">Удалить</a></td>
+                        <td><a href="{% url 'bug_clear_all' bug.id %}">Очистить</a></td>
 
                     </tr>
                     <tr>

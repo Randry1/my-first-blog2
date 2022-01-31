@@ -13,7 +13,8 @@ from django.views.generic import CreateView
 from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm, UrlFieldForm, UuiFieldForm, \
     ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm, DateTimeFieldForm, WidgetForm, \
     ThinTinctureForm, UserBookForm, CreatePerson, ChangeDataPersonModel, UpdateColumnForm, UpdatePerson, DeletePerson, \
-    ElectricForm, ForestForm, TreeForm, TreeFormM, BugForm, AddBushInBug, BugBushClear, BushForm, BushFormForEdit
+    ElectricForm, ForestForm, TreeForm, TreeFormM, BugForm, AddBushInBug, BugBushClear, BushForm, BushFormForEdit, \
+    SearchForm
 
 # Create your views here.
 from .models import Person, Electric, Forest, Tree, Bug, Bush
@@ -1161,6 +1162,13 @@ def bug_edit_clear(request, bug_id, bush_id):
 
         return redirect(request.META.get('HTTP_REFERER'))
     request.session['messages'] = "Отправте запрос методом пост через форму"
+    return redirect(request.META.get('HTTP_REFERER'))
+
+def bug_clear_all(request, bug_id):
+    """Очищает жука от кустов"""
+    bug = get_object_or_404(Bug, pk=bug_id)
+    bug.bush_set.clear()
+    request.session['messages'] = "Жук {0} очищен от кустов".format(bug.name)
     return redirect(request.META.get('HTTP_REFERER'))
 
 
