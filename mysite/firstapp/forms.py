@@ -4,7 +4,7 @@ from calendar import format
 from django import forms
 from django.core.validators import validate_slug
 from django.forms import ModelForm, TextInput
-from .models import Electric, Forest, Tree, Bug, Bush
+from .models import Electric, Forest, Tree, Bug, Bush, Moss
 
 
 class UserForm(forms.Form):
@@ -258,3 +258,10 @@ class BugBushClear(forms.Form):
 class SearchForm(forms.Form):
     """Форма поиска по названию"""
     name = forms.CharField(label='Поиск', required=False)
+
+
+class MossForm(ModelForm):
+    """Форма для модели мох, связь один к одному"""
+    class Meta:
+        model = Moss
+        fields = '__all__'

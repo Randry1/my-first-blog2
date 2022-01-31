@@ -92,4 +92,6 @@ urlpatterns = [
     path('bush/<int:bush_id>/edit/', views.bush_edit, name='bush_edit'),  # Изменение куста
     path('bush/<int:bush_id>/delete/', views.remote_bush, name='remote_bush'),  # Удаление куста
     path('search/', views.search, name='search'),  # Поиск по жукам по имени
+    path('index_moss/', views.index_moss, name='index_moss'),  # индексный файл мха
+    path('index_moss/create', views.create_moss, name='create_moss'),  # создаит экземпляр мха
 ]

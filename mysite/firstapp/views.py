@@ -14,10 +14,10 @@ from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm
     ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm, DateTimeFieldForm, WidgetForm, \
     ThinTinctureForm, UserBookForm, CreatePerson, ChangeDataPersonModel, UpdateColumnForm, UpdatePerson, DeletePerson, \
     ElectricForm, ForestForm, TreeForm, TreeFormM, BugForm, AddBushInBug, BugBushClear, BushForm, BushFormForEdit, \
-    SearchForm
+    SearchForm, MossForm
 
 # Create your views here.
-from .models import Person, Electric, Forest, Tree, Bug, Bush
+from .models import Person, Electric, Forest, Tree, Bug, Bush, Moss
 from django.db.models import F
 from .utils import update_post, update_post_f, update_post_update_or_create, update_persons
 from django.urls import reverse
@@ -97,6 +97,7 @@ def index(request):
     content += "<a href=\"{0}\" {1}>Многие ко многим Жуки кусты создание</a><br>".format('index_bug/1/bush/2/create', css_class_btn)
     content += "<a href=\"{0}\" {1}>Многие ко многим Жуки</a><br>".format('index_bug/', css_class_btn)
     content += "<a href=\"{0}\" {1}>Многие ко многим Кусты</a><br>".format('bush_index/', css_class_btn)
+    content += "<a href=\"{0}\" {1}>Один к одному Мох</a><br>".format('index_moss/', css_class_btn)
 
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
@@ -1260,3 +1261,24 @@ def search(request):
         return render(request, 'firstapp/search.html', context=context)
     else:
         return render(request, 'firstapp/search.html', context=context)
+
+
+def index_moss(request):
+    """Индексный файл мха"""
+    context = {'title': 'Мох'}
+    try:
+        context['messages'] = request.session['messages']
+        request.session.pop('messages')
+    except KeyError:
+        pass
+    mosses = Moss.objects.all()
+    context['moss'] = mosses
+    context['form'] = MossForm()
+    return render(request, 'firstapp/index_moss.html', context=context)
+
+
+
+def create_moss(request):
+    """Создание мха"""
+    request.session['messages'] = 'Мох '
+    return redirect(request.META.get('HTTP_REFERER'))
