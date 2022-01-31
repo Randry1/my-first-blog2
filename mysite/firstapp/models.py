@@ -46,3 +46,14 @@ class Bush(models.Model):
 
     class Meta:
         ordering = ['name']
+
+
+class Moss(models.Model):
+    """Модель животное показать связь один к одному"""
+    name = models.CharField(verbose_name='Имя', max_length=15)
+
+
+class TypeMoss(models.Model):
+    """Модель тип мха для отношение один к одному """
+    type_moss = models.CharField(verbose_name='Тип мха', max_length=15)
+    moss = models.OneToOneField(Moss, on_delete=models.CASCADE, primary_key=True)
