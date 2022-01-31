@@ -83,6 +83,7 @@ urlpatterns = [
     path('index_bug/', views.index_bug, name='index_bug'), # Все жуки
     path('bug/<int:id_bug>/add', views.bug_add, name='bug_add'), # добавить к жуку куст
     path('bug/<int:bug_id>/clear', views.bug_clear, name='bug_clear'), # Очистить к жука от куста
+    path('bug/<int:bug_id>/clearall', views.bug_clear_all, name='bug_clear_all'), # Очистить к жука от всех кустов
     path('bug/<int:bug_id>/edit', views.bug_edit, name='bug_edit'), # изменение жука
     path('bug/<int:bug_id>/remote', views.remote_bug, name='remote_bug'), # изменение жука
     path('bug/<int:bug_id>/bush/<int:bush_id>/edit/clear', views.bug_edit_clear, name='bug_edit_clear'), # изменение жука
@@ -90,4 +91,5 @@ urlpatterns = [
     path('bush/create/', views.bush_create, name='bush_create'), # Создание куста
     path('bush/<int:bush_id>/edit/', views.bush_edit, name='bush_edit'),  # Изменение куста
     path('bush/<int:bush_id>/delete/', views.remote_bush, name='remote_bush'),  # Удаление куста
+    path('search/', views.search, name='search'),  # Поиск по жукам по имени
 ]

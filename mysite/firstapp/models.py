@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Person(models.Model):
     """Первый раза использую БД глава из книжки"""
     name = models.CharField(max_length=12)
@@ -34,8 +35,14 @@ class Bug(models.Model):
     name = models.CharField(max_length=15, verbose_name='Название жука')
     population = models.IntegerField(verbose_name='Популяция')
 
+    class Meta:
+        ordering = ['population']
+
 
 class Bush(models.Model):
     """Модель куст, отношение многи ко многим"""
     name = models.CharField(max_length=15, verbose_name='Название куста')
     bugs = models.ManyToManyField(Bug)
+
+    class Meta:
+        ordering = ['name']

@@ -8,6 +8,15 @@
 {% block content %}
     <div class="row">
         <div class="col-md-12">
+            <form action="{% url 'search' %}" method="post">
+                {% csrf_token %}
+                {{ search_form.as_p }}
+                <input type="submit" value="Найти">
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             <form action="{%  url 'create_bug' %}" method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
@@ -21,14 +30,39 @@
                 <table >
                 {% for bug in bugs %}
                     <tr>
+                        <td><hr></td>
+                        <td><hr></td>
+                        <td><hr></td>
+                        <td><hr></td>
+                        <td><hr></td>
+                        <td><hr></td>
+                    </tr>
+                    <tr>
                         <td>{{ bug.id }}</td>
                         <td>{{ bug.name }}</td>
                         <td>{{ bug.population }}</td>
                         <td><a href="{% url 'bug_edit' bug.id %}">Изменить</a></td>
                         <td><a href="{% url 'remote_bug' bug.id %}">Удалить</a></td>
+                        <td><a href="{% url 'bug_clear_all' bug.id %}">Очистить от всех кустов</a></td>
 
                     </tr>
                     <tr>
+                        <td><hr></td>
+                        <td><hr></td>
+                        <td><hr></td>
+                        <td><hr></td>
+                        <td><hr></td>
+                        <td><hr></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% if bug.bush_set.all.count > 0 %}
+                            <b>Колличество связаных кустов: {{ bug.bush_set.all.count }} </b>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+
                         {% for bush in bug.bush_set.all %}
                             <tr>
                                 <td></td>
