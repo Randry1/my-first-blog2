@@ -33,9 +33,13 @@ class Bug(models.Model):
     """Клас Жук, показать отношение многие ко многим"""
     name = models.CharField(max_length=15, verbose_name='Название жука')
     population = models.IntegerField(verbose_name='Популяция')
+    class Meta:
+        ordering =['population']
 
 
 class Bush(models.Model):
     """Модель куст, отношение многи ко многим"""
     name = models.CharField(max_length=15, verbose_name='Название куста')
     bugs = models.ManyToManyField(Bug)
+    class Meta:
+        ordering = ['name']

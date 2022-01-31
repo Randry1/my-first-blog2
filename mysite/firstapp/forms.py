@@ -252,4 +252,9 @@ class AddBushInBug(forms.Form):
 
 class BugBushClear(forms.Form):
     """Форма чтобы прердать по пост запросу откреплене жука от куста"""
-    bush_id = forms.IntegerField(show_hidden_initial=False,required=False)
+    bush_id = forms.IntegerField(show_hidden_initial=False, required=False)
+
+
+class SearchForm(forms.Form):
+    """Форма поиска по названию"""
+    name = forms.CharField(label='Поиск', required=False)
