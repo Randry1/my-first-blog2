@@ -1324,3 +1324,11 @@ def edit_moss(request, moss_id):
         context['form'] = form
 
         return render(request, 'firstapp/edit_moss.html', context=context)
+
+
+def delete_moss(request, moss_id):
+    """Удаление мха потом добавить удаление типа мха"""
+    moss = get_object_or_404(Moss, pk=moss_id)
+    moss.delete()
+    request.session['messages'] = "Мох именем: {1} удалени".format(moss.name)
+    return redirect(request.META.get('HTTP_REFERER'))

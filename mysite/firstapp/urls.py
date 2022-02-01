@@ -95,4 +95,5 @@ urlpatterns = [
     path('index_moss/', views.index_moss, name='index_moss'),  # индексный файл мха
     path('index_moss/create', views.create_moss, name='create_moss'),  # создаит экземпляр мха
     path('index_moss/<int:moss_id>/edit', views.edit_moss, name='edit_moss'),  # создаит экземпляр мха
+    path('index_moss/<int:moss_id>/delete', views.delete_moss, name='delete_moss'),  # Удаляет экземпляр мха
 ]
