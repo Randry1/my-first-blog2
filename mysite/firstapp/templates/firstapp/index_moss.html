@@ -21,6 +21,7 @@
                         <tr>
                             <td>{{ moss.id }}</td>
                             <td>{{ moss.name }}</td>
+                            <td><a href="{% url 'edit_moss' moss.id %}">Изменить</a></td>
                         </tr>
                     {% endfor %}
                 </table>

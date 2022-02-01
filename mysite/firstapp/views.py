@@ -94,7 +94,8 @@ def index(request):
     content += "<a href=\"{0}\" {1}>Все элекстрики</a><br>".format('electric_index', css_class_btn)
     content += "<hr>"
     content += "<a href=\"{0}\" {1}>Один ко многим Лес деревья</a><br>".format('index_forest', css_class_btn)
-    content += "<a href=\"{0}\" {1}>Многие ко многим Жуки кусты создание</a><br>".format('index_bug/1/bush/2/create', css_class_btn)
+    content += "<a href=\"{0}\" {1}>Многие ко многим Жуки кусты создание</a><br>".format('index_bug/1/bush/2/create',
+                                                                                         css_class_btn)
     content += "<a href=\"{0}\" {1}>Многие ко многим Жуки</a><br>".format('index_bug/', css_class_btn)
     content += "<a href=\"{0}\" {1}>Многие ко многим Кусты</a><br>".format('bush_index/', css_class_btn)
     content += "<a href=\"{0}\" {1}>Один к одному Мох</a><br>".format('index_moss/', css_class_btn)
@@ -1087,6 +1088,7 @@ def create_bug_and_bush(request, id_bug, id_bush):
     # bush_malina.bugs.clear()
     return render(request, 'firstapp/create_bug_in_bush.html', context=context)
 
+
 def bug_edit(request, bug_id):
     """Edit bug по id"""
     context = {}
@@ -1095,7 +1097,7 @@ def bug_edit(request, bug_id):
     form = BugForm(instance=bug)
     context['form'] = form
     context['form_clear'] = BugBushClear()
-    try: # переносим сообщение из сессии в текущию функцию и видимость
+    try:  # переносим сообщение из сессии в текущию функцию и видимость
         context['messages'] = request.session['messages']
         request.session.pop('messages')
     except KeyError:
@@ -1140,7 +1142,7 @@ def bug_clear(request, bug_id):
         form = AddBushInBug(request.POST)
         if form.is_valid():
             bush_id = form.cleaned_data['bush_id']
-            bush = get_object_or_404(Bush,  pk=bush_id)
+            bush = get_object_or_404(Bush, pk=bush_id)
             bug.bush_set.remove(bush)
             request.session['messages'] = "Куст {0} откреплен от жука {1}".format(bush.name, bug.name)
             return redirect(index_bug)
@@ -1158,12 +1160,13 @@ def bug_edit_clear(request, bug_id, bush_id):
         bug = get_object_or_404(Bug, pk=bug_id)
         bush = get_object_or_404(Bush, pk=bush_id)
         bug.bush_set.remove(bush)
-        request.session['messages'] = "Куст {0} с id {1} откреплен от жука {2} c id {3}"\
+        request.session['messages'] = "Куст {0} с id {1} откреплен от жука {2} c id {3}" \
             .format(bush.name, bush.id, bug.name, bug.id)
 
         return redirect(request.META.get('HTTP_REFERER'))
     request.session['messages'] = "Отправте запрос методом пост через форму"
     return redirect(request.META.get('HTTP_REFERER'))
+
 
 def bug_clear_all(request, bug_id):
     """Очищает жука от кустов"""
@@ -1189,6 +1192,7 @@ def bush_index(request):
         pass
     return render(request, 'firstapp/index_bush.html', context=context)
 
+
 def bush_create(request):
     """Создание формы"""
     if request.method == 'POST':
@@ -1204,6 +1208,7 @@ def bush_create(request):
     else:
         request.session['messages'] = 'Отправте запрос методом get'
         return redirect(bush_index)
+
 
 def bush_edit(request, bush_id):
     """Изменить куст"""
@@ -1229,7 +1234,7 @@ def bush_edit(request, bush_id):
         bush = get_object_or_404(Bush, pk=bush_id)
         context['bush'] = bush
         context['form'] = BushFormForEdit(instance=bush)
-        return  render(request, 'firstapp/edit_bush.html', context=context)
+        return render(request, 'firstapp/edit_bush.html', context=context)
 
 
 def remote_bug(request, bug_id):
@@ -1277,7 +1282,6 @@ def index_moss(request):
     return render(request, 'firstapp/index_moss.html', context=context)
 
 
-
 def create_moss(request):
     """Создание мха"""
     if request.method == 'POST':
@@ -1293,3 +1297,30 @@ def create_moss(request):
     else:
         request.session['messages'] = 'Отправь данные через форму'
         return redirect(request.META.get('HTTP_REFERER'))
+
+
+def edit_moss(request, moss_id):
+    """Редактироапнин мха"""
+    context = {'title': 'Изменить мох'}
+    if request.method == 'POST':
+        moss = get_object_or_404(Moss, pk=moss_id)
+        form = MossForm(request.POST, instance=moss)
+        if form.is_valid():
+            form.save()
+            moss = get_object_or_404(Moss, pk=moss_id)
+            form = MossForm(instance=moss)
+            context['moss'] = moss
+            context['form'] = form
+            return render(request, 'firstapp/edit_moss.html', context=context)
+        else:
+            request.session['messages'] = form.errors
+            context['moss'] = moss
+            context['form'] = form
+            return render(request, 'firstapp/edit_moss.html', context=context)
+    else:
+        moss = get_object_or_404(Moss, pk=moss_id)
+        form = MossForm(instance=moss)
+        context['moss'] = moss
+        context['form'] = form
+
+        return render(request, 'firstapp/edit_moss.html', context=context)
