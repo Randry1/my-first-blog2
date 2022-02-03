@@ -1401,4 +1401,31 @@ def index_type_moss(request):
     context = {'title': 'Типы мха'}
     types_moss = TypeMoss.objects.all()
     context['types_moss'] = types_moss
+    context['form_moss'] = MossForm()
+    context['form_type_moss'] = TypeMossForm()
+
     return render(request, 'firstapp/index_type_moss.html', context=context)
+
+def create_type_moss(request):
+    """Создать тип мха"""
+    if request.method == 'POST':
+        form_moss = MossForm(request.POST)
+        form_type_moss = TypeMossForm(request.POST)
+        if form_moss.is_valid() and form_type_moss.is_valid():
+            moss = form_moss.save_m2m()
+            form_type_moss = form_type_moss.save_m2m()
+            return redirect(request.META.get('HTTP_REFERER'))
+        else:
+            request.session['messages'] = form_moss.errors
+            return redirect(request.META.get('HTTP_REFERER'))
+    else:
+        request.session['messages'] = 'not post request!'
+        return redirect(request.META.get('HTTP_REFERER'))
+
+
+def delete_type_moss(request, id_type_moss):
+    """Удалить тип мха, вместе удалится наверное и мох"""
+    type_moss = get_object_or_404(TypeMoss, pk=id_type_moss)
+    type_moss.delete()
+    request.session['messages'] = "тип мха удален %s" % (type_moss.type_moss,)
+    return redirect(request.META.get('HTTP_REFERER'))

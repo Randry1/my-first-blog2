@@ -102,5 +102,7 @@ urlpatterns = [
     path('index_moss/create_type_moss/', views.create_type_moss, name='create_type_moss'),  # создаит экземпляр типа мха
     path('index_moss/moss_book/<str:name>/', views.moss_book, name='moss_book'),  # из книги
     path('index_type_moss/', views.index_type_moss, name='index_type_moss'),  # индексный файл type_moss
+    path('type_moss/create/', views.create_type_moss, name='create_type_moss'),  # создать moss + type_moss
+    path('type_moss/<int:id_type_moss>/delete/', views.delete_type_moss, name='delete_type_moss'),  # удвлить moss + type_moss
 
 ]

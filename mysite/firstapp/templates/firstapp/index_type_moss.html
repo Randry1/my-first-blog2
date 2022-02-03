@@ -9,7 +9,26 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                <form action="{% url 'create_type_moss' %}" method="post">
+                    {% csrf_token %}
+                    {{ form_moss.as_p }}
+                    {{ form_type_moss.as_p }}
+                    <input type="submit" value="Создать">
+                </form>
+            </div>
+            <div class="col-md-12">
+                <table>
+                    {% for type_moss in types_moss %}
+                        <tr>
+                            <td>{{ type_moss.moss.id }}</td>
+                            <td>{{ type_moss.moss.name }}</td>
+                            <td>{{ type_moss.type_moss }}</td>
+                            <td><a href="{% url 'edit_moss' type_moss.moss.id %}">изменить</a></td>
+                            <td><a href="{% url 'delete_type_moss' type_moss.pk %}">удалить</a></td>
+                        </tr>
+                    {% endfor %}
 
+                </table>
             </div>
         </div>
     </div>
