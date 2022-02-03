@@ -49,12 +49,12 @@ urlpatterns = [
     path('user_book_form/', views.user_book_form, name='user_book_form'),
     path('css_class_form/', views.css_class_form, name='css_class_form'),
     path('attrs_css_form/', views.attrs_css_form, name='attrs_css_form'),
-    path('create_person/', views.create_person, name='create_person'), # начало модели
-    path('method_get_person/<int:id>/', views.method_get_person, name='method_get_person'), # метод get модели
-    path('method_get_or_create_person/', views.method_get_or_create_person, name='method_get_or_create_person'), # метод get_or_create модели
-    path('method_filter_person/', views.method_filter_person, name='method_filter_person'), # метод method_filter_person модели
-    path('method_exclude_model/', views.method_exclude_model, name='method_exclude_model'), # метод method_exclude_person модели
-    path('method_in_bulk_model/', views.method_in_bulk_model, name='method_in_bulk_model'), # метод method_in_bulk_person модели
+    path('create_person/', views.create_person, name='create_person'),  # начало модели
+    path('method_get_person/<int:id>/', views.method_get_person, name='method_get_person'),  # метод get модели
+    path('method_get_or_create_person/', views.method_get_or_create_person, name='method_get_or_create_person'),  # метод get_or_create модели
+    path('method_filter_person/', views.method_filter_person, name='method_filter_person'),  # метод method_filter_person модели
+    path('method_exclude_model/', views.method_exclude_model, name='method_exclude_model'),  # метод method_exclude_person модели
+    path('method_in_bulk_model/', views.method_in_bulk_model, name='method_in_bulk_model'),  # метод method_in_bulk_person модели
     path('change_date_in_bd/', views.change_date_in_bd, name='change_date_in_bd'), # метод save модели
     path('update_bd_person/', views.update_bd_person, name='update_bd_person'), # метод save модели
     path('metod_f/', views.metod_f, name='metod_f'), # метод save модели
@@ -78,6 +78,7 @@ urlpatterns = [
     path('index_forest/<int:id_forest>/tree/new/', views.create_tree, name='create_tree'), #Добовление дерева в лес
     path('index_forest/<int:id_forest>/tree/<int:id_tree>/edit', views.edit_tree, name='edit_tree'), #Добовление дерева в лес
     path('index_forest/<int:id_forest>/tree/<int:id_tree>/delete', views.delete_tree, name='delete_tree'), #Удаление get запросом дерева в лесу
+
     path('index_bug/<int:id_bug>/bush/<int:id_bush>/create', views.create_bug_and_bush, name='create_bug_and_bush'), # Создание жука в савязи с кустом
     path('index_bug/create', views.create_bug, name='create_bug'), # Создание жука в савязи с кустом
     path('index_bug/', views.index_bug, name='index_bug'), # Все жуки
@@ -87,16 +88,19 @@ urlpatterns = [
     path('bug/<int:bug_id>/edit', views.bug_edit, name='bug_edit'), # изменение жука
     path('bug/<int:bug_id>/remote', views.remote_bug, name='remote_bug'), # изменение жука
     path('bug/<int:bug_id>/bush/<int:bush_id>/edit/clear', views.bug_edit_clear, name='bug_edit_clear'), # изменение жука
+
     path('bush_index/', views.bush_index, name='bush_index'), # изменение жука
     path('bush/create/', views.bush_create, name='bush_create'), # Создание куста
     path('bush/<int:bush_id>/edit/', views.bush_edit, name='bush_edit'),  # Изменение куста
     path('bush/<int:bush_id>/delete/', views.remote_bush, name='remote_bush'),  # Удаление куста
     path('search/', views.search, name='search'),  # Поиск по жукам по имени
+
     path('index_moss/', views.index_moss, name='index_moss'),  # индексный файл мха
     path('index_moss/create', views.create_moss, name='create_moss'),  # создаит экземпляр мха
     path('index_moss/<int:moss_id>/edit', views.edit_moss, name='edit_moss'),  # создаит экземпляр мха
     path('index_moss/<int:moss_id>/delete', views.delete_moss, name='delete_moss'),  # Удаляет экземпляр мха
     path('index_moss/create_type_moss/', views.create_type_moss, name='create_type_moss'),  # создаит экземпляр типа мха
     path('index_moss/moss_book/<str:name>/', views.moss_book, name='moss_book'),  # из книги
+    path('index_type_moss/', views.index_type_moss, name='index_type_moss'),  # индексный файл type_moss
 
 ]

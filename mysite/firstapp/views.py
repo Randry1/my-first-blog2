@@ -100,6 +100,7 @@ def index(request):
     content += "<a href=\"{0}\" {1}>Многие ко многим Кусты</a><br>".format('bush_index/', css_class_btn)
     content += "<a href=\"{0}\" {1}>Один к одному Мох</a><br>".format('index_moss/', css_class_btn)
     content += "<a href=\"{0}\" {1}>Примеры из книги Мох</a><br>".format('index_moss/moss_book/name/', css_class_btn)
+    content += "<a href=\"{0}\" {1}>Индексный файл тип мха</a><br>".format('index_type_moss/', css_class_btn)
 
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
@@ -1381,4 +1382,23 @@ def moss_book(request, name):
     moss.typemoss = type_moss_m
     print(moss_m)
 
+    # Создание а потом добавление по полям
+    moss_p = Moss()
+    moss_p.name = name
+    moss_p.save()
+    type_moss_p = TypeMoss()
+    type_moss_p.type_moss = 'asdfsadf'
+    type_moss_p.save()
+    moss.typemoss = type_moss_p
+    moss.typemoss.save()
+    print(str(moss_p) + ' ' + str(type_moss_p))
+
     return render(request, 'firstapp/moss_book.html', context=context)
+
+
+def index_type_moss(request):
+    "Индексный файл для типа мха"
+    context = {'title': 'Типы мха'}
+    types_moss = TypeMoss.objects.all()
+    context['types_moss'] = types_moss
+    return render(request, 'firstapp/index_type_moss.html', context=context)
