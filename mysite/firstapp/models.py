@@ -50,6 +50,14 @@ class Bush(models.Model):
 class Moss(models.Model):
     """Модель животное показать связь один к одному"""
     name = models.CharField(verbose_name='Имя', max_length=15)
+    def __str__(self):
+        name = self.name
+        try:
+            type_moss = self.typemoss.type_moss
+        except:
+            type_moss = 'Тип пока не присвоен'
+        res = "Мох {0}, тип {1}".format(name, type_moss)
+        return res
 
 
 class TypeMoss(models.Model):

@@ -1375,4 +1375,10 @@ def moss_book(request, name):
     moss.typemoss.type_moss = str(name)
     print("изменение типа мха {0}".format(moss.typemoss.type_moss))
 
+    # Добавляет мох, добовляем тип связываем их
+    moss_m = Moss.objects.create(name='dadf')
+    type_moss_m = TypeMoss.objects.create(type_moss='dfasdf')
+    moss.typemoss = type_moss_m
+    print(moss_m)
+
     return render(request, 'firstapp/moss_book.html', context=context)
