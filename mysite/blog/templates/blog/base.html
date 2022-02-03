@@ -11,6 +11,7 @@
 
 <div class="page-header">
     <a href="{% url 'index' %}" class="top-menu btn btn-warning">First App</a>
+    <a href="{% url 'home' %}" class="top-menu btn btn-warning">Catalog</a>
     {% if user.is_authenticated %}
         <div class="mt-3 left">{{ user.username.title }} </div>
         <a class="top-menu btn btn-warning" href="{% url 'logout' %}">Выйти</a>
