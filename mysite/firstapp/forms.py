@@ -4,7 +4,7 @@ from calendar import format
 from django import forms
 from django.core.validators import validate_slug
 from django.forms import ModelForm, TextInput
-from .models import Electric, Forest, Tree, Bug, Bush, Moss
+from .models import Electric, Forest, Tree, Bug, Bush, Moss, TypeMoss
 
 
 class UserForm(forms.Form):
@@ -87,14 +87,16 @@ class FileFieldForm(forms.Form):
     даже если содержимое файла пустое)."""
     file = forms.FileField(label='Файл', allow_empty_file=True)
 
+
 class DateFieldForm(forms.Form):
     """Date field"""
     date = forms.DateField(label="Дата", help_text='Пример 25/12/2021')
-    
-    
+
+
 class TimeFieldForm(forms.Form):
     """Time field form"""
     time = forms.TimeField(label='Время: ')
+
 
 class DateTimeFieldForm(forms.Form):
     """Date time field"""
@@ -136,8 +138,10 @@ class WidgetForm(forms.Form):
 class ThinTinctureForm(forms.Form):
     """Тонкая настройка формы"""
     # TODO добавить класс css через виджет https://docs.djangoproject.com/en/dev/ref/forms/widgets/#django.forms.Widget.attrs
-    name = forms.CharField(label='Имя', initial='Витя', widget=forms.TextInput(attrs={"class": "field_class_from_attrs"}))
-    age = forms.IntegerField(label='Возраст', initial='46', help_text='Введите ваш возраст', widget=forms.NumberInput(attrs={"class": "field_class_from_attrs"}))
+    name = forms.CharField(label='Имя', initial='Витя',
+                           widget=forms.TextInput(attrs={"class": "field_class_from_attrs"}))
+    age = forms.IntegerField(label='Возраст', initial='46', help_text='Введите ваш возраст',
+                             widget=forms.NumberInput(attrs={"class": "field_class_from_attrs"}))
     comment = forms.CharField(label='Комментарий')
 
 
@@ -147,7 +151,7 @@ class UserBookForm(forms.Form):
     age = forms.IntegerField(label="Возраст:")
     required_css_class = 'field'
     field_css_class = "fortuna"
-    error_css_class = 'error'           #Отображается в классе который оборачиевает input и label добовляется только если форма не прошла валидацию
+    error_css_class = 'error'  # Отображается в классе который оборачиевает input и label добовляется только если форма не прошла валидацию
 
 
 class CreatePerson(forms.Form):
@@ -179,32 +183,38 @@ class UpdatePerson(forms.Form):
 class DeletePerson(forms.Form):
     """Форма для удаление данных методом post запроса"""
     id_person = forms.IntegerField(label='Id', widget=forms.HiddenInput)
-    
+
 
 class ElectricForm(ModelForm):
     """Форма для модели электрика"""
+
     class Meta:
         model = Electric
         fields = '__all__'
 
+
 class ForestForm(ModelForm):
     """Форма для модели лес"""
+
     class Meta:
         model = Forest
         fields = '__all__'
 
+
 class TreeForm(ModelForm):
     """Форма для модели дерево"""
+
     class Meta:
         model = Tree
         fields = '__all__'
+
 
 class TreeFormM(ModelForm):
     """Попробую настроить форму через виджеты"""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['forest'].widget.attrs.update({'class': 'hidden hide_parents' })
+        self.fields['forest'].widget.attrs.update({'class': 'hidden hide_parents'})
         self.fields['forest'].label = False
 
     class Meta:
@@ -220,6 +230,7 @@ class TreeFormM(ModelForm):
 
 class BugForm(ModelForm):
     """Form bug model"""
+
     class Meta:
         model = Bug
         fields = '__all__'
@@ -228,12 +239,15 @@ class BugForm(ModelForm):
 class BushForm(ModelForm):
     """Bush form fo model bush"""
     bug_id = forms.CharField(required=False)
+
     class Meta:
         model = Bush
-        fields =  ['name']
+        fields = ['name']
+
 
 class BushFormForEdit(ModelForm):
     """Куст форма для изиенение куста"""
+
     # def __init__(self, *args, **kwargs):
     #     super.__init__(*args, **kwargs)
     #     self.fields['bug'].widget.attrs.update({'class': 'hidden'})
@@ -241,12 +255,13 @@ class BushFormForEdit(ModelForm):
         model = Bush
         fields = '__all__'
 
+
 class AddBushInBug(forms.Form):
     """Форма добовляет куст к жуку"""
     bushes = Bush.objects.all()
     CHOICES = []
     for bush in bushes:
-        CHOICES.append( (bush.id, (bush.name + " " + str(bush.id) )))
+        CHOICES.append((bush.id, (bush.name + " " + str(bush.id))))
     bush_id = forms.ChoiceField(widget=forms.Select, choices=CHOICES, label=False)
 
 
@@ -262,6 +277,15 @@ class SearchForm(forms.Form):
 
 class MossForm(ModelForm):
     """Форма для модели мох, связь один к одному"""
+
     class Meta:
         model = Moss
+        fields = '__all__'
+
+
+class TypeMossForm(ModelForm):
+    """Форма для """
+
+    class Meta:
+        model = TypeMoss
         fields = '__all__'

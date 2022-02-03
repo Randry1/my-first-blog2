@@ -14,10 +14,10 @@ from .forms import UserForm, HelperTextContactForm, CharFieldForm, SlugFieldForm
     ComboFieldForm, FilePathFieldForm, FileFieldForm, DateFieldForm, TimeFieldForm, DateTimeFieldForm, WidgetForm, \
     ThinTinctureForm, UserBookForm, CreatePerson, ChangeDataPersonModel, UpdateColumnForm, UpdatePerson, DeletePerson, \
     ElectricForm, ForestForm, TreeForm, TreeFormM, BugForm, AddBushInBug, BugBushClear, BushForm, BushFormForEdit, \
-    SearchForm, MossForm
+    SearchForm, MossForm, TypeMossForm
 
 # Create your views here.
-from .models import Person, Electric, Forest, Tree, Bug, Bush, Moss
+from .models import Person, Electric, Forest, Tree, Bug, Bush, Moss, TypeMoss
 from django.db.models import F
 from .utils import update_post, update_post_f, update_post_update_or_create, update_persons
 from django.urls import reverse
@@ -99,6 +99,7 @@ def index(request):
     content += "<a href=\"{0}\" {1}>Многие ко многим Жуки</a><br>".format('index_bug/', css_class_btn)
     content += "<a href=\"{0}\" {1}>Многие ко многим Кусты</a><br>".format('bush_index/', css_class_btn)
     content += "<a href=\"{0}\" {1}>Один к одному Мох</a><br>".format('index_moss/', css_class_btn)
+    content += "<a href=\"{0}\" {1}>Примеры из книги Мох</a><br>".format('index_moss/moss_book/name/', css_class_btn)
 
     path_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     return render(request, 'firstapp/home.html', {'content': content, 'file': path_file})
@@ -1279,6 +1280,7 @@ def index_moss(request):
     mosses = Moss.objects.all()
     context['mosses'] = mosses
     context['form'] = MossForm()
+    context['form_type_moss'] = TypeMossForm()
     return render(request, 'firstapp/index_moss.html', context=context)
 
 
@@ -1305,23 +1307,29 @@ def edit_moss(request, moss_id):
     if request.method == 'POST':
         moss = get_object_or_404(Moss, pk=moss_id)
         form = MossForm(request.POST, instance=moss)
-        if form.is_valid():
+        form_type_moss = TypeMossForm(request.POST, instance=moss.typemoss)
+        if form.is_valid() and form_type_moss.is_valid():
             form.save()
+            form_type_moss.save()
+            moss.typemoss.save()
             moss = get_object_or_404(Moss, pk=moss_id)
             form = MossForm(instance=moss)
             context['moss'] = moss
             context['form'] = form
+            context['form_type_moss'] = TypeMossForm(instance=moss.typemoss)
             return render(request, 'firstapp/edit_moss.html', context=context)
         else:
             request.session['messages'] = form.errors
             context['moss'] = moss
             context['form'] = form
+            context['form_type_moss'] = TypeMossForm(instance=moss.typemoss)
             return render(request, 'firstapp/edit_moss.html', context=context)
     else:
         moss = get_object_or_404(Moss, pk=moss_id)
         form = MossForm(instance=moss)
         context['moss'] = moss
         context['form'] = form
+        context['form_type_moss'] = TypeMossForm(instance=moss.typemoss)
 
         return render(request, 'firstapp/edit_moss.html', context=context)
 
@@ -1330,5 +1338,41 @@ def delete_moss(request, moss_id):
     """Удаление мха потом добавить удаление типа мха"""
     moss = get_object_or_404(Moss, pk=moss_id)
     moss.delete()
-    request.session['messages'] = "Мох именем: {1} удалени".format(moss.name)
+    request.session['messages'] = "Мох именем: {0} удалени".format(moss.name)
     return redirect(request.META.get('HTTP_REFERER'))
+
+
+def create_type_moss(request):
+    """Создаст тип мха"""
+    if request.method == 'POST':
+        form = TypeMossForm(request.POST)
+        if form.is_valid():
+            form.save()
+            request.session['messages'] = 'Тип мха сохранен'
+            return redirect(request.META.get('HTTP_REFERER'))
+    else:
+        request.session['messages'] = 'Отправьие get запросом'
+        return redirect(request.META.get('HTTP_REFERER'))
+
+
+def moss_book(request, name):
+    """команды из книги"""
+    context = {'title': 'Из книги примеры работы API с базой данной'}
+
+    # создает мох и сразу сейвит в базу данных
+    moss = Moss.objects.create(name='сфагнум')
+    print("создан мох {0}".format(moss))
+
+    # создаем и подтягивает тип мха и добовляем созданный мох
+    type_moss = TypeMoss.objects.create(type_moss='окариот', moss=moss)
+    print("Создаем тип мха".format(type_moss))
+
+    # изменения имени
+    type_moss.moss.name = 'New name'
+    print('изменение имени {0}'.format(type_moss.moss.name))
+
+    # изменения типа из мха
+    moss.typemoss.type_moss = str(name)
+    print("изменение типа мха {0}".format(moss.typemoss.type_moss))
+
+    return render(request, 'firstapp/moss_book.html', context=context)

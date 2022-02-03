@@ -8,9 +8,18 @@
 {% block content %}
     <div class="row">
         <div class="col-md-12">
+            <h3>Создаит мох</h3>
             <form action="{% url 'create_moss' %}" method="post">
                 {%  csrf_token %}
                 {{ form.as_p }}
+                <input type="submit" value="Создать">
+            </form>
+        </div>
+        <div class="col-md-12">
+            <h3>Создаит тип мха</h3>
+            <form action="{% url 'create_type_moss' %}" method="post">
+                {% csrf_token %}
+                {{ form_type_moss.as_p }}
                 <input type="submit" value="Создать">
             </form>
         </div>
@@ -21,6 +30,7 @@
                         <tr>
                             <td>{{ moss.id }}</td>
                             <td>{{ moss.name }}</td>
+                            <td>{{ moss.typemoss.type_moss }}</td>
                             <td><a href="{% url 'edit_moss' moss.id %}">Изменить</a></td>
                             <td><a href="{% url 'delete_moss' moss.id %}">Удалить</a></td>
                         </tr>
