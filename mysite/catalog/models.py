@@ -1,6 +1,5 @@
 from django.db import models
 
-
 # Create your models here.
 from django.urls import reverse
 
@@ -71,4 +70,37 @@ class Book(models.Model):
 
     def get_absolute_url(self):
         #  Возвращает URL адрес экземпляра книги
-        return reverse('bool-detail', args=[str(self.id)])
+        return reverse('book-detail', args=[str(self.id)])
+
+
+class Status(models.Model):
+    """Статус экземпляра книги"""
+    name = models.CharField(max_length=20,
+                            help_text='Введите статус книги',
+                            verbose_name='Статус экземпляра')
+
+    def __str__(self):
+        return self.name
+
+
+class BookInstanse(models.Model):
+    """Отображает состояние экземпляра книги"""
+    book = models.ForeignKey('Book', on_delete=models.CASCADE, null=True)
+    inv_nom = models.CharField(max_length=20, null=True,
+                               help_text='Ввведите инвентаризационный номер',
+                               verbose_name='Инвентаризационный номер')
+    imprint = models.CharField(max_length=200, null=True,
+                               help_text='Введите издательство и год выпуска',
+                               verbose_name='Издательство')
+    status = models.ForeignKey('Status', on_delete=models.CASCADE,
+                               null=True,
+                               help_text='Изменить статус экземпляра книги',
+                               verbose_name='Статус экземпляра книги')
+    due_back = models.DateField(null=True, blank=True,
+                                help_text='Введите окончание срока статуса',
+                                verbose_name='Дата окончания статуса')
+    def __str__(self):
+        return '%s %s %s ' % (self.inv_nom, self.book, self.status)
+
+    class Meta:
+        ordering = ['due_back']
