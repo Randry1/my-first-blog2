@@ -56,8 +56,7 @@ class Book(models.Model):
                                  help_text='Выберете язык книги',
                                  verbose_name='Язык книги', null=True)
     author = models.ManyToManyField('Author', help_text='Выберете автора книги',
-                                    verbose_name='Автор книги',
-                                    null=True)
+                                    verbose_name='Автор книги')
     summary = models.TextField(max_length=100,
                                help_text='Введите краткое описание',
                                verbose_name='Краткое описание книги')
@@ -83,7 +82,7 @@ class Status(models.Model):
         return self.name
 
 
-class BookInstanse(models.Model):
+class BookInstance(models.Model):
     """Отображает состояние экземпляра книги"""
     book = models.ForeignKey('Book', on_delete=models.CASCADE, null=True)
     inv_nom = models.CharField(max_length=20, null=True,
