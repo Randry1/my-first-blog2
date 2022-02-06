@@ -71,6 +71,14 @@ class Book(models.Model):
         #  Возвращает URL адрес экземпляра книги
         return reverse('book-detail', args=[str(self.id)])
 
+    # Показывает авторов кторыий писали книгу в в виде строки через запятую
+    def display_author(self):
+        authors = self.author.all()
+        return ', '.join([author.last_name for author in authors])
+
+    # Добавляет заголовок в таблицу админке
+    display_author.short_description = 'Авторы'
+
 
 class Status(models.Model):
     """Статус экземпляра книги"""
@@ -84,7 +92,8 @@ class Status(models.Model):
 
 class BookInstance(models.Model):
     """Отображает состояние экземпляра книги"""
-    book = models.ForeignKey('Book', on_delete=models.CASCADE, null=True)
+    book = models.ForeignKey('Book', on_delete=models.CASCADE, null=True,
+                             verbose_name='Книга')
     inv_nom = models.CharField(max_length=20, null=True,
                                help_text='Ввведите инвентаризационный номер',
                                verbose_name='Инвентаризационный номер')
@@ -98,6 +107,7 @@ class BookInstance(models.Model):
     due_back = models.DateField(null=True, blank=True,
                                 help_text='Введите окончание срока статуса',
                                 verbose_name='Дата окончания статуса')
+
     def __str__(self):
         return '%s %s %s ' % (self.inv_nom, self.book, self.status)
 
