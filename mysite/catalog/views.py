@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-
+from django.views import generic
 
 # Create your views here.
 from .models import Book, BookInstance, Author
@@ -25,3 +25,8 @@ def index(request):
         'num_instance_available': num_instance_available,
         'num_author': num_author
     })
+
+
+class BookListView(generic.ListView):
+    """Этот класс позволяет создать список книг при помощи генерации страниц Djabgo"""
+    model = Book
