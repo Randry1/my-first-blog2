@@ -16,15 +16,23 @@ class AuthorAdmin(admin.ModelAdmin):
     list_display = ['last_name', 'first_name']
 
 
+class BookInstanceInline(admin.TabularInline):
+    """Класс одновременное отображение связаных моделей в линию"""
+    model = BookInstance
+
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ['title', 'genre', 'display_author']
+    list_display = ('title', 'genre', 'display_author')
     # fields = ['title', 'genre']
-    exclude = ['genre']  # удалить поля из форм редактирования
+    # exclude = ['genre']  # удалить поля из форм редактирования
+    list_filter = ('genre', 'author')
+    inlines = [BookInstanceInline]
 
+    
 @admin.register(BookInstance)
 class BookInstance(admin.ModelAdmin):
     # list_display = ['inv_nom', 'book', 'imprint', 'status']
+    #  Обьеденяем поля по группам в админке сайта
     list_filter = ('book', 'status')
     fieldsets = (
         ('Экземпляр книги', {'fields': ('book', 'imprint', 'inv_nom')}),

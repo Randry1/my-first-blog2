@@ -95,7 +95,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'firstapp/static')
+    os.path.join(BASE_DIR, 'firstapp/static'),
+    os.path.join(BASE_DIR, 'catalog/static'),
 ]
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 MEDIA_URL = '/media/'

@@ -17,6 +17,7 @@
         <a class="top-menu btn btn-warning" href="{% url 'logout' %}">Выйти</a>
         <a href="{% url 'post_new' %}" class="top-menu mt-3"><span class="glyphicon glyphicon-plus"></span></a>
         <a href="{% url 'post_draft_list' %}" class="top-menu btn btn-warning">Черновики</a>
+        <a href="{% url 'admin:index' %}" class="top-menu btn btn-warning">Админка</a>
     {% else %}
         <a class="top-menu btn btn-warning" href="{% url 'login' %}">Войти</a>
     {% endif %}

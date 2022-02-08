@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% block title %}<title>Мир книг</title>{% endblock %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    {#  Добавление статическогр CSS файла  #}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% block head %}
+        <img src="{% static 'images/logotip.jpg' %}" style="width: 100px; height: 100px" align="absmiddle" alt="Логотип">
+        <span class="name-brand"><font size=7 color="blue">Сайт мир книг</font></span>
+    {% endblock %}
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-2">
+                {% block sidebar %}
+                    <ul class="sidebar-nav">
+                        <li><a href="{% url 'home' %}">Главная страница</a></li>
+                        <li><a href="">Все книги</a></li>
+                        <li><a href="">Все авторы</a></li>
+                    </ul>
+                {% endblock %}
+            </div>
+            <div class="col-sm-10">
+                {% block content %}
+
+                {% endblock %}
+                {% block footer %}
+                    <footer class="footer">
+                        {% block copyright %}
+                            <p class="copyright">Copyright ООО Рога и копыта, все права защищены</p>
+                        {% endblock %}
+                    </footer>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
